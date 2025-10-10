@@ -24,10 +24,10 @@ logotohome img{
 html, body {
 	font-size: 16px;
 	font-family: sans-serif;
-	color: #393939;
+	color: #0c0c0c;
     margin-left: 15px;
     margin-bottom: 40px;
-	background: #efefef;
+	background: #fffefe;
 }
 h1{
     text-indent: 0em;
@@ -50,5 +50,67 @@ span.blackback{
     text-indent: 3em;
     background: #393939;
     color: #efefef;
-}
+} 
+  <!DOCTYPE html>
+  <html lang="ja">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-
+    width,initial-scale=1.0">
+     
+    <title>タイトル</tytle>
+
+    <!-- リセット --!>
+    <link rel="stllesheet"
+    href="https://cdn.jsdelivr.net/npm/destyle.css@
+    3.0.2/destyle.css">
+
+    <!-- style.css -->
+
+    <!-- style.css -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Google font -->
+
+
+</head>
+
+<body>
+
+  <header>
+
+  </header>
+
+  <main>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
