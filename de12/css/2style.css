@@ -4,8 +4,8 @@ body {
   padding: 20px;
   text-align: center;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-  color: #333;
+  background: linear-gradient(to right, #9dff8e, #feffff);
+  color: #000000;
 }
 
 /* 見出しスタイル（太く、大きく、青色） */
@@ -24,7 +24,7 @@ h2 {
 }
 
 h3 {
-  font-size: 1.5rem;
+  font-size: 2rem;
 }
 
 /* 画像スタイル（モダンに影・角丸） */
@@ -40,7 +40,7 @@ h3 {
 a {
   display: inline-block;
   background-color: #007BFF;
-  color: white;
+  color: rgb(209, 235, 203);
   padding: 12px 20px;
   border-radius: 8px;
   text-decoration: none;
@@ -49,7 +49,7 @@ a {
 }
 
 a:hover {
-  background-color: #0056b3;
+  background-color: #b875b8;
 }
 
 /* フッター */
