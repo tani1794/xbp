@@ -1,0 +1,343 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title> タニサンのページ</title>
+  <style>
+    :root{
+      --bg: #fefcfb;
+      --card:#ffffff;
+      --accent:#7dcfb6;
+      --accent2:#f7a9a8;
+      --accent3:#fbe29f;
+      --muted:#6b7280;
+      --radius:16px;
+      --maxw:1100px;
+      --gap:1.25rem;
+      font-family: "Noto Sans JP", system-ui, -apple-system, "Hiragino Kaku Gothic ProN", "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+    *{box-sizing:border-box;scroll-behavior:smooth;}
+    body{margin:0;background:var(--bg);color:#0f172a;line-height:1.6}
+    .wrap{max-width:var(--maxw);margin:36px auto;padding:24px}
+
+    header{display:flex;align-items:center;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--bg);padding:12px 24px;border-bottom:1px solid #e5e7eb;z-index:10;}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:12px;display:flex;align-items:center;justify-content:center;color:white;font-weight:700}
+    nav{display:flex;gap:16px}
+    nav a{color:var(--muted);text-decoration:none;font-weight:600;transition:color .3s}
+    nav a:hover{color:var(--accent)}
+    nav a.cta{background:var(--accent);color:white;padding:8px 12px;border-radius:8px}
+
+    section{margin-top:40px;scroll-margin-top:80px;}
+    .card{background:var(--card);border-radius:var(--radius);padding:20px;box-shadow:0 6px 18px rgba(2,6,23,0.06);transition:transform .3s, box-shadow .3s;}
+    .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(2,6,23,0.08);}
+
+    h1,h2,h3{margin-top:0;font-weight:800;}
+    h1{font-size:32px;color:var(--accent2);}
+    h2{font-size:26px;color:var(--accent3);}
+    h3{font-size:22px;color:var(--accent);}
+    p{font-size:16px;color:#374151;}
+
+    .features{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:var(--gap);margin-top:24px}
+    .feature{padding:18px;border-radius:12px;background:linear-gradient(180deg,#fff,#fbfdff);border:1px solid rgba(15,23,42,0.04)}
+    .feature p{font-size:15px;color:var(--muted)}
+
+    footer{margin-top:50px;text-align:center;color:var(--muted);font-size:13px}
+
+    /* スクロールアニメーション */
+    .fade-in{opacity:0;transform:translateY(20px);transition:opacity 1s ease,transform 1s ease;}
+    .fade-in.visible{opacity:1;transform:translateY(0);}
+
+    @media (max-width:560px){
+      nav{display:none}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">DE12</div>
+        <div>
+          <div style="font-weight:800">デザイン演習Ⅰ・Ⅱ</div>
+          <div style="font-size:12px;color:var(--muted)">第四回</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#section1">ゲーム紹介</a>
+        <a href="#section2">ルール説明</a>
+        <a href="#section3">作成しての感想</a>
+        <a href="#section4">最後におまけ♡</a>
+       
+      </nav>
+    </header>
+
+    <section id="section1" class="fade-in card">
+      <h1>ゲーム紹介</h1>
+      <p>今回私が作成したゲームは芸能人の10問クイズです。各問いには3つのヒントが出されてそれをもとに答えていく方式になっています。</p>
+      <p>みなさん当たるかな？(^-^)</p>
+    </section>
+
+    <section id="section2" class="fade-in card">
+      <h2>ルール説明</h2>
+      <p>上記に述べた通りに出されたヒントをもとに答えて貰います。選択問題ではなく解答者が直接タイピングして答える方式です。間違っても正解しても次の問題に進みます。</p>
+         <p>再度同じ問題はお答えできないのでみなさん慎重に答えて下さい。</p>
+         </head>
+<body>
+  <pre><code class="language-python">
+def greet(name):
+    return f"Hello, {name}!"
+  </code>import random
+
+#  芸能人クイズ（問題データ）
+quiz_data = [
+    {
+        "features": [
+            "ドラマ『逃げるは恥だが役に立つ』に出演",
+            "1988年6月11日生まれ",
+            "歌手としても活動しており、「恋ダンス」で話題に"
+        ],
+        "answer": "星野源"
+    },
+    {
+        "features": [
+            "映画『キングダム』シリーズに主演",
+            "1994年11月26日生まれ",
+            "俳優の山田裕貴と仲が良いことで知られる"
+        ],
+        "answer": "山﨑賢人"
+    },
+    {
+        "features": [
+            "お笑いコンビ『霜降り明星』のツッコミ担当",
+            "1993年7月14日生まれ",
+            "『霜降りバラエティ』などで活躍"
+        ],
+        "answer": "粗品"
+    },
+    {
+        "features": [
+            "映画『ちはやふる』や『一度死んでみた』に出演",
+            "1998年6月19日生まれ",
+            "CM女王としても有名な女優"
+        ],
+        "answer": "広瀬すず"
+    },
+    {
+        "features": [
+            "「世界の北野」としても知られる",
+            "1947年1月18日生まれ",
+            "映画監督・俳優・お笑いタレントの三刀流"
+        ],
+        "answer": "ビートたけし"
+    },
+    {
+        "features": [
+            "ドラマ『silent』で話題に",
+            "1999年1月29日生まれ",
+            "川口春奈と共演して注目を浴びた"
+        ],
+        "answer": "目黒蓮"
+    },
+    {
+        "features": [
+            "NHK朝ドラ『半分、青い。』に主演",
+            "1999年9月24日生まれ",
+            "明るい笑顔が印象的な若手女優"
+        ],
+        "answer": "永野芽郁"
+    },
+    {
+        "features": [
+            "チョコレートプラネットのボケ担当",
+            "1983年4月12日生まれ",
+            "松尾駿とのコンビで『TT兄弟』などが人気"
+        ],
+        "answer": "長田庄平"
+    },
+    {
+        "features": [
+            "ドラマ『半沢直樹』や『下町ロケット』に出演",
+            "1974年11月14日生まれ",
+            "舞台でも活躍する実力派俳優"
+        ],
+        "answer": "堺雅人"
+    },
+    {
+        "features": [
+            "バラエティ『月曜から夜ふかし』のMC",
+            "1983年11月26日生まれ",
+            "関ジャニ∞のメンバー"
+        ],
+        "answer": "村上信五"
+    }
+]
+
+# 問題をランダムに並び替え
+random.shuffle(quiz_data)
+
+print(" 芸能人クイズゲームを始めます！\n")
+score = 0
+
+for i, q in enumerate(quiz_data, start=1):
+    print(f"第{i}問")
+    for f in q["features"]:
+        print("・" + f)
+    print("→ この人物は誰？\n")
+
+    answer = input("あなたの答え: ").strip()
+
+    if answer == q["answer"]:
+        print("✅ 正解です！🎉\n")
+        score += 1
+    else:
+        print(f"❌ 残念！正解は『{q['answer']}』でした。\n")
+
+    print("-" * 40)
+
+# 結果表示
+print(f"\n🎉 ゲーム終了！あなたの正解数は {score} / {len(quiz_data)} です！")
+
+# 称号の表示（5点以上で称号あり）
+if score == len(quiz_data):
+    title = "🌟芸能マスター（全問正解！）"
+elif score >= 8:
+    title = "🎬ドラマ博士（かなり詳しい！）"
+elif score >= 5:
+    title = "📺エンタメ通（なかなかの知識！）"
+else:
+    title = "😅もう少し頑張りましょう！"
+
+print(f"あなたの称号：{title}")
+</pre>
+
+  <!-- highlight.js 本体 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+  <script>hljs.highlightAll();</script>
+</body>
+</html>
+</p>
+    </section>
+
+    <section id="section3" class="fade-in card">
+      <h3>作成しての感想</h3>
+      <p>単刀直入にいうと難しい。コードを理解するのに時間はかかるし、もう大変の言葉以外出てこなかったです.</p>
+      <p>しかしながら、作品はできたので本当に嬉しい気持ちでいっぱいです。一谷最高っちょーーーーーーー！</p>
+
+    </section>
+
+    <section id="section4" class="fade-in card">
+     
+      <!-- ▼ スクロールアニメーション付きYouTube埋め込み ▼ -->
+<style>
+  /* ▼ YouTube動画コンテナ ▼ */
+  .youtube-container {
+    position: relative;
+    width: 80%;
+    max-width: 720px;
+    margin: 80px auto;
+    padding-bottom: 56.25%; /* 16:9比率 */
+    height: 0;
+    overflow: hidden;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1.2s ease-out, transform 1.2s ease-out;
+  }
+
+  .youtube-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* ▼ アニメーション適用時の状態 ▼ */
+  .youtube-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* ▼ 背景アニメーション ▼ */
+  body {
+    background: linear-gradient(135deg, #e0f7fa, #e3f2fd, #fce4ec);
+    background-size: 400% 400%;
+    animation: gradientMove 12s ease infinite;
+    font-family: "Helvetica Neue", sans-serif;
+    color: #333;
+  }
+
+  @keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* ▼ タイトル（h5）のスタイル ▼ */
+  h5 {
+    text-align: center;
+    font-size: 1.5rem;
+    margin-top: 100px;
+    opacity: 0.9;
+    letter-spacing: 0.05em;
+  }
+</style>
+
+<h4>🎥最後におまけ♡ </h4>
+
+<div class="youtube-container">
+  <iframe width="560" height="315"
+    src="https://www.youtube.com/embed/uSsZAa1aTC8?si=dao5LHMPFb465btz"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    referrerpolicy="strict-origin-when-cross-origin"
+    allowfullscreen>
+  </iframe>
+</div>
+
+<script>
+  // ▼ スクロールアニメーション制御 ▼
+  document.addEventListener("DOMContentLoaded", () => {
+    const target = document.querySelector(".youtube-container");
+
+    // IntersectionObserverで可視範囲を検知
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          target.classList.add("visible");
+          observer.unobserve(target); // 一度だけ発火
+        }
+      });
+    }, { threshold: 0.3 });
+
+    observer.observe(target);
+  });
+</script>
+<!-- ▲ スクロールアニメーション付きYouTube埋め込み ▲ -->
+
+</section>
+
+    <footer>
+      <small>© 2025 タニサンWebページ </small>
+    </footer>
+  </div>
+
+  <script>
+    // スクロール時にfade-inを可視化
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
