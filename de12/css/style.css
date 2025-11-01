@@ -1,63 +1,26 @@
-/* 全体中央揃え & ベース設定 */
-body {
-  margin: 0;
-  padding: 20px;
-  text-align: center;
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #f0f4f8, #d9e2ec);
-  color: #333;
-}
-
-/* 見出しスタイル（太く、大きく、青色） */
-h1, h2, h3 {
-  color: #007BFF; /* 青色 */
-  font-weight: bold;
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-size: 2.5rem;
-}
-
-h2 {
-  font-size: 2rem;
-}
-
-h3 {
-  font-size: 1.5rem;
-}
-
-/* 画像スタイル（モダンに影・角丸） */
-.main-image {
-  width: 400px;
-  height: auto;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-  margin: 30px 0;
-}
-
-/* リンクスタイル（モダンなボタン風） */
-a {
-  display: inline-block;
-  background-color: #007BFF;
-  color: white;
-  padding: 12px 20px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s;
-}
-
-a:hover {
-  background-color: #0056b3;
-}
-
-/* フッター */
-footer {
-  margin-top: 40px;
-  font-size: 0.9rem;
-  color: #555;
-}
-
-
-
+/<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>XBP_HPsample</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="shortcut icon" href="./images/xbp.ico">
+</head>
+<body>
+    <logotohome>
+    <a href="../index.html"><img src="./images/0_XBlogo.png" alt=""></a>
+    </logotohome>
+    <h1>デザイン演習Ⅰ・Ⅱ</h1>
+        <h2>HTMLに関すること</h2>
+        <ol>
+            <li><a href="./hp1.html" target="_blank">htmlの基礎知識</a></li>
+            <li><a href="./hp2.html" target="_blank">htmlのwork</a></li>
+            <li><a href="./test.html" target="_blank">テストページ</a></li>
+        </ol>
+        <h2>演習ノート一覧</h2>
+        <ul>
+            <li><a href="./1.html" target="_blank">第一回</a></li>
+            <li><a href="./2.html" target="_blank">第二回</a></li>
+            <li><a href="./3.html" target="_blank">第三回</a></li>
+            <li><a href="./4.html" target="_blank">第四回</a></li>
+        </ul>

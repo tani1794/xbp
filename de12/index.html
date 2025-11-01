@@ -1,35 +1,92 @@
 <!DOCTYPE html>
 <html lang="jp">
 <head>
-    <meta charset="UTF-8">
-    <title>XBP_HPsample</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="shortcut icon" href="./images/xbp.ico">
+  <meta charset="UTF-8">
+  <title>XBP_HPsample</title>
+  <link rel="stylesheet" href="../css/new page.css">
+  <link rel="shortcut icon" href="./images/xbp.ico">
+
+  <!-- Minecraft風フォント -->
+  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
 </head>
 <body>
+
+  <!-- 🎥 YouTube背景動画 -->
+  <div class="video-background">
+    <div class="video-foreground">
+      <iframe 
+        src="https://www.youtube.com/embed/jLuJbSjo7NA?autoplay=1&mute=1&loop=1&playlist=jLuJbSjo7NA&controls=0&showinfo=0&modestbranding=1"
+        frameborder="0"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <div class="content">
     <logotohome>
-    <a href="../index.html"><img src="./images/0_XBlogo.png" alt=""></a>
+      <a href="../index.html"><img src="./images/0_XBlogo.png" alt=""></a>
     </logotohome>
-    <h1>デザイン演習Ⅰ・Ⅱ</h1>
-        <h2>HTMLに関すること</h2>
-        <ol>
-            <li><a href="./hp1.html" target="_blank">htmlの基礎知識</a></li>
-            <li><a href="./hp2.html" target="_blank">htmlのwork</a></li>
-            <li><a href="./test.html" target="_blank">テストページ</a></li>
-        </ol>
-        <h2>演習ノート一覧</h2>
-        <ul>
-            <li><a href="./1.html" target="_blank">第一回</a></li>
-            <li><a href="./2.html" target="_blank">第二回</a></li>
-            <li><a href="./3.html" target="_blank">第三回</a></li>
-            <li><a href="./4.html" target="_blank">第四回</a></li>
-        </ul>
+
+    <h1 class="fade-in">デザイン演習Ⅰ・Ⅱ</h1>
+    <h2 class="fade-in">HTMLに関すること</h2>
+
+    <ol>
+      <li class="slide-in"><a href="./hp1.html" target="_blank">htmlの基礎知識</a></li>
+      <li class="slide-in"><a href="./hp2.html" target="_blank">htmlのwork</a></li>
+      <li class="slide-in"><a href="./test.html" target="_blank">テストページ</a></li>
+    </ol>
+
+    <h2 class="fade-in">演習ノート一覧</h2>
+    <ul>
+      <li class="slide-in"><a href="./1.html" target="_blank">第一回</a></li>
+      <li class="slide-in"><a href="./2.html" target="_blank">第二回</a></li>
+      <li class="slide-in"><a href="./3.html" target="_blank">第三回</a></li>
+      <li class="slide-in"><a href="./4.html" target="_blank">第四回</a></li>
+    </ul>
+  </div>
+
+  <script>
+    // スクロールアニメーション制御
+    const targets = document.querySelectorAll('.fade-in, .slide-in');
+    const options = { threshold: 0.1 };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, options);
+
+    targets.forEach(t => observer.observe(t));
+  </script>
 
 
+<script>
+  const clickSound = document.getElementById('clickSound');
+  
+  // 初回ユーザー操作で音再生を許可
+  document.body.addEventListener('click', enableAudio, { once: true });
 
-    
-<br>
-<br>
+  function enableAudio() {
+    clickSound.play().then(() => {
+      clickSound.pause();
+      clickSound.currentTime = 0;
+      setupClickSound();
+    }).catch(err => console.log("初回クリック音許可が必要です:", err));
+  }
+
+  function setupClickSound() {
+    document.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        clickSound.currentTime = 0;
+        clickSound.play();
+      });
+    });
+  }
+</script>
+<audio id="clickSound" src="../minecraft.:sounds:/" preload="auto"></audio>
 
 
 </body>
