@@ -1,0 +1,85 @@
+/* 基本 */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: "Helvetica Neue", Arial, sans-serif; background: #000; color: #fff; }
+
+/* ----- 背景動画（固定・背面） ----- */
+.video-fixed {
+  position: fixed;
+  inset: 0;
+  z-index: 0; /* 背面 */
+  overflow: hidden;
+  pointer-events: none;
+}
+.video-fixed iframe {
+  position: absolute;
+  top: -12%;
+  left: -12%;
+  width: 124vw;
+  height: 124vh;
+  border: none;
+  pointer-events: none;
+}
+
+/* ----- Gryffindor イメージセクション（最初に表示） ----- */
+.image-section {
+  position: relative;
+  z-index: 10; /* 前面 */
+  height: 100vh;
+  width: 100%;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: opacity .4s ease, transform .4s ease;
+  transform-origin: center;
+}
+
+/* 暗めのオーバーレイ（画像を少し暗くして文字を見やすく） */
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 0;
+}
+
+/* コンテンツ：文字やロゴ */
+.content {
+  position: relative;
+  z-index: 11;
+  text-align: center;
+  background: rgba(0,0,0,0.35);
+  padding: 36px 48px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+}
+
+/* デバッグ用アウトライン（開発時のみ、確認できたら消す） */
+.debug-outline { outline: none; }
+/* コメント解除すると枠で確認できます */
+/* .debug-outline { outline: 3px dashed rgba(255,255,255,0.18); } */
+
+.logo { width: 120px; height: auto; margin-bottom: 18px; display:block; margin-left:auto; margin-right:auto; }
+
+h1 { font-size: 2rem; margin-bottom: 6px; }
+h2 { font-size: 1.1rem; color: #e6eef2; margin-bottom: 14px; }
+
+/* リスト */
+ul { list-style:none; padding:0; margin:0; }
+ul li { margin: 8px 0; }
+.content a { color:#fff; text-decoration:none; font-weight:600; }
+.content a:hover { color:#00e0ff; }
+
+/* ----- スクロールしてvideoを見せるための下部スペーサー ----- */
+.spacer {
+  height: 120vh; /* 下に十分なスクロール領域を確保 */
+  background: transparent;
+  z-index: 5;
+}
+
+/* レスポンシブ */
+@media (max-width:720px){
+  .content { padding: 20px; }
+  .logo { width: 90px; }
+  h1 { font-size: 1.4rem; }
+}

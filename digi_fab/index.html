@@ -1,27 +1,76 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>デジタルファブリケーション</title>
-    <link rel="stylesheet" href="./css/style.css">
-    <link rel="shortcut icon" href="./images/xbp.ico">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>デジタルファブリケーション</title>
+  <link rel="stylesheet" href="../css/degifab:page.css" />
 </head>
 <body>
-    <logotohome>
-    <a href="../index.html"><img src="./images/0_XBlogo.png" alt=""></a>
-    </logotohome>
-    <h1>デジタルファブリケーション</h1>
-    <h2>演習ノート一覧</h2>
+
+  <!-- 背景動画（固定、常に背面） -->
+  <div class="video-fixed">
+    <iframe
+      src="https://www.youtube.com/embed/ALbAkNzi57Y?autoplay=1&mute=1&loop=1&playlist=ALbAkNzi57Y&controls=0&modestbranding=1"
+      frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  </div>
+
+  <!-- Gryffindor 背景（最初に見えるセクション） -->
+  <!-- NOTE: inline style を使って背景画像のパス解決をHTML側で確実にする -->
+  <section class="image-section fade-scroll" 
+           style="background-image: url('./images/Gryffindor_compressed_kb.jpg');">
+    <div class="overlay" aria-hidden="true"></div>
+
+    <div class="content debug-outline">
+      <div class="logotohome">
+        <a href="./index.html"><img src="./images/0_XBlogo.png" alt="Logo" class="logo"></a>
+      </div>
+
+      <h1>デジタルファブリケーション</h1>
+      <h2>演習ノート一覧</h2>
       <ul>
-       <li><a href="./2.html" target="_blank">第一回</a></li>
+        <li><a href="./2.html" target="_blank">第一回</a></li>
+        <li><a href="./3.html" target="_blank">レーザーカット</a></li>
       </ul>
+    </div>
+  </section>
 
+  <!-- 空白（下に動画が見えるスペース） -->
+  <section class="spacer">
+    <!-- 空のセクション。ここにスクロールすると背景動画が見える -->
+  </section>
 
+  <script>
+  // IntersectionObserver でセクションの表示率を監視し、opacity を切り替える
+  (function(){
+    const section = document.querySelector('.image-section');
+    if (!section) return;
 
-    
-<br>
-<br>
+    const options = {
+      root: null,
+      threshold: buildThresholdList()
+    };
 
+    function buildThresholdList() {
+      let thresholds = [];
+      for (let i=0.0; i<=1.0; i+=0.01) thresholds.push(i);
+      return thresholds;
+    }
 
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        // entry.intersectionRatio は 0.0 - 1.0（表示割合）
+        const ratio = entry.intersectionRatio;
+        // ratio が 0 に近づくほど透明にする
+        section.style.opacity = Math.max(0, Math.min(1, ratio));
+        // optional: 小さくなったら縮小も加える
+        const scale = 0.98 + 0.02 * ratio;
+        section.style.transform = `scale(${scale})`;
+      });
+    }, options);
+
+    observer.observe(section);
+  })();
+  </script>
 </body>
 </html>

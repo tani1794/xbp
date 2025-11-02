@@ -13,7 +13,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120vw;
+  width: 123vw;
   height: 68vw; /* 16:9比率 */
   transform: translate(-50%, -50%);
   pointer-events: none;
