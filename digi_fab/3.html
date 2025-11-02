@@ -1,12 +1,78 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <!-- ⑥↓タイトルを変えてみよう -->
-    <title>タニサンの第一回課題ページ</title>
-    <!-- ⑤スタイルシートの設定をしよう -->
-     <link rel="stylesheet" href="./css/style.css">
-    <!-- h1.htmlからある行をコピペしてくればOK -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>タニサン　レーザーカットページ</title>
+    <link rel="stylesheet" href="../css/degifab2.css">
 </head>
 <body>
-    <h1>第一回課題</h1>
-    
+    <header>
+        <h1>レーザーカット</h1>
+    </header>
+
+    <main>
+        <!-- セクション1：下から上スライド -->
+        <section class="work-section section1">
+            <h2>レーザーカットベース</h2>
+            <img src="../images/laser cut base.png" width="60%" alt="レーザーカットベース">
+            <p>こちらの画像は私がAdobeイラストレーターで作成したレーザーカットの下書きです。デザインはトランプのマークを使用しました。
+                自分はディズニー映画の「不思議の国のアリス」が好きなので”チェシャ猫”を表す猫もデザインに入れてみました。
+                この下書きがうまくいけば観葉植物の植木鉢代わりのものが完成します。
+            </p>
+        </section>
+
+        <!-- セクション2：左から右スライド -->
+        <section class="work-section section2">
+            <h2>完成写真</h2>
+            <img src="../images/CE13AEAD-DEEE-4468-9438-7ECC2ED60D67_1_102_o.jpeg" width="60%" alt="完成写真">
+            <p>完成した作品の写真です。ん〜〜〜〜〜微妙！反省点がたくさん見つかった気がします。サイズも全然違うし、もっと形やデザインも
+                こだわった方が……
+            </p>
+        </section>
+
+        <!-- セクション3：右から左スライド -->
+        <section class="work-section section3">
+            <h2>デジファブデータ</h2>
+            <a href="./files/degifab (1).ai" download>AIファイルをダウンロード</a>
+
+            <p>このファイルのデーターが私が作成したイラストレーターのものです。</p>
+        </section>
+
+        <!-- セクション4：拡大表示 -->
+        <section class="work-section section4">
+            <h2>反省点</h2>
+            <p>まず、何を作成したいのかが曖昧ではっきりしたものがなかったので以前授業でやったようにイメージを膨らませて
+                アイディアを考える時間を作るように努力したいです。そして、妥協しないことです。この授業でやることは一回一回が
+                とても重要な経験値なので真剣に取り組んで行きたいです。
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2025 Tanisan Portfolio</p>
+    </footer>
+
+    <!-- JSでスクロールアニメーション -->
+    <script src="./js/scroll.js"></script>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    const sections = document.querySelectorAll(".work-section");
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if(entry.isIntersecting){
+                entry.target.classList.add("visible");
+            } else {
+                entry.target.classList.remove("visible");
+            }
+        });
+    }, { threshold: 0.1 });
+
+    sections.forEach(section => observer.observe(section));
+});
+</script>
+
+
+</body>
+</html>

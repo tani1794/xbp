@@ -1,0 +1,71 @@
+/* 基本設定 */
+body {
+    margin: 0;
+    font-family: 'Orbitron', sans-serif;
+    background: linear-gradient(135deg, #b0b0b0, #e50d0d, #d0d0d0);
+    background-size: 400% 400%;
+    animation: shine 10s ease-in-out infinite;
+    color: #fff;
+}
+
+@keyframes shine {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+header, footer {
+    text-align: center;
+    padding: 2rem 0;
+}
+
+h1 {
+    font-size: 3rem;
+    color: rgb(25, 13, 95);
+}
+
+h2 {
+    font-size: 2.5rem;
+    color: #19d457;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.5rem;
+    color: #000000;
+}
+
+/* セクションスタイル共通 */
+.work-section {
+    opacity: 0;
+    transition: all 1s ease-out;
+    padding: 5rem 2rem;
+    position: relative;
+}
+
+/* セクション別アニメーション */
+.section1 { transform: translateY(50px); }
+.section1.visible { opacity: 1; transform: translateY(0); }
+
+.section2 { transform: translateX(-50px); }
+.section2.visible { opacity: 1; transform: translateX(0); }
+
+.section3 { transform: translateX(50px); }
+.section3.visible { opacity: 1; transform: translateX(0); }
+
+.section4 { transform: scale(0.8); }
+.section4.visible { opacity: 1; transform: scale(1); }
+
+/* 背景文字ランダム散布 */
+body::before {
+    content: "Laser Cut Laser Cut Laser Cut Laser Cut Laser Cut";
+    position: fixed;
+    top: 0;
+    left: 0;
+    font-size: 5rem;
+    color: rgba(255, 215, 0, 0.1);
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 0;
+    transform: rotate(-15deg);
+}
