@@ -1,93 +1,117 @@
 <!DOCTYPE html>
 <html lang="jp">
 <head>
-  <meta charset="UTF-8">
-  <title>XBP_HPsample</title>
-  <link rel="stylesheet" href="../css/new page.css">
-  <link rel="shortcut icon" href=">
-
-  <!-- Minecraft風フォント -->
-  <link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+<meta charset="UTF-8">
+<title>ポートフォリオサンプル</title>
+<link href="https://fonts.cdnfonts.com/css/minecraft-4" rel="stylesheet">
+<style>
+body {
+  margin:0;
+  font-family:'Minecraft',sans-serif;
+  color:#fff;
+  background:#000;
+  overflow-x:hidden;
+}
+.video-background {
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:-1;
+  background:black;
+}
+.video-background iframe {
+  width:100vw;
+  height:56.25vw; /* 16:9比率 */
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.section {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:60px 20px;
+  opacity:0;
+  transform:translateY(30px);
+  transition:all 1s ease;
+}
+.section.show { opacity:1; transform:translateY(0); }
+h1,h2 { transition:color 1s,text-shadow 1s; }
+.color-animate { animation:colorGlow 3s infinite alternate; }
+@keyframes colorGlow {
+  0%{color:#fff;text-shadow:0 0 5px #fff;}
+  25%{color:#00ff7f;text-shadow:0 0 10px #00ff7f;}
+  50%{color:#1e90ff;text-shadow:0 0 15px #1e90ff;}
+  75%{color:#ff69b4;text-shadow:0 0 20px #ff69b4;}
+  100%{color:#ffff00;text-shadow:0 0 25px #ffff00;}
+}
+a {
+  display:inline-block;
+  margin:10px;
+  padding:10px 20px;
+  color:white;
+  background:#333;
+  border-radius:10px;
+  text-decoration:none;
+  transition:transform 0.3s,background-color 0.3s;
+}
+a:hover { transform:scale(1.1); background-color:#555; }
+</style>
 </head>
 <body>
 
-  <!-- 🎥 YouTube背景動画 -->
-  <div class="video-background">
-    <div class="video-foreground">
-      <iframe 
-        src="https://www.youtube.com/embed/jLuJbSjo7NA?autoplay=1&mute=1&loop=1&playlist=jLuJbSjo7NA&controls=0&showinfo=0&modestbranding=1"
-        frameborder="0"
-        allow="autoplay; fullscreen"
-        allowfullscreen>
-      </iframe>
-    </div>
-  </div>
+<!-- 背景動画 -->
+<div class="video-background">
+  <iframe
+    src="https://www.youtube.com/embed/orfC3uDBXzU?start=10&autoplay=1&mute=1&loop=1&playlist=orfC3uDBXzU&controls=0&modestbranding=1"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    allowfullscreen>
+  </iframe>
+</div>
 
-  <div class="content">
-    <logotohome>
-      <a href="../index.html"><img src="./images/0_XBlogo.png" alt=""></a>
-    </logotohome>
+<div class="section">
+  <h1>デザイン演習Ⅰ・Ⅱ</h1>
+  <h2>HTMLに関すること</h2>
+  <a href="./hp1.html" target="_blank">htmlの基礎知識</a>
+  <a href="./hp2.html" target="_blank">htmlのwork</a>
+  <a href="./test.html" target="_blank">テストページ</a>
+</div>
 
-    <h1 class="fade-in">デザイン演習Ⅰ・Ⅱ</h1>
-    <h2 class="fade-in">HTMLに関すること</h2>
-
-    <ol>
-      <li class="slide-in"><a href="./hp1.html" target="_blank">htmlの基礎知識</a></li>
-      <li class="slide-in"><a href="./hp2.html" target="_blank">htmlのwork</a></li>
-      <li class="slide-in"><a href="./test.html" target="_blank">テストページ</a></li>
-    </ol>
-
-    <h2 class="fade-in">演習ノート一覧</h2>
-    <ul>
-      <li class="slide-in"><a href="./1.html" target="_blank">第一回</a></li>
-      <li class="slide-in"><a href="./2.html" target="_blank">第二回</a></li>
-      <li class="slide-in"><a href="./3.html" target="_blank">第三回</a></li>
-      <li class="slide-in"><a href="./4.html" target="_blank">第四回</a></li>
-    </ul>
-  </div>
-
-  <script>
-    // スクロールアニメーション制御
-    const targets = document.querySelectorAll('.fade-in, .slide-in');
-    const options = { threshold: 0.1 };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('show');
-        }
-      });
-    }, options);
-
-    targets.forEach(t => observer.observe(t));
-  </script>
-
+<div class="section">
+  <h2>演習ノート一覧</h2>
+  <a href="./1.html" target="_blank">第一回</a>
+  <a href="./2.html" target="_blank">第二回</a>
+  <a href="./3.html" target="_blank">第三回</a>
+  <a href="./4.html" target="_blank">第四回</a>
+</div>
 
 <script>
-  const clickSound = document.getElementById('clickSound');
-  
-  // 初回ユーザー操作で音再生を許可
-  document.body.addEventListener('click', enableAudio, { once: true });
-
-  function enableAudio() {
-    clickSound.play().then(() => {
-      clickSound.pause();
-      clickSound.currentTime = 0;
-      setupClickSound();
-    }).catch(err => console.log("初回クリック音許可が必要です:", err));
-  }
-
-  function setupClickSound() {
-    document.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        clickSound.currentTime = 0;
-        clickSound.play();
-      });
-    });
-  }
+// スクロールアニメーション＋色変化
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add('show');
+      const headings = entry.target.querySelectorAll('h1,h2');
+      headings.forEach(h=>h.classList.add('color-animate'));
+    }
+  });
+},{threshold:0.2});
+sections.forEach(section=>observer.observe(section));
 </script>
-<audio id="clickSound" src="../minecraft.:sounds:/" preload="auto"></audio>
-
 
 </body>
 </html>
+
+
+
