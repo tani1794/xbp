@@ -1,0 +1,87 @@
+/* 背景設定 */
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.3), rgba(0,0,0,0.3)),
+    url('./74ad2bd9-8091-4156-b263-f3c6b8833fcf.png');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  color: #333;
+}
+
+/* タイトル */
+.main-title {
+  text-align: center;
+  color: #fff;
+  padding: 2rem;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+  font-size: 2rem;
+}
+
+/* 各セクション */
+section {
+  width: 80%;
+  margin: 100px auto;
+  background-color: rgba(255, 215, 0, 0.85); /* 銀杏色 */
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.25);
+  opacity: 0;
+  transform: translateY(50px);
+  animation: fadeIn 2s ease forwards;
+}
+
+/* 遅延を使ってスクロール風に表示 */
+section:nth-of-type(1) { animation-delay: 0.5s; }
+section:nth-of-type(2) { animation-delay: 1.2s; }
+section:nth-of-type(3) { animation-delay: 2s; }
+section:nth-of-type(4) { animation-delay: 2.8s; }
+
+/* アニメーション定義 */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(80px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 方向別スタイル */
+.from-left { animation-name: fadeLeft; }
+.from-right { animation-name: fadeRight; }
+.from-top { animation-name: fadeTop; }
+.from-bottom { animation-name: fadeBottom; }
+
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(100px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeTop {
+  from { opacity: 0; transform: translateY(-100px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeBottom {
+  from { opacity: 0; transform: translateY(100px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* コードブロック */
+pre {
+  background-color: #222;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 10px;
+  overflow-x: auto;
+}
+
+/* YouTube埋め込み */
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+

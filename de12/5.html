@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>タニサンのページ</title>
+
+  <!-- CSS を埋め込み：外部参照ミスを防ぐ -->
+  <style>
+    /* --- 背景 --- */
+    :root{
+      --ginnan: rgba(255,215,0,0.9); /* 銀杏色（少し不透明） */
+    }
+    html,body{height:100%; margin:0;}
+    body{
+      font-family: "Noto Sans JP", "Hiragino Sans", sans-serif;
+      /* 画像ファイル名を同じフォルダに置くこと */
+      background-image:
+        linear-gradient(rgba(0,0,0,0.32), rgba(0,0,0,0.32)),
+        url('../images/10384BD8-703D-486C-B304-144959F44876_1_201_a.jpeg');
+      background-size: cover;
+      background-position: center;
+      background-attachment: fixed; /* 固定 */
+      color:#111;
+    }
+
+    /* メインタイトル */
+    .main-title{
+      text-align:center;
+      color:#fff;
+      padding:36px 12px;
+      text-shadow: 0 4px 18px rgba(0,0,0,0.6);
+      font-size:2rem;
+      margin:0;
+    }
+
+    /* セクションの基本 */
+    .section {
+      width: min(1100px, 92%);
+      margin: 64px auto;
+      background: var(--ginnan);
+      border-radius:16px;
+      padding:36px 28px;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.25);
+      /* 見やすくするため必ず高さを取る */
+      min-height: 60vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0; /* 初期は見えない -> アニメーションで表示 */
+      transform: translateY(30px);
+      /* 共通アニメーション（ロード時に順次表示される） */
+      animation-duration: 900ms;
+      animation-fill-mode: forwards;
+      animation-timing-function: cubic-bezier(.22,.9,.33,1);
+    }
+
+    /* デバッグ用の目に見える枠（必要なら有効化） */
+    /* .section { outline: 3px dashed rgba(0,0,0,0.08); } */
+
+    /* 見出し/本文 */
+    .section h2{
+      margin:0 0 12px 0;
+      font-size:2rem;
+      color:#2b2b2b;
+    }
+    .section p{ margin:0; font-size:1.05rem; line-height:1.8; color:#2b2b2b; }
+
+    /* コードブロック */
+    pre{
+      background:#0e0e0e;
+      color:#e8e8e8;
+      padding:16px;
+      border-radius:10px;
+      overflow:auto;
+      margin-top:16px;
+      font-size:0.95rem;
+      line-height:1.5;
+    }
+
+    /* 動画中央配置 */
+    .video-container{ display:flex; justify-content:center; align-items:center; margin-top:18px; }
+
+    /* スライド方向ごとのアニメーション名 */
+    .from-left { animation-name: slideLeft; }
+    .from-right { animation-name: slideRight; }
+    .from-top { animation-name: slideTop; }
+    .from-bottom { animation-name: slideBottom; }
+
+    /* 各セクションの表示タイミング（ロード時に順番に現れる） */
+    .section:nth-of-type(1){ animation-delay: 0.4s; }
+    .section:nth-of-type(2){ animation-delay: 1.0s; }
+    .section:nth-of-type(3){ animation-delay: 1.6s; }
+    .section:nth-of-type(4){ animation-delay: 2.2s; }
+
+    /* アニメーション定義（JSなしで見せる） */
+    @keyframes slideLeft {
+      from { opacity:0; transform: translateX(-120px) scale(0.98); }
+      to   { opacity:1; transform: translateX(0)     scale(1); }
+    }
+    @keyframes slideRight {
+      from { opacity:0; transform: translateX(120px) scale(0.98); }
+      to   { opacity:1; transform: translateX(0)     scale(1); }
+    }
+    @keyframes slideTop {
+      from { opacity:0; transform: translateY(-120px) scale(0.98); }
+      to   { opacity:1; transform: translateY(0)      scale(1); }
+    }
+    @keyframes slideBottom {
+      from { opacity:0; transform: translateY(120px) scale(0.98); }
+      to   { opacity:1; transform: translateY(0)      scale(1); }
+    }
+
+    /* レスポンシブ微調整 */
+    @media (max-width:700px){
+      .main-title{ font-size:1.4rem; padding:20px 8px; }
+      .section{ padding:20px; min-height:55vh; }
+      .section h2{ font-size:1.4rem; }
+      pre{ font-size:0.85rem; }
+      iframe{ width:100%; height:220px; }
+    }
+  </style>
+</head>
+<body>
+<!-- SECTION 1 -->
+<section class="section from-left">
+  <h2>APIについての説明</h2>
+  <p>
+    天気アプリや電子決済アプリ、地図アプリなどは、
+    すべて外部の「API（Application Programming Interface）」から
+    データや機能を受け取っています。ここではその仕組みを3つの例で紹介します。
+  </p>
+
+  <!-- ▼ APIカテゴリ（ボタン風） -->
+  <div style="display:flex; justify-content:center; flex-wrap:wrap; gap:24px; margin-top:36px;">
+    <div style="
+      background:rgba(255, 162, 0, 0.9);
+      color:#222;
+      padding:18px 32px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      font-weight:bold;
+      font-size:1.2rem;">
+      天気予報
+    </div>
+    <div style="
+      background:rgba(255, 98, 0, 0.9);
+      color:#222;
+      padding:18px 32px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      font-weight:bold;
+      font-size:1.2rem;">
+      電子決済
+    </div>
+    <div style="
+      background:rgba(255, 0, 0, 0.9);
+      color:#222;
+      padding:18px 32px;
+      border-radius:12px;
+      box-shadow:0 4px 12px rgba(0,0,0,0.25);
+      font-weight:bold;
+      font-size:1.2rem;">
+      地図マップ
+    </div>
+  </div>
+
+  <!-- ▼ 各API説明ブロック ▼ -->
+  <div style="margin-top:40px;">
+    <h3>🌤 天気アプリ × API</h3>
+    <p>
+      <strong>どうしてAPIが必要？</strong><br>
+      天気アプリは、自分で気温や降水量を観測しているわけではありません。<br>
+      代わりに、気象庁やWeatherAPIなどの「天気データAPI」から情報をもらっています。
+    </p>
+    <p>
+      🧩 <strong>仕組み</strong><br>
+      1. 天気アプリが「東京の現在の天気を教えて」とAPIにリクエストを送る<br>
+      2. APIがデータベースから「東京は気温18℃、晴れ」と返す<br>
+      3. アプリがそのデータを画面に表示する
+    </p>
+  </div>
+
+  <div style="margin-top:40px;">
+    <h3>💰 電子決済アプリ × API</h3>
+    <p>
+      <strong>どうしてAPIが必要？</strong><br>
+      PayPay・LINE Pay・Apple Pay などのアプリは、<br>
+      「お金のやりとり」を安全に処理するために、決済APIを使っています。
+    </p>
+    <p>
+      🧩 <strong>仕組み</strong><br>
+      1. ユーザーが「1000円を送金」ボタンを押す<br>
+      2. アプリが「この人の口座から1000円引いて相手に送って」とAPIに依頼<br>
+      3. APIが銀行やクレジット会社と通信して処理を実行
+    </p>
+  </div>
+
+  <div style="margin-top:40px;">
+    <h3>🗺 地図アプリ × API</h3>
+    <p>
+      <strong>どうしてAPIが必要？</strong><br>
+      Google Mapsのような地図アプリは、膨大な地図データをAPIで呼び出しています。<br>
+      アプリの中にすべての地図を保存しているわけではありません。
+    </p>
+    <p>
+      🧩 <strong>仕組み</strong><br>
+      1. アプリが「東京駅の地図を表示して」とGoogle Maps APIにリクエスト<br>
+      2. APIが地図データを返し、画面に地図が表示される<br>
+      3. さらに「現在地を表示」「ルート検索」などの機能もAPIが担当
+    </p>
+  </div>
+</section>
+
+
+  <!-- SECTION 2 (Pythonコード) -->
+  <section class="section from-right">
+    <h2>Pythonコード（例）</h2>
+    <p>私が作成したPythonコードです。今回は変な会話をAIが作成するようにOpenaiに依頼してみました。</p>
+    <pre><code>import openai
+
+openai.api_key = "sk-XXXXXXXXXXXXXXXXXX"
+
+prompt = """
+あなたはお笑いコンビ「サンドウィッチマン」の作家です。
+登場人物は「ボケ」と「ツッコミ」の二人。
+テーマ：大学生の日常で起きたちょっと変な出来事
+"""
+
+response = openai.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role":"system","content":"あなたはプロの漫才作家です。"},
+        {"role":"user","content":prompt}
+    ],
+    max_tokens=700, temperature=0.9
+)
+
+print(response.choices[0].message.content.strip())</code></pre>
+  </section>
+
+  <!-- SECTION 3 -->
+  <section class="section from-top">
+    <h2>作成しての反省点・学習した点</h2>
+    <p>今回に課題はみんなとスタートラインが遅れたこともあり、非常に大変でした。古いPCのバージョンをターミナルでどうアップデートするかでまず壁に激突
+        しました。ですが、道用先生がCHAT GPTはプログラム系に非常に強いと言う言葉を耳にしてAI活用法の参考書うを購入してAIを活用する能力を身に付けれました。
+        反省点としては今回の想像力を次のステージへと思考するプロセスを実行しなかったことです。</p>
+         実際に、過去の神大生は今回行った講義のようにOpenaiを活用して献立のアプリを作成したと聞きました。同じように、もしくはそれ以上のものを創り上げたいのでこれからもプログラムがんばっていきたいです。</p>
+        　コードの内容ですが、role,system,contentにあなたは〜モデルです。と言い聞かせ、指示をしました。そうすることによりより一層会話の質が高まると思ったからです。</p>
+    </p>
+  </section>
+
+  <!-- SECTION 4 (YouTube埋め込み) -->
+  <section class="section from-bottom">
+    <!-- SECTION 4 (YouTube埋め込み) -->
+  <section class="section from-bottom">
+    <h2>関連動画</h2>
+    <div class="video-container">
+      <!-- 1つ目の動画 -->
+      <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/sBn9ACyMpi0?si=66M-yGDRDBMuQ4Sw"
+        title="YouTube video player 1" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="video-container">
+      <!-- 2つ目の動画 -->
+      <iframe width="560" height="315"
+        src="https://www.youtube.com/embed/aZXwYyNshQY"
+        title="YouTube video player 2" frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+
+</body>
+</html>
