@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>タニサンのペーシ</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        :root {
+            --main-purple: #c9a8ff; /* パステル紫 */
+            --bg-purple: #61388e;  /* 淡いパステル背景 */
+            --text-dark: #3a2c4f;
+        }
+        /* セクションの共通デザイン */
+section {
+  background: rgba(0, 0, 0, 0.4);   /* 半透明の黒 */
+  padding: 40px;
+  border-radius: 20px;             /* 丸み */
+  backdrop-filter: blur(10px);     /* ブラー効果 */
+  -webkit-backdrop-filter: blur(10px); /* Safari対応 */
+  max-width: 900px;                /* セクション幅 */
+  margin: 0 auto 40px auto;        /* ← 下に40pxのスペース */
+  text-align: center;              /* 中央揃え */
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+                url('/mnt/data/237d3c29-42a8-4dec-becb-c485f98ff4ef.png') no-repeat center/cover;
+            font-family: "Yu Gothic", sans-serif;
+            color: var(--text-dark);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        section {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 30px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+        section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        p {
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <ul>
+            <li><a href="#sec1">自分が扱ったデータ</a></li>
+            <li><a href="#sec2">結果</a></li>
+            <li><a href="#sec3">分析・思考</a></li>
+            <li><a href="#sec4">使用したPythonコード</a></li>
+        </ul>
+    </nav>
+</header>
+
+<section id="sec1" class="fade-section">
+    <h2>自分が扱ったデータ</h2>
+    <p>私たちのグループは役割分担をしてデータを求めました。私が調べたデータは”どのような購入者か（Customertype” ”購入した時刻と日にち”
+        です。
+    </p>
+</section>
+
+<section id="sec2" class="fade-section">
+    <h2>結果</h2>
+    <p> <img src="../images/スクリーンショット 2025-11-24 16.40.45.png"width="50%"> </p>
+     <p> <img src="../images/スクリーンショット 2025-11-24 16.41.17.png"width="50%"> </p>
+      <p> <img src="../images/スクリーンショット 2025-11-24 16.42.04.png"width="50%"> </p>
+       <p> <img src="../images/スクリーンショット 2025-11-24 16.42.41.png"width="50%"> </p>
+</section>
+
+<section id="sec3" class="fade-section">
+<h2>分析・思考</h2>
+<div style="text-align:center; max-width:900px; margin:0 auto;">
+<p>グラフから確認できる主要な事実：<br>
+・購入者の属性は労働者が多い。<br>
+・購入時刻を月別で集計すると、5月と10月に山がある。</p>
+
+
+<h3 style="margin-bottom:8px;">仮説（なぜそうなるか）</h3>
+<ol style="text-align:left; display:inline-block; text-align:left;">
+<li><strong>気候変化による体調悪化・倦怠感</strong><br>暖かい季節・気温差が大きい時期は疲労や倦怠を感じやすく、味の濃い・満足感のある弁当を選びがち。</li>
+<li><strong>食欲の変動</strong><br>暑さで食欲が落ちると、冷めても食べやすい・匂いが少ない食品が選ばれる。シウマイはその条件に合う。</li>
+<li><strong>外回り・移動の多さ</strong><br>出張や外回りの増加は移動中に手早く買える駅弁タイプの需要を高める。</li>
+</ol>
+
+
+<h3 style="margin-bottom:8px;">証拠と評価</h3>
+<ul style="text-align:left; display:inline-block;">
+<li>月別ピーク（5月・10月）と“暖かい/気温差の大きい”という気候条件が一致するかを気象データで照合すべき（次ステップ）。</li>
+<li>購入者属性が労働者に偏っているため、勤務地付近の販売・駅利用状況が関連している可能性が高い。</li>
+</ul>
+
+
+<h3 style="margin-bottom:8px;">（改善・追加分析）</h3>
+<ol style="text-align:left; display:inline-block;">
+<li>気象データ（気温・湿度・気圧差）と月別購入量を統計的に相関分析する。</li>
+<li>購入場所（駅近・オフィス街など）の時間帯別分析で“移動中需要”を検証する。</li>
+<li>アンケート（簡易）で「購入理由（疲労・手軽さ・味）」を定量化する。</li>
+</ol>
+
+
+
+</div>
+</section>
+
+
+</body>
+</html>
+
+<section id="sec4" class="fade-section" style="text-align:center; line-height:1.8;">
+    <h2>使用したPythonコード</h2>
+
+    <div style="max-width:850px; margin:0 auto; text-align:left; background:rgba(255,255,255,0.25); padding:25px; border-radius:20px; backdrop-filter:blur(8px);">
+
+        <h3>① "datetime" を本当の日時データに変換している</h3>
+        <p>
+            もともと datetime は「20250109 13:20」のような文字列のことが多い。<br>
+            文字列のままだと「月だけ取り出す」「日時順に並べる」などができない。<br>
+            なので <code>str.strptime()</code> を使って “日時型” に変換している。
+        </p>
+
+        <h3>② 日付から「月」だけ取り出している</h3>
+        <p>
+            <code>pl.col("datetime").dt.month()</code> で月番号を取り出す。<br>
+            例：2025年1月9日 → 1、2025年5月21日 → 5。<br>
+            「何月の売上か？」という情報づくり。
+        </p>
+
+        <h3>③ 月ごとに売上金額を合計している</h3>
+        <p>
+            <code>.group_by("month")</code> → 月ごとにまとめる<br>
+            <code>.agg(pl.col("amount").sum())</code> → 各月の売上を合計する<br><br>
+            1月、2月、3月…というように、売上の“月別集計表”が完成。
+        </p>
+
+        <h3>④ 結果を並べてグラフ化している</h3>
+        <p>
+            <code>.sort("month")</code> で 1月 → 2月 → 3月 の順に並べ替え、<br>
+            <code>.to_pandas()</code> で pandas に変換し、<br>
+            <code>.plot(kind="bar")</code> で棒グラフを描く。<br><br>
+            → 月ごとの売上差が“ひと目でわかるグラフ”になる。
+        </p>
+
+        <h3>例え話</h3>
+        <p>
+            あなたが学校の自販機売上をまとめる係だとする。<br>
+            まず売れた時間のメモを受け取る（最初は文字列）。<br>
+            → 日付として読み込める形に変換。<br>
+            → 月だけ取り出す。<br>
+            → 月ごとの売上を集計。<br>
+            → 棒グラフにして「どの月が一番売れたか」ひと目でわかる。<br>
+            まさにその流れを自動でやってくれるのがこのコード。
+        </p>
+
+    </div>
+</section>
+
+<script>
+// スクロールアニメーション
+const sections = document.querySelectorAll('.fade-section');
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+        }
+    });
+}, { threshold: 0.2 });
+
+sections.forEach(sec => observer.observe(sec));
+</script>
+
+
+
+
+</body>
+</html>

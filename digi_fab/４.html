@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Minimalist Fashion — Sample</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#ffffff;
+      --text:#111;
+      --muted:#6b6b6b;
+      --accent:#000;
+      --gap:24px;
+      --max-width:1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Helvetica Neue", Arial;
+      color:var(--text);
+      background:var(--bg);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+    }
+
+    /* layout */
+    .container{max-width:var(--max-width);margin:0 auto;padding:32px}
+    header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+
+    /* logo */
+    .logo{font-family:Playfair Display, serif;font-weight:700;letter-spacing:1px;font-size:20px}
+    nav{display:flex;gap:18px;align-items:center}
+    nav a{font-size:14px;color:var(--muted);text-decoration:none}
+
+    /* hero */
+    .hero{display:grid;grid-template-columns:1fr 460px;gap:var(--gap);align-items:center;padding:40px 0}
+    .hero-left{padding-right:20px}
+    .eyebrow{font-size:13px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+    h1{font-family:Playfair Display, serif;font-size:48px;margin:14px 0}
+    p.lead{color:var(--muted);max-width:52ch}
+    .cta{display:inline-block;margin-top:22px;padding:12px 18px;border:1px solid var(--accent);background:transparent;text-decoration:none;color:var(--accent);font-weight:600}
+
+    /* hero-right product card */
+    .hero-card{background:#f7f7f7;border-radius:8px;padding:18px;display:flex;flex-direction:column;gap:12px}
+    .hero-card img{width:100%;height:300px;object-fit:cover;border-radius:6px}
+    .price{font-weight:600}
+
+    /* grid */
+    .grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:48px}
+    .product{border:1px solid #eee;padding:12px;border-radius:6px;display:flex;flex-direction:column}
+    .product img{width:100%;height:260px;object-fit:cover;border-radius:4px}
+    .product h3{font-size:16px;margin:10px 0 6px}
+    .product p{margin:0;color:var(--muted);font-size:14px}
+
+    /* footer */
+    footer{border-top:1px solid #eee;margin-top:48px;padding:28px 0;color:var(--muted);font-size:14px}
+
+    /* responsive */
+    @media (max-width:1000px){
+      .hero{grid-template-columns:1fr;}
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .hero-right img{height:220px}
+    }
+    @media (max-width:560px){
+      .grid{grid-template-columns:1fr}
+      h1{font-size:32px}
+    }
+
+    /* subtle animations */
+    .fade-up{opacity:0;transform:translateY(10px);transition:all .6s ease-out}
+    .fade-up.show{opacity:1;transform:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="logo">Minimal &amp; Co.</div>
+      <nav>
+        <a href="#">New</a>
+        <a href="#">Women</a>
+        <a href="#">Men</a>
+        <a href="#">About</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-left">
+          <div class="eyebrow">New Collection — AW25</div>
+          <h1>Quiet luxury, reduced to essentials</h1>
+          <p class="lead">A modern take on minimal tailoring, crafted materials and quiet detailing. Designed to be worn and lived in — not to shout.</p>
+          <a class="cta" href="#products">Shop the collection</a>
+        </div>
+
+        <aside class="hero-right fade-up">
+          <div class="hero-card">
+            <img src="https://images.unsplash.com/photo-1520975698514-4b4f8f0c5a2b?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="Product">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <div>
+                <div style="font-size:14px;color:var(--muted)">Wool Overcoat</div>
+                <div class="price">¥98,000</div>
+              </div>
+              <button aria-label="Add to cart" style="border:1px solid #000;background:transparent;padding:10px 12px;border-radius:6px">＋</button>
+            </div>
+          </div>
+        </aside>
+      </section>
+
+      <section id="products">
+        <div class="grid">
+          <article class="product fade-up">
+            <img src="https://images.unsplash.com/photo-1541099649105-f69ad21f3246?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="item1">
+            <h3>Structured Blazer</h3>
+            <p>¥58,000</p>
+          </article>
+
+          <article class="product fade-up">
+            <img src="https://images.unsplash.com/photo-1542089363-4b6f5b5b8d0b?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="item2">
+            <h3>Long Sleeve Knit</h3>
+            <p>¥18,500</p>
+          </article>
+
+          <article class="product fade-up">
+            <img src="https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="item3">
+            <h3>Relaxed Trousers</h3>
+            <p>¥24,000</p>
+          </article>
+
+          <article class="product fade-up">
+            <img src="https://images.unsplash.com/photo-1593032465170-67b2a5b0c7f8?q=80&w=1600&auto=format&fit=crop&ixlib=rb-4.0.3&s=placeholder" alt="item4">
+            <h3>Minimal Tote</h3>
+            <p>¥12,000</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+          <div>© Minimal &amp; Co. 2025</div>
+          <div style="display:flex;gap:12px">
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Contact</a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // simple reveal animation when scrolling
+    const els = document.querySelectorAll('.fade-up');
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting) e.target.classList.add('show');
+      })
+    }, {threshold:0.12});
+    els.forEach(el=>io.observe(el));
+  </script>
+</body>
+</html>
