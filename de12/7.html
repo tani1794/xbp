@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>タニサンのペーシ</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <style>
+        :root {
+            --main-purple: #2c9414; /* パステル紫 */
+            --bg-purple: #3650e6;  /* 淡いパステル背景 */
+            --text-dark: #034644;
+        }
+        /* セクションの共通デザイン */
+section {
+  background: rgba(0, 0, 0, 0.4);   /* 半透明の黒 */
+  padding: 40px;
+  border-radius: 20px;             /* 丸み */
+  backdrop-filter: blur(10px);     /* ブラー効果 */
+  -webkit-backdrop-filter: blur(10px); /* Safari対応 */
+  max-width: 900px;                /* セクション幅 */
+  margin: 0 auto 40px auto;        /* ← 下に40pxのスペース */
+  text-align: center;              /* 中央揃え */
+
+        body {
+            margin: 0;
+            background:
+                linear-gradient(rgba(42, 212, 8, 0.45), rgba(211, 230, 10, 0.45)),
+                url('/mnt/data/237d3c29-42a8-4dec-becb-c485f98ff4ef.png') no-repeat center/cover;
+            font-family: "Yu Gothic", sans-serif;
+            color: var(--text-dark);
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(8px);
+            z-index: 999;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: bold;
+        }
+
+        section {
+  background: rgba(74, 4, 61, 0.2);
+  border-radius: 30px;
+  padding: 20px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+        section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        p {
+            font-size: 1rem;
+            font-weight: bold;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+
+</header>
+
+<section id="sec1" class="fade-section">
+    <h2>Presentation</h2>
+    <p> 
+       <a href="https://kanagawau-my.sharepoint.com/:p:/r/personal/r202502082ul_jindai_jp/Documents/Presentation.pptx?d=wc8a58c65c4ee43e5ba4ea6120c7b1b77&csf=1&web=1&e=LyP6Y6" target="_blank">Power Point</a><br>
+    </p>
+</section>
+
