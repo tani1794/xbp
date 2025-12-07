@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>タニサンのページ</title>
+
+    <style>
+        /* ここがCSS部分 */
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background: url("./images/Yokohama.background.png") no-repeat center center fixed;
+            background-size: cover;
+            scroll-behavior: smooth;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0,0,0,0.5);
+            padding: 15px 0;
+            text-align: center;
+            z-index: 1000;
+        }
+
+        header a {
+            color: #fff;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        section {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            transition: background 1s;
+        }
+
+        /* スクロールしたら透明になる */
+        section:hover {
+            background: rgba(0,0,0,0.4);
+        }
+
+        h2 {
+            font-size: 40px;
+            margin-bottom: 15px;
+            text-shadow: 0px 0px 6px black;
+        }
+
+        p {
+            font-size: 20px;
+            text-shadow: 0px 0px 4px black;
+        }
+
+        /* 写真ギャラリー */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 200px);
+            gap: 15px;
+        }
+        .gallery div {
+            width: 200px;
+            height: 150px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 10px;
+        }
+    </style>
+
+</head>
+<body>
+
+<header>
+    <a href="#sec1">質問一覧</a>
+    <a href="#sec2">芸能人</a>
+    <a href="#sec3">グルメ</a>
+    <a href="#sec4">観光スポット</a>
+</header>
+
+<section id="sec1">
+    <div>
+        <h2>当日の質問一覧</h2>
+        <p style="text-align:center; line-height:2;">
+1. 横浜の盛り上がれるイベント<br>
+2. 横浜を昔と今で比較してみて<br>
+3. 失って悲しいイベントは？<br>
+4. 新しくできて嬉しいイベントは？<br>
+5. 横浜出身の芸能人誰知っている？<br>
+6. 横浜のおすすめのデートスポットを今と昔で<br>
+7. 横浜で流行ったグルメ<br>
+8. 横浜のおみやげおしえて<br>
+9. 他県から旅行目的でくるとしたらどこいくべき<br>
+10. 横浜の人しか伝わらないお話<br>
+11. 横浜で住みやすい場所（学生）<br>
+12. 横浜で住みやすい場所（新卒）<br>
+13. ぶっちゃけ一番のスーパーは<br>
+14. 近づいてはいけない心霊スポット的な<br>
+15. 会ったことのある芸能人
+</p>
+
+    </div>
+</section>
+
+<section id="sec2" style="padding:100px 20px; display:flex; justify-content:center; align-items:center;">
+  <div style="max-width:900px; width:100%; text-align:center; color:#fff; line-height:1.9;">
+
+    <h2 style="margin-bottom:12px;">予想芸能人</h2>
+
+    <img src="./images/Setuko.jpeg" alt="原節子" style="width:30%; max-width:220px; display:block; margin:12px auto; border-radius:8px;">
+
+    <p style="margin-top:8px;">
+      原節子 * 1920年生まれ。出身は現在の横浜市保土ケ谷区。<br>
+      * 1935年にデビュー、1950〜60年代にかけて日本映画を代表する女優として活躍。<br>
+      * 1962年の作品を最後に引退したが、1960年代の映画界では大きな存在だった。
+    </p>
+
+  
+    <img src="./images/Ohsawa Toshio.jpeg" alt="黒沢年男" style="width:30%; max-width:220px; display:block; margin:18px auto 12px; border-radius:8px;">
+
+    <p>
+      黒沢年男 * 1944年生まれ、横浜出身。<br>
+      * 1964年から映画俳優としてデビューし、1960年代後半から活躍。
+    </p>
+
+  </div>
+</section>
+
+
+<section id="sec3" style="padding:100px 20px; display:flex; justify-content:center; align-items:center;">
+  <div style="max-width:900px; width:100%; text-align:center; color:#fff; line-height:1.9;">
+
+    <h3 style="margin-bottom:12px;">横浜グルメ</h3>
+
+    <img src="./images/naporitann.jpeg" alt="ナポリタン" style="width:30%; max-width:220px; display:block; margin:12px auto; border-radius:8px;">
+
+    <p style="margin-top:8px;">
+     米兵たちはスパゲッティにケチャップをかけて食べていたようです。この食事風景が、後のナポリタン考案のヒントとなりました。<br>
+     港町である横浜は、開港以来、新しい海外の文化や食材を受け入れ、日本の文化として昇華させる土壌がありました。<br>
+    </p>
+
+    <img src="./images/Haaabaa.jpeg" alt="横濱ハーバー" style="width:55%; max-width:220px; display:block; margin:12px auto; border-radius:8px;">
+
+    <p style="margin-top:8px;">
+ * 港町・横浜らしい「船」「港」イメージのお菓子で、昔から横浜銘菓のひとつとして知られてきた。<br>
+* 洋菓子文化と和の味の融合が、昭和〜高度経済成長期の港町・横浜らしい“おしゃれなお土産”感。<br>
+    </p>
+
+    </div>
+</section>
+
+
+<section id="sec4" style="padding:100px 20px; display:flex; justify-content:center; align-items:center;">
+  <div style="max-width:900px; width:100%; text-align:center; color:#fff; line-height:1.9;">
+
+    <h4 style="margin-bottom:12px;">観光スポット</h4>
+  <img src="./images/Sankeien.jpeg" alt="三溪園" style="width:55%; max-width:220px; display:block; margin:12px auto; border-radius:8px;">
+
+      <p style="margin-top:8px;">
+        * 港町の近代文化とはまた違って、日本の伝統的な庭園・建築を落ち着いて楽しめる場所。季節ごとに風景が変わって、春の桜、秋の紅葉などがきれい。 <br>
+* 忙しい観光とは違って、ゆっくり静かに「和」の時間を過ごしたい人にピッタリ。<br>
+      </p>
+        </div>
+    </div>
+</section>
+
+</body>
+</html>
+
+

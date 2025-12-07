@@ -1,0 +1,152 @@
+/* 基本レイアウト */
+:root{
+    --bg-image: url('../images/background.jpg'); /* 背景画像をここに置いてください */
+    --accent: rgba(255,255,255,0.85);
+    --panel: rgba(255,255,255,0.9);
+    --panel-dark: rgba(0,0,0,0.5);
+    --max-width: 1100px;
+    --header-height: 72px;
+    font-family: "Noto Sans JP", "Helvetica Neue", Arial, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html,body { height:100%; margin:0; }
+
+/* 背景（全体に適用） */
+body {
+    min-height: 100%;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    color: #111;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+}
+
+/* オーバーレイで少し暗くして文字を見やすくする */
+body::before{
+    content: "";
+    position: fixed;
+    inset:0;
+    background: linear-gradient(rgba(0,0,0,0.25), rgba(0,0,0,0.25));
+    pointer-events:none;
+    z-index:0;
+}
+
+/* コンテナ */
+.container {
+    width: min(94%, var(--max-width));
+    margin: 0 auto;
+    position: relative;
+    z-index: 2; /* 背景より上 */
+}
+
+/* ヘッダー（固定） */
+.site-header {
+    position: sticky;
+    top: 0;
+    backdrop-filter: blur(6px);
+    z-index: 10;
+    background: rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.header-inner {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    height: var(--header-height);
+}
+.logo {
+    font-size: 1.1rem;
+    color: #fff;
+    margin:0;
+    padding:0.4rem 0;
+    letter-spacing: 1px;
+}
+.main-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin-left: 1rem;
+    font-weight: 600;
+    opacity: 0.95;
+}
+.main-nav a:hover { opacity: 1; text-decoration: underline; }
+
+/* 各セクションの基本 */
+.site-main { position:relative; z-index:2; }
+.page-section {
+    min-height: 80vh;
+    padding: 6rem 0;
+    display:flex;
+    align-items:center;
+    transition: background-color 400ms ease, box-shadow 300ms ease;
+    /* 非表示時（デフォルト）に半透明のパネルを置く */
+    background: linear-gradient(rgba(255,255,255,0.85), rgba(255,255,255,0.85));
+    box-shadow: 0 6px 30px rgba(0,0,0,0.2);
+    margin: 2rem 0;
+    border-radius: 12px;
+}
+
+/* セクションのテキストを中央寄せする内側ラッパー */
+.section-inner {
+    width: min(92%, 900px);
+    margin: 0 auto;
+    text-align: left;
+    color: #111;
+}
+
+/* セクション見出しと説明 */
+.section-title {
+    font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+    margin: 0 0 0.8rem 0;
+}
+.section-desc {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    margin: 0 0 1.2rem 0;
+}
+
+/* ギャラリーのスタイル */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-top: 1rem;
+}
+.gallery-grid img {
+    width:100%;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 8px;
+    display:block;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.25);
+}
+
+/* in-view クラス（見えているセクション）:
+   要件：「スクロールしたらセクションの色が透明になる」→ in-view で背景を透明にする */
+.page-section.in-view {
+    background: rgba(255,255,255,0.04); /* ほぼ透明（背景画像を見せる） */
+    box-shadow: none;
+    border: 1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(6px) saturate(1.1);
+    color: #fff;
+}
+.page-section.in-view .section-inner { color: #fff; }
+
+/* レスポンシブ微調整 */
+@media (max-width:800px){
+    .header-inner { padding: 0 0.5rem; }
+    .page-section { padding: 4rem 0; margin: 1rem 0; }
+    .gallery-grid img { height: 120px; }
+}
+
+/* フッター */
+.site-footer {
+    padding: 1.2rem 0;
+    text-align:center;
+    color: rgba(255,255,255,0.8);
+    background: transparent;
+}
+
+
