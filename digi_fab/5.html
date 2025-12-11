@@ -1,10 +1,11 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>タニサンのページ</title>
   <meta name="description" content="A responsive, modern portfolio template with filtering, search, and accessible markup." />
+
   <style>
     :root{
       --bg:#0f1724; --card:#0b1220; --muted:#98a1b3; --accent:#7dd3fc; --glass: rgba(255,255,255,0.04);
@@ -14,94 +15,58 @@
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; background:linear-gradient(180deg,#071024 0%, #071122 60%); color:#428be5; -webkit-font-smoothing:antialiased;
-      padding:32px; line-height:1.45;
+      margin:0; background:#ffffff; color:#333; -webkit-font-smoothing:antialiased;
+      padding:0; line-height:1.45; text-align:center;
     }
 
-    /* Container */
-    .wrap{max-width:1150px; margin:0 auto;}
-
-    /* Header */
-    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
-    .brand{display:flex;gap:14px;align-items:center}
-    .logo{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#60a5fa);display:flex;align-items:center;justify-content:center;color:#042033;font-weight:700;box-shadow:var(--shadow)}
-    nav{display:flex;gap:12px;align-items:center}
-    nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:10px}
-    nav a:hover{color:var(--accent);background:var(--glass)}
-
-    /* Hero */
-    .hero{display:grid;grid-template-columns:1fr 360px;gap:28px;align-items:center;margin-bottom:28px}
-    .intro{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:26px;border-radius:var(--radius);box-shadow:var(--shadow)}
-    h1{margin:0 0 8px;font-size:28px}
-    p.lead{color:var(--muted);margin:0 0 16px}
-    .cta{display:inline-block;padding:10px 16px;border-radius:12px;background:rgba(125,211,252,0.12);color:var(--accent);text-decoration:none;font-weight:600}
-
-    .profile-card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 6px 18px rgba(2,6,23,0.6)}
-    .profile-card img{width:100%;border-radius:10px;display:block;margin-bottom:12px}
-    .meta{font-size:13px;color:var(--muted)}
-
-    /* Controls */
-    .controls{display:flex;gap:12px;align-items:center;margin-bottom:18px}
-    .search{flex:1}
-    .search input{width:100%;padding:10px 14px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);color:inherit}
-    .filters{display:flex;gap:8px}
-    .filters button{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:var(--muted);cursor:pointer}
-    .filters button.active{background:var(--accent);color:#042033;border:none}
-
-    /* Grid */
-    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:var(--gap)}
-    .card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:12px;box-shadow:var(--shadow);transition:transform .22s ease, box-shadow .22s ease}
-    .card:hover{transform:translateY(-8px);box-shadow:0 14px 40px rgba(2,6,23,0.75)}
-    .thumb{height:140px;border-radius:10px;overflow:hidden;margin-bottom:10px;background:#0a1526;display:flex;align-items:center;justify-content:center;color:var(--muted)}
-    .title{font-weight:600;margin:0 0 6px}
-    .tags{font-size:13px;color:var(--muted)}
-
-    /* Modal */
-    .modal{position:fixed;inset:0;background:rgba(2,6,23,0.6);display:none;align-items:center;justify-content:center;padding:24px}
-    .modal.open{display:flex}
-    .modal-content{max-width:900px;width:100%;background:linear-gradient(180deg,#081426,#071226);padding:20px;border-radius:14px}
-
-    /* Footer */
-    footer{color:var(--muted);font-size:13px;margin-top:30px;text-align:center}
-
-    /* Responsive */
-    @media (max-width:880px){
-      .hero{grid-template-columns:1fr}
-      .profile-card{order:-1}
+    header, section, footer {
+      padding: 80px 20px;
+      max-width: 900px;
+      margin: 0 auto;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 0.7s ease-out;
     }
+    header.show, section.show, footer.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    h1, h2, h3 {
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    /* ギャラリー */
+    .gallery-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      margin-top: 20px;
+    }
+
+    .photo-item img {
+      width: 70%;
+      max-width: 450px;
+      border-radius: 14px;
+      display: block;
+      margin: 0 auto 10px;
+    }
+
+    /* フェードイン（タイトル用） */
+    h2.fade, h3.fade {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: 0.8s ease;
+    }
+    .fade.showfade { opacity:1; transform:translateY(0); }
+
   </style>
-<style>
-  body {
-    font-family: sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #ffffff;
-    color: #333;
-    text-align: center;
-  }
-  header, section, footer {
-    padding: 80px 20px;
-    max-width: 900px;
-    margin: 0 auto;
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.7s ease-out;
-  }
-  header.show, section.show, footer.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  h1, h2, h3 {
-    font-weight: 300;
-    margin-bottom: 20px;
-  }
-  figure {
-    display: inline-block;
-    margin: 10px;
-  }
-</style>
 </head>
 <body>
+
+  <!-- HEADER -------------------------------------------------->
   <header>
     <h1>タニサンの作品</h1>
     <nav>
@@ -111,74 +76,81 @@
     </nav>
   </header>
 
+  <!-- ABOUT -------------------------------------------------->
   <section id="about">
-    <h2>作品説明</h2>
-    <p>ここに自己紹介文が入ります。あなたの経歴、スキル、活動内容などを記載できます。</p>
+    <h2>作品説明・VIEW OF POINT</h2>
+    <p>
+      Design for othersで作成した私の作品は”コインケース”です。<br>
+      ① ゲームセンターで100円玉を予想以上に使ってしまう問題に気づいたため。<br>
+      ⓶ お札よりも100円を抵抗なく使ってしまうことに気づいたため。<br>
+      ⓷ 小銭はあればあるほど使ってしまうという洞察を得たため。<br>
+      ⓸ その人は小銭の使用を抑える仕組みを必要としている。<br>
+    </p>
   </section>
 
+  <!-- MEDIA / GALLERY -------------------------------------------------->
   <section id="media">
-    <h2>Photos & Videos</h2>
+    <h2 class="fade" id="gallery-title">完成した作品</h2>
+    <h3 class="fade" id="gallery-sub">Photo Gallery</h3>
 
-    <h3>Photo Gallery</h3>
-    <div>
-      <figure>
-        <img src="" alt="Photo Example 1" width="250">
+    <div class="gallery-container">
+      <figure class="photo-item">
+        <img src="./images/IMG_6026.png" alt="作品写真 1">
         <figcaption>作品写真 1</figcaption>
       </figure>
-      <figure>
-        <img src="" alt="Photo Example 2" width="250">
+
+      <figure class="photo-item">
+        <img src="./images/IMG_6027.png" alt="作品写真 2">
         <figcaption>作品写真 2</figcaption>
       </figure>
-      <figure>
-        <img src="" alt="Photo Example 3" width="250">
-        <figcaption>作品写真 3</figcaption>
-      </figure>
-    </div>
-
-    <h3>Video Gallery</h3>
-    <div>
-      <figure>
-        <video width="350" controls>
-          <source src="" type="video/mp4">
-          Your browser does not support the video tag.
-        </video>
-        <figcaption>動画作品 1</figcaption>
-      </figure>
     </div>
   </section>
 
-  <section id="projects">
-    <h2>Projects</h2>
-    <ul>
-      <li><strong>ALL</strong> / <strong>WEB</strong>の作品カテゴリをここに表示</li>
-      <li>作品タイトル1 - 説明文を追加</li>
-      <li>作品タイトル2 - 説明文を追加</li>
-      <li>作品タイトル3 - 説明文を追加</li>
-    </ul>
-  </section>
-
+  <!-- FOOTER -------------------------------------------------->
   <footer>
-    <p>&copy; <span id="year"></span> Yuto Ichitani</p>
+    © <span id="year"></span> Tanisan Portfolio
   </footer>
 
+
+  <!-- SCRIPTS -------------------------------------------------->
   <script>
+    // 年表示
     document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-<script>
-  const sections = document.querySelectorAll('header, section, footer');
-  const reveal = () => {
-    sections.forEach(sec => {
-      const rect = sec.getBoundingClientRect();
-      if(rect.top < window.innerHeight - 50) {
-        sec.classList.add('show');
-      }
+
+    // セクションスクロール表示
+    const sections = document.querySelectorAll('header, section, footer');
+    const reveal = () => {
+      sections.forEach(sec => {
+        const rect = sec.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 50) {
+          sec.classList.add('show');
+        }
+      });
+    };
+    window.addEventListener('scroll', reveal);
+    reveal();
+
+
+    // ギャラリータイトルのフェードイン
+    const fadeTargets = [
+      document.getElementById("gallery-title"),
+      document.getElementById("gallery-sub")
+    ];
+
+    window.addEventListener("scroll", () => {
+      fadeTargets.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        if(rect.top < window.innerHeight - 60){
+          el.classList.add("showfade");
+        }
+      });
     });
-  };
-  window.addEventListener('scroll', reveal);
-  reveal();
-</script>
+
+  </script>
+
 </body>
 </html>
+
 
 
 
