@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>タニサンのページ</title>
+
+<style>
+:root{
+  --greek-wall:#f6f3ee;
+  --ink:#1c1c1c;
+  --shadow:#ded9cf;
+  --swiss-green:#3f6f5a;
+  --wash:#ece7dd;
+}
+
+body{
+  margin:0;
+  background:var(--greek-wall);
+  color:var(--ink);
+  font-family:"Times New Roman","Hiragino Mincho ProN",serif;
+  letter-spacing:0.06em;
+}
+
+main{
+  max-width:1200px;
+  margin:0 auto;
+  padding:160px 24px;
+}
+
+.space{
+  background:linear-gradient(
+    180deg,
+    var(--greek-wall),
+    var(--wash)
+  );
+  border-radius:40px;
+  padding:100px 90px;
+  margin-bottom:160px;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.08),
+    inset 0 0 0 1px var(--shadow);
+  opacity:0;
+  transform:translateY(120px);
+  transition:all 2.2s cubic-bezier(.16,1,.3,1);
+  position:relative;
+  overflow:hidden;
+}
+
+.space::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:
+    radial-gradient(
+      circle at 80% 20%,
+      rgba(63,111,90,0.06),
+      transparent 60%
+    );
+  pointer-events:none;
+}
+
+.space.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+h2{
+  font-size:2.8rem;
+  font-weight:normal;
+  margin-bottom:40px;
+}
+
+h2 small{
+  display:block;
+  font-size:0.9rem;
+  color:var(--swiss-green);
+  letter-spacing:0.3em;
+  margin-bottom:12px;
+}
+
+p{
+  font-size:1.05rem;
+  line-height:2.4;
+  max-width:720px;
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 1.6s ease;
+}
+
+.space.show p{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.space.show p:nth-of-type(2){
+  transition-delay:0.6s;
+}
+
+.space.show p:nth-of-type(3){
+  transition-delay:1.1s;
+}
+
+.ink-line{
+  width:60px;
+  height:2px;
+  background:linear-gradient(
+    90deg,
+    var(--ink),
+    transparent
+  );
+  margin:50px 0;
+  opacity:0;
+  transform:scaleX(0);
+  transform-origin:left;
+  transition:all 1.8s ease;
+}
+
+.space.show .ink-line{
+  opacity:1;
+  transform:scaleX(1);
+}
+
+.media{
+  margin-top:80px;
+  background:#ffffff;
+  padding:26px;
+  border-radius:26px;
+  box-shadow:0 30px 60px rgba(0,0,0,0.15);
+  opacity:0;
+  transform:translateY(50px);
+  transition:all 1.8s ease;
+  transition-delay:1.4s;
+}
+
+.space.show .media{
+  opacity:1;
+  transform:translateY(0);
+}
+
+iframe{
+  width:100%;
+  border-radius:18px;
+}
+style>
+/* 和紙の気配 */
+.washi::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(0,0,0,0.015),
+      rgba(0,0,0,0.015) 1px,
+      transparent 1px,
+      transparent 6px
+    ),
+    radial-gradient(
+      circle at 30% 20%,
+      rgba(255,255,255,0.35),
+      transparent 60%
+    );
+  opacity:0.35;
+  pointer-events:none;
+  border-radius:inherit;
+}
+
+/* 画像だけ遅れて出現 */
+.media-delay{
+  opacity:0;
+  transform:translateY(40px);
+  transition:all 1.8s cubic-bezier(.16,1,.3,1);
+  transition-delay:1.6s;
+}
+
+.space.show .media-delay{
+  opacity:1;
+  transform:translateY(0);
+}
+</style>
+
+</style>
+</head>
+
+<body>
+
+<main>
+
+<section class="space washi">
+  <h2>
+    <small>作品説明</small>
+    Introduce to my works
+  </h2>
+
+  <div class="ink-line"></div>
+
+  <p>
+    ラストアサイントメント……私が作成した作品はポケットティッシュカバーです。<br>
+    ポケットティッシュは携帯しやすい一方で、存在が目立たず忘れられがちです。<br>
+    そんな小さなヒーローを目立たせたいという想いから、この作品を制作しました。
+  </p>
+
+  <div class="media media-delay">
+       <img src="./images/Tanicraft1.png"  width="55%"alt="作品写真 1">
+  </div>
+</section>
+
+
+<section class="space">
+  <h2>
+    <small>設計</small>
+   Design
+  </h2>
+  <div class="ink-line"></div>
+  <p>
+  どう目立たせるかを考えたときに視点を変え、固定概念という名の殻をぶち破りました。<br>
+  「ポケットから出せばいい。」そう思ったんです。そして、現在流行になっているカラビナに装着できるようにして
+  ファッションの一部にすれば目立てると考えました。<br>
+  </p>
+</section>
+
+<section class="space">
+  <h2>
+    <small>どう惹きつけるか</small>
+   How to attracted
+  </h2>
+  <div class="ink-line"></div>
+  <p>
+   ファッショの一部にするにはまず、誰かに見て選んでもらって使用してもらうプロセスが前提になります。<br>
+   なので、カバーのデザインもイケメンまたは美女にする必要があります。<br>
+   そして次に使用する場所です。私が考えている使用場所はズボンのベルト紐にカラビナと同時使用。またはバッグにあるチャックやカラビナに付けてもらう。<br>
+  </p>
+  <div class="media media-delay">
+       <img src="./images"  width="55%"alt="作品写真 2">
+  </div>
+ 
+</section>
+
+<section class="space">
+  <h2>
+    <small>映像</small>
+    Video & Images
+  </h2>
+  <div class="ink-line"></div>
+  <p>
+    Motion here does not entertain.
+    It preserves silence.
+  </p>
+
+ <div class="media">
+  <iframe
+    width="560"
+    height="315"
+    src="https://www.youtube.com/embed/J8r_CyxD5T4"
+    title="YouTube video player"
+    frameborder="0"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+    allowfullscreen>
+  </iframe>
+</div>
+
+</section>
+
+</main>
+
+<script>
+const spaces = document.querySelectorAll(".space");
+
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("show");
+    }
+  });
+},{
+  threshold:0.25
+});
+
+spaces.forEach(s=>observer.observe(s));
+</script>
+
+</body>
+</html>
