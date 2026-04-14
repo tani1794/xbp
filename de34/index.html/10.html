@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>演習Ⅲ・1回目　タニサンのページ</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-1: #040404;
+      --bg-2: #0b0b0b;
+      --bg-3: #121212;
+      --white: #ffffff;
+      --soft-white: rgba(255,255,255,0.84);
+      --muted: rgba(255,255,255,0.62);
+      --line: rgba(255,255,255,0.12);
+      --glass: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.1);
+      --shadow: 0 24px 70px rgba(0,0,0,0.48);
+      --radius-xl: 34px;
+      --radius-lg: 26px;
+      --radius-md: 18px;
+      --transition: 0.4s ease;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: var(--white);
+      min-height: 100vh;
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at 50% 12%, rgba(255,255,255,0.08), transparent 26%),
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,0.04), transparent 20%),
+        radial-gradient(circle at 85% 25%, rgba(255,255,255,0.035), transparent 20%),
+        linear-gradient(180deg, var(--bg-1) 0%, var(--bg-2) 45%, var(--bg-3) 100%);
+    }
+
+    .ambient {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.02), transparent 28%, transparent 72%, rgba(255,255,255,0.02)),
+        radial-gradient(circle at center, rgba(255,255,255,0.03), transparent 48%);
+    }
+
+    .noise {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.08;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 120px 120px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 90%);
+    }
+
+    .page {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 100vh;
+      padding: 42px 22px 70px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .frame {
+      width: 100%;
+      max-width: 1180px;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 40px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.025));
+      backdrop-filter: blur(18px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .frame::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.08), transparent 20%, transparent 80%, rgba(255,255,255,0.04));
+      pointer-events: none;
+    }
+
+    .top-bar {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 18px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.18);
+      backdrop-filter: blur(10px);
+    }
+
+    .brand {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.8);
+      text-transform: uppercase;
+    }
+
+    .status {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+    }
+
+    .content {
+      padding: 70px 60px 54px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-number {
+      position: absolute;
+      top: 38px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(5rem, 18vw, 12rem);
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.035);
+      user-select: none;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+    .hero-sub {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 22px;
+      padding: 10px 18px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.05);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.74);
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      animation: fadeUp 0.9s ease forwards;
+    }
+
+    .hero-sub::before,
+    .hero-sub::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 1px;
+      background: rgba(255,255,255,0.32);
+    }
+
+    h1 {
+      position: relative;
+      z-index: 1;
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: clamp(2.2rem, 5vw, 4.8rem);
+      font-weight: 900;
+      line-height: 1.14;
+      letter-spacing: 0.03em;
+      margin-bottom: 22px;
+      text-shadow: 0 0 18px rgba(255,255,255,0.08);
+      animation: fadeUp 1.05s ease forwards;
+    }
+
+    .concept {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto 18px;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      font-weight: 900;
+      line-height: 1.9;
+      color: var(--soft-white);
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    .micro-copy {
+      position: relative;
+      z-index: 1;
+      max-width: 660px;
+      margin: 0 auto 42px;
+      font-size: 0.98rem;
+      font-weight: 700;
+      line-height: 1.95;
+      color: var(--muted);
+      animation: fadeUp 1.35s ease forwards;
+    }
+
+    .center-mark {
+      width: min(760px, 100%);
+      margin: 0 auto 40px;
+      padding: 20px 24px;
+      border-radius: 24px;
+      border: 1px solid rgba(255,255,255,0.09);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.03));
+      backdrop-filter: blur(12px);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.22);
+      animation: fadeUp 1.5s ease forwards;
+    }
+
+    .center-mark span {
+      display: inline-block;
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.05rem, 2.1vw, 1.3rem);
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.86);
+    }
+
+    .panel {
+      position: relative;
+      z-index: 1;
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 26px;
+      border-radius: var(--radius-xl);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.11);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), var(--shadow);
+      backdrop-filter: blur(18px);
+      animation: fadeUp 1.65s ease forwards;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 28px;
+      position: relative;
+    }
+
+    .tab-button {
+      appearance: none;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.045);
+      color: var(--white);
+      border-radius: 999px;
+      padding: 15px 26px;
+      cursor: pointer;
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: 0.98rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      transition: transform var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition), border-color var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-width: 190px;
+      backdrop-filter: blur(10px);
+    }
+
+    .tab-button::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(120deg, transparent 0%, rgba(255,255,255,0.1) 50%, transparent 100%);
+      transform: translateX(-130%);
+      transition: transform 0.6s ease;
+    }
+
+    .tab-button:hover {
+      transform: translateY(-3px);
+      background: rgba(255,255,255,0.09);
+      border-color: rgba(255,255,255,0.18);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    }
+
+    .tab-button:hover::before {
+      transform: translateX(130%);
+    }
+
+    .tab-button.active {
+      background: var(--white);
+      color: #0a0a0a;
+      border-color: rgba(255,255,255,0.45);
+      box-shadow: 0 12px 28px rgba(255,255,255,0.15);
+    }
+
+    .tab-button.active::after {
+      content: "";
+      position: absolute;
+      left: 20%;
+      bottom: 6px;
+      width: 60%;
+      height: 2px;
+      background: rgba(0,0,0,0.55);
+      border-radius: 999px;
+    }
+
+    .tab-stage {
+      position: relative;
+      min-height: 520px;
+    }
+
+    .tab-content {
+      display: none;
+      animation: tabIn 0.6s ease forwards;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    .content-box {
+      padding: 38px 28px 34px;
+      border-radius: 28px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.03));
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .content-header {
+      margin-bottom: 24px;
+    }
+
+    .content-label {
+      display: inline-block;
+      margin-bottom: 12px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.56);
+      text-transform: uppercase;
+    }
+
+    .content-box h2 {
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: clamp(1.55rem, 3vw, 2.35rem);
+      font-weight: 900;
+      letter-spacing: 0.04em;
+      margin-bottom: 10px;
+    }
+
+    .content-intro {
+      max-width: 760px;
+      margin: 0 auto;
+      font-size: 1rem;
+      font-weight: 700;
+      line-height: 1.95;
+      color: rgba(255,255,255,0.72);
+    }
+
+    .insight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 30px;
+    }
+
+    .insight-card {
+      padding: 24px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .insight-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .insight-card h3 {
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .insight-card p {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.76);
+    }
+
+    .goal-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 22px;
+      margin-top: 30px;
+      align-items: start;
+    }
+
+    .goal-main,
+    .goal-side {
+      display: grid;
+      gap: 16px;
+    }
+
+    .goal-card {
+      padding: 22px 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: center;
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .goal-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .goal-card h3 {
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .goal-card p {
+      font-size: 0.95rem;
+      font-weight: 700;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .accent-card {
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.085), rgba(255,255,255,0.045));
+      border: 1px solid rgba(255,255,255,0.14);
+    }
+
+    .closing {
+      margin-top: 34px;
+      padding-top: 26px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .closing p {
+      max-width: 780px;
+      margin: 0 auto;
+      font-size: 1rem;
+      font-weight: 800;
+      line-height: 2;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .signature {
+      margin-top: 24px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 800;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.42);
+      text-transform: uppercase;
+    }
+
+    .footer-note {
+      margin-top: 38px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: rgba(255,255,255,0.48);
+      letter-spacing: 0.04em;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(26px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes tabIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.995);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    @media (max-width: 980px) {
+      .content {
+        padding: 62px 28px 44px;
+      }
+
+      .goal-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tab-stage {
+        min-height: auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .page {
+        padding: 16px;
+      }
+
+      .frame {
+        border-radius: 28px;
+      }
+
+      .top-bar {
+        padding: 16px 18px;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .content {
+        padding: 56px 18px 34px;
+      }
+
+      .hero-number {
+        top: 56px;
+        font-size: clamp(4rem, 24vw, 7rem);
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 8vw, 2.8rem);
+        line-height: 1.22;
+      }
+
+      .concept {
+        font-size: 0.98rem;
+        line-height: 1.95;
+      }
+
+      .micro-copy {
+        font-size: 0.92rem;
+        line-height: 1.9;
+        max-width: 95%;
+        margin-bottom: 30px;
+      }
+
+      .center-mark {
+        padding: 16px 14px;
+        border-radius: 18px;
+      }
+
+      .center-mark span {
+        font-size: 0.95rem;
+        line-height: 1.8;
+      }
+
+      .panel {
+        padding: 16px;
+        border-radius: 24px;
+      }
+
+      .content-box {
+        padding: 28px 16px 24px;
+        border-radius: 20px;
+      }
+
+      .tabs {
+        gap: 10px;
+      }
+
+      .tab-button {
+        width: 100%;
+        min-width: auto;
+        max-width: 100%;
+        padding: 14px 18px;
+        font-size: 0.92rem;
+      }
+
+      .content-box h2 {
+        font-size: 1.45rem;
+        line-height: 1.35;
+      }
+
+      .content-intro,
+      .insight-card p,
+      .goal-card p,
+      .closing p {
+        font-size: 0.94rem;
+        line-height: 1.95;
+      }
+
+      .footer-note {
+        margin-top: 30px;
+        font-size: 0.84rem;
+        line-height: 1.8;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient"></div>
+  <div class="noise"></div>
+
+  <main class="page">
+    <section class="frame">
+      <div class="top-bar">
+        <div class="brand">TANISAN PORTFOLIO</div>
+        <div class="status">Design Exercise III / First Session</div>
+      </div>
+
+      <div class="content">
+        <div class="hero-number">01</div>
+
+        <div class="hero-sub">Design Exercise III</div>
+
+        <h1>演習Ⅲ・1回目　タニサンのページ</h1>
+
+        <p class="concept">
+          初回講義で得た学びを、ただの感想で終わらせず、設計と思考の起点として残すためにまとめたページです。
+        </p>
+
+        <p class="micro-copy">
+          このページでは、1回目の講義を通して感じた気づき、これからの意欲、そして目標を整理し、
+          自分自身のデザインと設計に対する姿勢がどのように変化したのかを、一目で伝わる形に構成しています。
+        </p>
+
+        <div class="center-mark">
+          <span>見る人に伝わる形を考えながら、自分の学びを質のある表現へ変えていく。</span>
+        </div>
+
+        <div class="panel">
+          <div class="tabs">
+            <button class="tab-button active" onclick="openTab('tab1', this)">講義の感想</button>
+            <button class="tab-button" onclick="openTab('tab2', this)">意欲・目標</button>
+          </div>
+
+          <div class="tab-stage">
+            <div id="tab1" class="tab-content active">
+              <div class="content-box">
+                <div class="content-header">
+                  <div class="content-label">Reflection</div>
+                  <h2>1回目の講義の感想</h2>
+                  <p class="content-intro">
+                    今回の講義を通して、ホームページ制作は単にコードを書く作業ではなく、
+                    情報をどう見せるかまで含めて考えるデザインと設計の積み重ねであることを強く実感しました。
+                  </p>
+                </div>
+
+                <div class="insight-grid">
+                  <div class="insight-card">
+                    <h3>気づいたこと</h3>
+                    <p>
+                      HTMLは要素を並べるだけではなく、内容の順序や見せ方によって受け取られ方が変わるため、
+                      最初の構成づくりがとても重要だと感じました。
+                    </p>
+                  </div>
+
+                  <div class="insight-card">
+                    <h3>難しかったこと</h3>
+                    <p>
+                      自分が伝えたい内容をそのまま置くだけでは整理されたページにならず、
+                      見る人の視線や理解の流れまで考える必要がある点に難しさを感じました。
+                    </p>
+                  </div>
+
+                  <div class="insight-card">
+                    <h3>今後に活かしたいこと</h3>
+                    <p>
+                      これからは、完成した見た目だけでなく、そこに至る設計の考え方も意識しながら、
+                      伝わりやすさと表現の両方を高めていきたいです。
+                    </p>
+                  </div>
+                </div>
+
+                <div class="closing">
+                  <p>
+                    初回講義は、ページ制作の入口であると同時に、自分の中でデザインを感覚だけで捉えるのではなく、
+                    構造と意図を持って形にしていく必要性を明確にした時間でした。
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab2" class="tab-content">
+              <div class="content-box">
+                <div class="content-header">
+                  <div class="content-label">Motivation & Goals</div>
+                  <h2>これからの意欲・目標</h2>
+                  <p class="content-intro">
+                    今後は、ページを見た瞬間の印象だけでなく、内容の伝わり方まで設計できるようになり、
+                    デザイン、設計、質の向上、意欲の向上を一つの流れとして積み上げていきたいと考えています。
+                  </p>
+                </div>
+
+                <div class="goal-layout">
+                  <div class="goal-main">
+                    <div class="goal-card accent-card">
+                      <h3>短期目標</h3>
+                      <p>
+                        レイアウト、余白、文字の強弱を意識しながら、見やすく整ったページを安定して作れるようになる。
+                      </p>
+                    </div>
+
+                    <div class="goal-card">
+                      <h3>中期目標</h3>
+                      <p>
+                        コードを書く前に構成を考える習慣を身につけ、デザインと設計を結びつけたページ制作ができるようになる。
+                      </p>
+                    </div>
+
+                    <div class="goal-card">
+                      <h3>質の向上</h3>
+                      <p>
+                        毎回の制作で改善点を振り返り、見た目の完成度だけでなく、内容の伝わり方まで高めていくことを目指す。
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="goal-side">
+                    <div class="goal-card">
+                      <h3>意欲の向上</h3>
+                      <p>
+                        制作を重ねるたびに新しい工夫を取り入れ、自分の表現の幅を広げながら前向きに学び続けていく。
+                      </p>
+                    </div>
+
+                    <div class="goal-card accent-card">
+                      <h3>これから意識したい姿勢</h3>
+                      <p>
+                        ただ課題を提出するためではなく、自分の学びを作品として残す意識を持ち、丁寧に設計していく。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="closing">
+                  <p>
+                    これからは、1回ごとの演習を点で終わらせず、デザインと設計を軸にしながら積み上げ、
+                    表現の質を少しずつ高めていける自分を目標にしていきます。
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="signature">TANISAN / DESIGN NOTE / SESSION 01</div>
+          <div class="footer-note">
+            学びを積み重ね、設計と表現の質を高めていくための最初の記録。
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function openTab(tabId, button) {
+      const contents = document.querySelectorAll('.tab-content');
+      const buttons = document.querySelectorAll('.tab-button');
+
+      contents.forEach((content) => {
+        content.classList.remove('active');
+      });
+
+      buttons.forEach((btn) => {
+        btn.classList.remove('active');
+      });
+
+      document.getElementById(tabId).classList.add('active');
+      button.classList.add('active');
+    }
+  </script>
+</body>
+</html>
