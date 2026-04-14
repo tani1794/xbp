@@ -1,29 +1,730 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>XBP_HPsample</title>
-    <link rel="stylesheet" href="./css/style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XBP | タニサンのポートフォリオ</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #050505;
+      --bg-soft: #0c0c0c;
+      --text: rgba(255, 255, 255, 0.96);
+      --muted: rgba(255, 255, 255, 0.6);
+      --soft-muted: rgba(255, 255, 255, 0.42);
+      --line: rgba(255, 255, 255, 0.12);
+      --card: rgba(255, 255, 255, 0.06);
+      --card-strong: rgba(255, 255, 255, 0.1);
+      --shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
+      --accent: rgba(255, 255, 255, 0.88);
+      --accent-soft: rgba(255, 255, 255, 0.18);
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.08), transparent 20%),
+        radial-gradient(circle at 16% 82%, rgba(255,255,255,0.035), transparent 16%),
+        radial-gradient(circle at 84% 74%, rgba(255,255,255,0.035), transparent 16%),
+        linear-gradient(180deg, #020202 0%, #060606 55%, #0c0c0c 100%);
+      position: relative;
+    }
+
+    .background-layer {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.16;
+      animation: drift 16s ease-in-out infinite alternate;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .orb1 {
+      width: 340px;
+      height: 340px;
+      top: 8%;
+      left: 10%;
+      animation-duration: 18s;
+    }
+
+    .orb2 {
+      width: 260px;
+      height: 260px;
+      bottom: 10%;
+      right: 12%;
+      animation-duration: 14s;
+    }
+
+    .orb3 {
+      width: 180px;
+      height: 180px;
+      top: 44%;
+      left: 54%;
+      animation-duration: 12s;
+    }
+
+    .grid-lines {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 90px 90px;
+      mask-image: radial-gradient(circle at center, black 36%, transparent 82%);
+      opacity: 0.32;
+      animation: pulseGrid 8s ease-in-out infinite;
+    }
+
+    .archive-scan {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .archive-scan::before {
+      content: "";
+      position: absolute;
+      left: -15%;
+      width: 130%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.72), transparent);
+      top: 12%;
+      box-shadow: 0 0 18px rgba(255,255,255,0.35);
+      animation: archiveRead 8.5s linear infinite;
+      opacity: 0.7;
+    }
+
+    .archive-scan::after {
+      content: "ARCHIVE READING / DESIGN DATA / PROCESS DATA / RECORDING GROWTH / XBP";
+      position: absolute;
+      top: 12%;
+      left: 0;
+      width: 100%;
+      font-size: 0.72rem;
+      letter-spacing: 0.24em;
+      color: rgba(255,255,255,0.16);
+      text-align: center;
+      animation: archiveText 8.5s linear infinite;
+      white-space: nowrap;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 24px 28px 34px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 4px 4px 0;
+    }
+
+    .logo a {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      color: var(--text);
+      text-decoration: none;
+      letter-spacing: 0.22em;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .logo img {
+      width: 42px;
+      height: auto;
+      object-fit: contain;
+      filter: brightness(1.08) contrast(1.05);
+    }
+
+    .status {
+      font-size: 0.78rem;
+      letter-spacing: 0.24em;
+      color: var(--soft-muted);
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .hero {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 42px 0 24px;
+    }
+
+    .hero-inner {
+      width: 100%;
+      max-width: 1200px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-label {
+      display: inline-block;
+      margin-bottom: 18px;
+      padding: 10px 18px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.72);
+      font-size: 0.8rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      backdrop-filter: blur(10px);
+      animation: fadeUp 1s ease forwards;
+    }
+
+    .hero-title {
+      font-size: clamp(3rem, 10vw, 7.8rem);
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      line-height: 0.96;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.08);
+      animation: fadeUp 1.2s ease forwards;
+    }
+
+    .hero-title .light {
+      color: rgba(255,255,255,0.68);
+      font-weight: 300;
+    }
+
+    .strong-subcopy {
+      max-width: 900px;
+      margin: 0 auto 16px;
+      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
+      line-height: 1.8;
+      color: rgba(255,255,255,0.9);
+      font-weight: 700;
+      animation: fadeUp 1.35s ease forwards;
+    }
+
+    .hero-sub {
+      max-width: 820px;
+      margin: 0 auto 28px;
+      font-size: clamp(0.98rem, 1.8vw, 1.12rem);
+      line-height: 1.95;
+      color: rgba(255,255,255,0.72);
+      animation: fadeUp 1.5s ease forwards;
+    }
+
+    .trust-row {
+      width: min(900px, 100%);
+      margin: 0 auto 26px;
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeUp 1.65s ease forwards;
+    }
+
+    .trust-chip {
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+      color: rgba(255,255,255,0.64);
+      font-size: 0.76rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    .phrase-box {
+      position: relative;
+      width: min(760px, 100%);
+      margin: 0 auto;
+      min-height: 64px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: fadeUp 1.8s ease forwards;
+    }
+
+    .phrase {
+      position: absolute;
+      opacity: 0;
+      transform: translateY(16px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+      font-size: clamp(1rem, 2vw, 1.22rem);
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.82);
+      line-height: 1.7;
+    }
+
+    .phrase.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .floating-stage {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding-top: 10px;
+    }
+
+    .guide-line {
+      margin: 0 auto 18px;
+      text-align: center;
+      font-size: 0.82rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      align-items: stretch;
+    }
+
+    .card {
+      position: relative;
+      min-height: 290px;
+      padding: 22px 20px 20px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      backdrop-filter: blur(14px);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      transform: translateY(0);
+      animation: floatCard 7s ease-in-out infinite;
+      transition: transform 0.45s ease, border-color 0.45s ease, background 0.45s ease, box-shadow 0.45s ease;
+    }
+
+    .card:nth-child(2) {
+      animation-duration: 8.4s;
+      animation-delay: 0.45s;
+    }
+
+    .card:nth-child(3) {
+      animation-duration: 7.7s;
+      animation-delay: 0.9s;
+    }
+
+    .card:nth-child(4) {
+      animation-duration: 8.8s;
+      animation-delay: 1.25s;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(130deg, rgba(255,255,255,0.13), transparent 35%, transparent 65%, rgba(255,255,255,0.06));
+      opacity: 0;
+      transition: opacity 0.45s ease;
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(255,255,255,0.11), rgba(255,255,255,0.04));
+    }
+
+    .card.primary {
+      border-color: rgba(255,255,255,0.18);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.045));
+      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+    }
+
+    .card.recommended {
+      transform: scale(1.02);
+    }
+
+    .card-badge {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.7);
+      font-size: 0.7rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .card-number {
+      font-size: 0.72rem;
+      letter-spacing: 0.22em;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    .card h3 {
+      font-size: 1.36rem;
+      font-weight: 700;
+      line-height: 1.35;
+      margin-bottom: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    .card p {
+      font-size: 0.93rem;
+      line-height: 1.85;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 18px;
+    }
+
+    .card-meta {
+      margin-top: auto;
+      margin-bottom: 18px;
+      font-size: 0.76rem;
+      letter-spacing: 0.12em;
+      color: rgba(255,255,255,0.44);
+      text-transform: uppercase;
+      line-height: 1.8;
+    }
+
+    .card a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #fff;
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255,255,255,0.26);
+      transition: gap 0.35s ease, border-color 0.35s ease;
+      position: relative;
+      z-index: 2;
+    }
+
+    .card a:hover {
+      gap: 14px;
+      border-color: rgba(255,255,255,0.9);
+    }
+
+    .idea-line {
+      margin-top: 26px;
+      text-align: center;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.7);
+    }
+
+    .bottom-note {
+      margin-top: 18px;
+      text-align: center;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      color: rgba(255,255,255,0.34);
+      text-transform: uppercase;
+    }
+
+    @keyframes drift {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(40px, -30px) scale(1.12); }
+    }
+
+    @keyframes pulseGrid {
+      0%, 100% { opacity: 0.26; transform: scale(1); }
+      50% { opacity: 0.38; transform: scale(1.02); }
+    }
+
+    @keyframes archiveRead {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      8% {
+        opacity: 0.7;
+      }
+      46% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(72vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes archiveText {
+      0% {
+        transform: translateY(0);
+        opacity: 0;
+      }
+      10% {
+        opacity: 0.16;
+      }
+      48% {
+        opacity: 0.16;
+      }
+      100% {
+        transform: translateY(72vh);
+        opacity: 0;
+      }
+    }
+
+    @keyframes floatCard {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 1100px) {
+      .cards {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .wrapper {
+        padding: 18px 16px 22px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .hero {
+        padding: 30px 0 22px;
+      }
+
+      .hero-title {
+        font-size: clamp(2.6rem, 16vw, 4.2rem);
+        line-height: 1.02;
+      }
+
+      .strong-subcopy {
+        font-size: 1.02rem;
+        line-height: 1.85;
+      }
+
+      .hero-sub {
+        font-size: 0.95rem;
+        line-height: 1.85;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .card {
+        min-height: 250px;
+      }
+
+      .phrase-box {
+        min-height: 90px;
+      }
+
+      .phrase {
+        line-height: 1.7;
+      }
+
+      .trust-row {
+        gap: 10px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <logotohome>
-    <a href="./index.html"><img src="./images/0_XBlogo.png" alt=""></a>
-    </logotohome>
-    <h1>XBP</h1>
-        <h2>タニサンのXBPポートフォリオ一覧</h2>
-        <!-- このようにするとコードとして認識されない。（メモができる）-->
-        <!--番号付きのリスト-->
-        <ol>
-            <li><a href="./de12/index.html">デザイン演習Ⅰ・Ⅱ</a></li>
-            <li><a href="./digi_fab/index.html">デジタルファブリケーション</a></li>
-            <li><a href="./de34/index 2.html">デザイン演習Ⅲ・Ⅳ</a></li>
-            <li><a href="./de56/index.html/#000">デザイン演習Ⅴ・Ⅵ</a></li>
-        </ol>
+  <div class="background-layer">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+    <div class="grid-lines"></div>
+    <div class="archive-scan"></div>
+  </div>
 
-            
-        <br>
-        <br>
+  <div class="wrapper">
+    <header class="topbar">
+      <div class="logo">
+        <a href="./index.html">
+          <img src="./images/0_XBlogo.png" alt="XBPロゴ">
+          <span>XBP Archive</span>
+        </a>
+      </div>
+      <div class="status">TANISAN PORTFOLIO INDEX</div>
+    </header>
 
+    <main class="hero">
+      <div class="hero-inner">
+        <div class="hero-label">XBP Portfolio Gateway</div>
 
+        <h1 class="hero-title">
+          XBP<br>
+          <span class="light">Portfolio</span>
+        </h1>
+
+        <p class="strong-subcopy">
+          デザインと設計の成長を記録するポートフォリオ
+        </p>
+
+        <p class="hero-sub">
+          このページは、授業ごとの制作物を並べるだけではなく、デザインと情報の蓄積を一つの流れとして見せるために構成したXBPの入口です。  
+          学習記録、設計の変化、表現の成長が段階ごとにたどれるように整理しています。
+        </p>
+
+        <div class="trust-row">
+          <div class="trust-chip">Design Archive</div>
+          <div class="trust-chip">Process Record</div>
+          <div class="trust-chip">Information Accumulation</div>
+          <div class="trust-chip">Growth Portfolio</div>
+        </div>
+
+        <div class="phrase-box">
+          <div class="phrase active">記録を作品へ、作品を価値へ変えていく。</div>
+          <div class="phrase">デザインと情報の蓄積を、一つの流れとして見せる。</div>
+          <div class="phrase">授業ごとの成長が、ポートフォリオとしてつながっていく。</div>
+        </div>
+      </div>
+    </main>
+
+    <section class="floating-stage">
+      <div class="guide-line">Recommended Route / Start with Design I・II or Design III・IV</div>
+
+      <div class="cards">
+        <article class="card primary recommended">
+          <div class="card-badge">Recommended Start</div>
+          <div class="card-number">01 / Design Core</div>
+          <h3>デザイン演習Ⅰ・Ⅱ</h3>
+          <p>
+            基礎的なHTMLの理解からページ構造の考え方までを含み、XBP全体の出発点となる学習記録です。  
+            デザインの基盤と情報整理の始まりが確認できます。
+          </p>
+          <div class="card-meta">design foundation / first archive / structure record</div>
+          <a href="./de12/index.html">Enter</a>
+        </article>
+
+        <article class="card">
+          <div class="card-badge">Practice Archive</div>
+          <div class="card-number">02 / Fabrication</div>
+          <h3>デジタルファブリケーション</h3>
+          <p>
+            制作と実践を通して得た学びをまとめた記録です。  
+            手を動かしながら思考を形にしていく過程を見ることができます。
+          </p>
+          <div class="card-meta">making process / practical record / fabrication log</div>
+          <a href="./digi_fab/index.html">Enter</a>
+        </article>
+
+        <article class="card primary">
+          <div class="card-badge">Featured Archive</div>
+          <div class="card-number">03 / Design Growth</div>
+          <h3>デザイン演習Ⅲ・Ⅳ</h3>
+          <p>
+            基礎から一歩進み、設計、表現、振り返りの質を高めていった中盤の蓄積です。  
+            作品として見せる意識が強くなった成長の流れが確認できます。
+          </p>
+          <div class="card-meta">design growth / reflection record / quality development</div>
+          <a href="./de34/index 2.html">Enter</a>
+        </article>
+
+        <article class="card">
+          <div class="card-badge">Advanced Section</div>
+          <div class="card-number">04 / Advanced</div>
+          <h3>デザイン演習Ⅴ・Ⅵ</h3>
+          <p>
+            後半の発展的な制作と応用の記録です。  
+            前段階で蓄積した設計力と表現力が、どのように広がったかを見るためのセクションです。
+          </p>
+          <div class="card-meta">advanced archive / applied design / accumulated output</div>
+          <a href="./de56/index.html/#000">Enter</a>
+        </article>
+      </div>
+
+      <div class="idea-line">
+        このアーカイブは、学習記録を並べるためではなく、蓄積された思考と表現を価値として伝えるために設計しています。
+      </div>
+
+      <div class="bottom-note">
+        記録を作品へ、作品を価値へ変えていく。
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const phrases = document.querySelectorAll('.phrase');
+    let currentPhrase = 0;
+
+    function rotatePhrases() {
+      phrases[currentPhrase].classList.remove('active');
+      currentPhrase = (currentPhrase + 1) % phrases.length;
+      phrases[currentPhrase].classList.add('active');
+    }
+
+    setInterval(rotatePhrases, 2800);
+
+    const cards = document.querySelectorAll('.card');
+    let autoFocus = 0;
+
+    function pulseCards() {
+      cards.forEach((card) => {
+        if (card.classList.contains('primary')) {
+          card.style.borderColor = 'rgba(255,255,255,0.18)';
+        } else {
+          card.style.borderColor = 'rgba(255,255,255,0.1)';
+        }
+      });
+
+      cards[autoFocus].style.borderColor = 'rgba(255,255,255,0.32)';
+      cards[autoFocus].style.boxShadow = '0 34px 90px rgba(0,0,0,0.58)';
+      
+      cards.forEach((card, index) => {
+        if (index !== autoFocus) {
+          card.style.boxShadow = '';
+        }
+      });
+
+      autoFocus = (autoFocus + 1) % cards.length;
+    }
+
+    pulseCards();
+    setInterval(pulseCards, 1900);
+  </script>
 </body>
 </html>
