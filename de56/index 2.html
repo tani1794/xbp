@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タニサンのポートフォリオ</title>
+
+  <!-- フォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      color: #ffffff;
+      background: #000;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* 背景動画 */
+    .video-background {
+      position: fixed;
+      inset: 0;
+      z-index: -3;
+      overflow: hidden;
+      background: #000;
+    }
+
+    .video-background iframe {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 100vw;
+      height: 56.25vw;
+      min-width: 177.77vh;
+      min-height: 100vh;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    /* 可読性改善用オーバーレイ */
+    .video-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.70), rgba(0,0,0,0.82)),
+        radial-gradient(circle at center, rgba(255,255,255,0.06), rgba(0,0,0,0.2));
+      backdrop-filter: blur(2px);
+    }
+
+    /* 上部ナビ */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 18px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .logo {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      letter-spacing: 0.2em;
+      color: #ffffff;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 0.92rem;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      background: rgba(255,255,255,0.18);
+      transform: translateY(-2px);
+    }
+
+    /* 共通セクション */
+    .section {
+      min-height: 100vh;
+      padding: 120px 8% 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transform: translateY(40px);
+      transition: 1s ease;
+    }
+
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+    }
+
+    /* ヒーロー */
+    .hero {
+      text-align: center;
+    }
+
+    .hero-sub {
+      display: inline-block;
+      font-size: 0.95rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #cfcfcf;
+      margin-bottom: 18px;
+      padding: 8px 16px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(6px);
+    }
+
+    .hero h1 {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2.7rem, 7vw, 6rem);
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      line-height: 1.05;
+      margin-bottom: 20px;
+      text-shadow: 0 0 18px rgba(255,255,255,0.15);
+    }
+
+    .hero p {
+      max-width: 760px;
+      margin: 0 auto 30px;
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: rgba(255,255,255,0.82);
+    }
+
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 25px;
+    }
+
+    .btn-main,
+    .btn-sub {
+      text-decoration: none;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-weight: 700;
+      transition: 0.35s ease;
+      display: inline-block;
+    }
+
+    .btn-main {
+      color: #000;
+      background: #ffffff;
+      box-shadow: 0 10px 30px rgba(255,255,255,0.18);
+    }
+
+    .btn-main:hover {
+      transform: translateY(-3px) scale(1.02);
+    }
+
+    .btn-sub {
+      color: #fff;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(6px);
+    }
+
+    .btn-sub:hover {
+      background: rgba(255,255,255,0.16);
+      transform: translateY(-3px);
+    }
+
+    /* セクションタイトル */
+    .section-label {
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 0.25em;
+      color: #d0d0d0;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .section-desc {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.78);
+      max-width: 780px;
+      margin-bottom: 40px;
+    }
+
+    /* ガラスカードエリア */
+    .glass-panel {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      padding: 34px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+    }
+
+    /* カードグリッド */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 22px;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.34);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 22px;
+      padding: 24px;
+      transition: 0.35s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.10), rgba(255,255,255,0));
+      opacity: 0;
+      transition: 0.35s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(255,255,255,0.22);
+      box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    }
+
+    .card:hover::before {
+      opacity: 1;
+    }
+
+    .card h3 {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.72);
+      margin-bottom: 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card a {
+      display: inline-block;
+      text-decoration: none;
+      color: #fff;
+      font-weight: 700;
+      padding: 10px 18px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.16);
+      transition: 0.3s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .card a:hover {
+      background: rgba(255,255,255,0.20);
+      transform: scale(1.04);
+    }
+
+    /* ノート一覧 */
+    .notes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .note-link {
+      text-decoration: none;
+      color: #fff;
+      padding: 18px 16px;
+      text-align: center;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      transition: 0.3s ease;
+      font-weight: 700;
+    }
+
+    .note-link:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.18);
+    }
+
+    /* フッター */
+    footer {
+      padding: 40px 8% 50px;
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      background: rgba(0,0,0,0.35);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      backdrop-filter: blur(8px);
+    }
+
+    /* レスポンシブ */
+    @media (max-width: 768px) {
+      .top-nav {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .hero h1 {
+        letter-spacing: 0.04em;
+      }
+
+      .glass-panel {
+        padding: 24px;
+      }
+
+      .section {
+        padding: 140px 6% 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 背景動画 -->
+  <div class="video-background">
+    <iframe
+      src="https://www.youtube.com/embed/orfC3uDBXzU?start=10&autoplay=1&mute=1&loop=1&playlist=orfC3uDBXzU&controls=0&modestbranding=1"
+      title="YouTube background video"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen>
+    </iframe>
+  </div>
+
+  <!-- 可読性改善オーバーレイ -->
+  <div class="video-overlay"></div>
+
+  <!-- ナビ -->
+  <header class="top-nav">
+    <div class="logo">PORTFOLIO</div>
+    <nav class="nav-links">
+      <a href="#top">Top</a>
+      <a href="#work12">演習Ⅰ・Ⅱ</a>
+      <a href="#note1">ノート一覧Ⅰ</a>
+      <a href="#work34">演習Ⅲ・Ⅳ</a>
+      <a href="#note2">ノート一覧Ⅱ</a>
+    </nav>
+  </header>
+
+  <!-- ヒーロー -->
+  <section class="section hero" id="top">
+    <div class="container">
+      <span class="hero-sub">DESIGN EXERCISE PORTFOLIO</span>
+      <h1>タニサンの<br>デザインポートフォリオ</h1>
+      <p>
+        このサイトは、デザイン演習で制作したHTML作品と演習ノートを整理し、
+        学習の流れと成果が一目で伝わるように再設計したポートフォリオです。
+      </p>
+      <div class="hero-buttons">
+        <a href="#work12" class="btn-main">作品を見る</a>
+        <a href="#note2" class="btn-sub">ノート一覧へ</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 演習Ⅰ・Ⅱ -->
+  <section class="section" id="work12">
+    <div class="container">
+      <p class="section-label">Works 01</p>
+      <h2 class="section-title">デザイン演習Ⅰ・Ⅱ</h2>
+      <p class="section-desc">
+        HTMLの基礎理解から実践ページの作成までをまとめたセクションです。
+        ただのリンク一覧ではなく、各コンテンツの役割が見えるカード形式に変更しています。
+      </p>
+
+      <div class="glass-panel">
+        <div class="card-grid">
+          <div class="card">
+            <h3>HTMLの基礎知識</h3>
+            <p>HTML構造の理解と基本タグの学習内容を確認できるページです。</p>
+            <a href="./hp1.html" target="_blank">開く</a>
+          </div>
+
+          <div class="card">
+            <h3>HTMLのwork</h3>
+            <p>演習の中で作成した実践的なワークページをまとめています。</p>
+            <a href="./hp2.html" target="_blank">開く</a>
+          </div>
+
+          <div class="card">
+            <h3>テストページ</h3>
+            <p>試作や確認用として制作したページを閲覧できます。</p>
+            <a href="./test.html" target="_blank">開く</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ノート一覧Ⅰ -->
+  <section class="section" id="note1">
+    <div class="container">
+      <p class="section-label">Archive 01</p>
+      <h2 class="section-title">演習ノート一覧Ⅰ</h2>
+      <p class="section-desc">
+        第1回から第9回までの演習記録です。学習の積み重ねが追いやすいよう、均一なグリッドで配置しています。
+      </p>
+
+      <div class="glass-panel">
+        <div class="notes-grid">
+          <a class="note-link" href="./1.html" target="_blank">第一回</a>
+          <a class="note-link" href="./2.html" target="_blank">第二回</a>
+          <a class="note-link" href="./3.html" target="_blank">第三回</a>
+          <a class="note-link" href="./4.html" target="_blank">第四回</a>
+          <a class="note-link" href="./5.html" target="_blank">第五回</a>
+          <a class="note-link" href="./6.html" target="_blank">第六回</a>
+          <a class="note-link" href="./7.html" target="_blank">第七回</a>
+          <a class="note-link" href="./8.html" target="_blank">第八回</a>
+          <a class="note-link" href="./9html.html" target="_blank">第九回</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 演習Ⅲ・Ⅳ -->
+  <section class="section" id="work34">
+    <div class="container">
+      <p class="section-label">Works 02</p>
+      <h2 class="section-title">デザイン演習Ⅲ・Ⅳ</h2>
+      <p class="section-desc">
+        後半の演習内容を独立したセクションとして追加しています。
+        これにより、Ⅰ・ⅡとⅢ・Ⅳの役割分担が明確になります。
+      </p>
+
+      <div class="glass-panel">
+        <div class="card-grid">
+          <div class="card">
+            <h3>HTMLの基礎知識Ⅱ</h3>
+            <p>後半の演習で扱った知識や応用内容の確認ページです。</p>
+            <a href="./hp3.html" target="_blank">開く</a>
+          </div>
+
+          <div class="card">
+            <h3>HTMLのworkⅡ</h3>
+            <p>演習Ⅲ・Ⅳで制作した実践ページを整理したセクションです。</p>
+            <a href="./hp4.html" target="_blank">開く</a>
+          </div>
+
+          <div class="card">
+            <h3>テストページⅡ</h3>
+            <p>追加の試作や確認用ページを閲覧できます。</p>
+            <a href="./test2.html" target="_blank">開く</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ノート一覧Ⅱ -->
+  <section class="section" id="note2">
+    <div class="container">
+      <p class="section-label">Archive 02</p>
+      <h2 class="section-title">演習ノート一覧Ⅱ</h2>
+      <p class="section-desc">
+        第10回以降のノートを独立表示しています。ページ全体の情報構造を整理し、
+        見る側が迷わない形にしています。
+      </p>
+
+      <div class="glass-panel">
+        <div class="notes-grid">
+          <a class="note-link" href="./10.html" target="_blank">第十回</a>
+          <a class="note-link" href="./11.html" target="_blank">第十一回</a>
+          <a class="note-link" href="./12.html" target="_blank">第十二回</a>
+          <a class="note-link" href="./13.html" target="_blank">第十三回</a>
+          <a class="note-link" href="./14.html" target="_blank">第十四回</a>
+          <a class="note-link" href="./15.html" target="_blank">第十五回</a>
+          <a class="note-link" href="./16.html" target="_blank">第十六回</a>
+          <a class="note-link" href="./17.html" target="_blank">第十七回</a>
+          <a class="note-link" href="./18.html" target="_blank">第十八回</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© Tani Portfolio Site</p>
+  </footer>
+
+  <script>
+    const sections = document.querySelectorAll('.section');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    sections.forEach((section) => observer.observe(section));
+  </script>
+
+</body>
+</html>
