@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>XBP | タニサンのポートフォリオ</title>
+  <meta name="description" content="デザインと設計の成長を記録し、記録を作品へ、作品を価値へ変えていくためのXBPポートフォリオ入口ページ。" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Cormorant+Garamond:wght@500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -13,16 +19,18 @@
 
     :root {
       --bg: #050505;
-      --bg-soft: #0c0c0c;
-      --text: rgba(255, 255, 255, 0.96);
-      --muted: rgba(255, 255, 255, 0.6);
-      --soft-muted: rgba(255, 255, 255, 0.42);
-      --line: rgba(255, 255, 255, 0.12);
-      --card: rgba(255, 255, 255, 0.06);
-      --card-strong: rgba(255, 255, 255, 0.1);
-      --shadow: 0 30px 80px rgba(0, 0, 0, 0.48);
-      --accent: rgba(255, 255, 255, 0.88);
-      --accent-soft: rgba(255, 255, 255, 0.18);
+      --bg-soft: #0d0d0d;
+      --paper: #e6dece;
+      --text: rgba(244, 241, 234, 0.96);
+      --muted: rgba(244, 241, 234, 0.68);
+      --soft-muted: rgba(244, 241, 234, 0.42);
+      --line: rgba(244, 241, 234, 0.12);
+      --line-strong: rgba(244, 241, 234, 0.22);
+      --card: rgba(255, 255, 255, 0.05);
+      --card-strong: rgba(255, 255, 255, 0.08);
+      --shadow: 0 30px 90px rgba(0, 0, 0, 0.5);
+      --accent-soft: rgba(230, 222, 206, 0.14);
+      --ease: 0.55s cubic-bezier(.22,.61,.36,1);
     }
 
     html {
@@ -32,14 +40,34 @@
     body {
       min-height: 100vh;
       overflow-x: hidden;
-      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Inter', 'Noto Sans JP', sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at 50% 18%, rgba(255,255,255,0.08), transparent 20%),
-        radial-gradient(circle at 16% 82%, rgba(255,255,255,0.035), transparent 16%),
-        radial-gradient(circle at 84% 74%, rgba(255,255,255,0.035), transparent 16%),
+        radial-gradient(circle at 50% 16%, rgba(255,255,255,0.08), transparent 20%),
+        radial-gradient(circle at 14% 82%, rgba(255,255,255,0.035), transparent 16%),
+        radial-gradient(circle at 84% 74%, rgba(230,222,206,0.04), transparent 16%),
         linear-gradient(180deg, #020202 0%, #060606 55%, #0c0c0c 100%);
       position: relative;
+      letter-spacing: 0.01em;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 110px 110px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 84%);
+      opacity: 0.22;
+      z-index: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
     }
 
     .background-layer {
@@ -54,9 +82,9 @@
       position: absolute;
       border-radius: 50%;
       filter: blur(90px);
-      opacity: 0.16;
+      opacity: 0.14;
       animation: drift 16s ease-in-out infinite alternate;
-      background: rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.18);
     }
 
     .orb1 {
@@ -81,18 +109,6 @@
       top: 44%;
       left: 54%;
       animation-duration: 12s;
-    }
-
-    .grid-lines {
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-      background-size: 90px 90px;
-      mask-image: radial-gradient(circle at center, black 36%, transparent 82%);
-      opacity: 0.32;
-      animation: pulseGrid 8s ease-in-out infinite;
     }
 
     .archive-scan {
@@ -126,6 +142,8 @@
       text-align: center;
       animation: archiveText 8.5s linear infinite;
       white-space: nowrap;
+      text-transform: uppercase;
+      font-weight: 700;
     }
 
     .wrapper {
@@ -135,14 +153,14 @@
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      padding: 24px 28px 34px;
+      padding: 28px 32px 40px;
     }
 
     .topbar {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 4px 4px 0;
+      padding: 4px 2px 0;
     }
 
     .logo a {
@@ -150,10 +168,9 @@
       align-items: center;
       gap: 14px;
       color: var(--text);
-      text-decoration: none;
       letter-spacing: 0.22em;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
     }
 
@@ -165,11 +182,12 @@
     }
 
     .status {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       letter-spacing: 0.24em;
       color: var(--soft-muted);
       text-transform: uppercase;
       white-space: nowrap;
+      font-weight: 700;
     }
 
     .hero {
@@ -177,78 +195,107 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 42px 0 24px;
+      padding: 70px 0 48px;
     }
 
     .hero-inner {
       width: 100%;
-      max-width: 1200px;
+      max-width: 1280px;
       text-align: center;
       position: relative;
     }
 
     .hero-label {
-      display: inline-block;
-      margin-bottom: 18px;
-      padding: 10px 18px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 26px;
+      padding: 11px 20px;
       border: 1px solid var(--line);
       border-radius: 999px;
       background: rgba(255,255,255,0.04);
-      color: rgba(255,255,255,0.72);
+      color: rgba(255,255,255,0.74);
       font-size: 0.8rem;
       letter-spacing: 0.24em;
       text-transform: uppercase;
       backdrop-filter: blur(10px);
-      animation: fadeUp 1s ease forwards;
+      font-weight: 700;
+    }
+
+    .hero-label::before,
+    .hero-label::after {
+      content: "";
+      width: 14px;
+      height: 1px;
+      background: rgba(255,255,255,0.28);
+    }
+
+    .hero-title-wrap {
+      margin-bottom: 20px;
+      padding-bottom: 34px;
     }
 
     .hero-title {
-      font-size: clamp(3rem, 10vw, 7.8rem);
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      line-height: 0.96;
+      font-size: clamp(3.2rem, 10vw, 8rem);
+      line-height: 0.92;
       text-transform: uppercase;
-      margin-bottom: 16px;
-      text-shadow: 0 0 30px rgba(255,255,255,0.08);
-      animation: fadeUp 1.2s ease forwards;
+      margin-bottom: 12px;
+      text-shadow: 0 0 30px rgba(255,255,255,0.06);
+      letter-spacing: -0.06em;
+      font-weight: 800;
+    }
+
+    .hero-title .mono {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+    }
+
+    .hero-title .serif {
+      display: block;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.8rem, 11vw, 9rem);
+      font-weight: 600;
+      letter-spacing: -0.04em;
+      color: var(--paper);
+      line-height: 0.88;
+      text-transform: none;
     }
 
     .hero-title .light {
-      color: rgba(255,255,255,0.68);
+      color: rgba(255,255,255,0.72);
       font-weight: 300;
     }
 
     .strong-subcopy {
       max-width: 900px;
-      margin: 0 auto 16px;
-      font-size: clamp(1.15rem, 2.2vw, 1.5rem);
-      line-height: 1.8;
+      margin: 0 auto 18px;
+      font-size: clamp(1.14rem, 2.2vw, 1.52rem);
+      line-height: 1.9;
       color: rgba(255,255,255,0.9);
       font-weight: 700;
-      animation: fadeUp 1.35s ease forwards;
     }
 
     .hero-sub {
-      max-width: 820px;
-      margin: 0 auto 28px;
+      max-width: 860px;
+      margin: 0 auto 38px;
       font-size: clamp(0.98rem, 1.8vw, 1.12rem);
-      line-height: 1.95;
+      line-height: 2;
       color: rgba(255,255,255,0.72);
-      animation: fadeUp 1.5s ease forwards;
+      padding-inline: 14px;
     }
 
     .trust-row {
-      width: min(900px, 100%);
-      margin: 0 auto 26px;
+      width: min(980px, 100%);
+      margin: 0 auto 42px;
       display: flex;
       justify-content: center;
       gap: 14px;
       flex-wrap: wrap;
-      animation: fadeUp 1.65s ease forwards;
     }
 
     .trust-chip {
-      padding: 10px 16px;
+      padding: 11px 16px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.1);
       background: rgba(255,255,255,0.04);
@@ -257,29 +304,30 @@
       letter-spacing: 0.14em;
       text-transform: uppercase;
       backdrop-filter: blur(8px);
+      font-weight: 700;
     }
 
     .phrase-box {
       position: relative;
-      width: min(760px, 100%);
+      width: min(820px, 100%);
       margin: 0 auto;
-      min-height: 64px;
+      min-height: 80px;
       display: flex;
       justify-content: center;
       align-items: center;
-      animation: fadeUp 1.8s ease forwards;
     }
 
     .phrase {
       position: absolute;
       opacity: 0;
-      transform: translateY(16px);
+      transform: translateY(22px);
       transition: opacity 0.9s ease, transform 0.9s ease;
       font-size: clamp(1rem, 2vw, 1.22rem);
       font-weight: 700;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.04em;
       color: rgba(255,255,255,0.82);
-      line-height: 1.7;
+      line-height: 1.8;
+      padding-inline: 14px;
     }
 
     .phrase.active {
@@ -289,55 +337,82 @@
 
     .floating-stage {
       width: 100%;
-      max-width: 1280px;
+      max-width: 1320px;
       margin: 0 auto;
-      padding-top: 10px;
+      padding-top: 44px;
+      position: relative;
+    }
+
+    .floating-stage::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(1120px, 94%);
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
     }
 
     .guide-line {
-      margin: 0 auto 18px;
+      margin: 0 auto 28px;
       text-align: center;
       font-size: 0.82rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.42);
+      font-weight: 700;
     }
 
     .cards {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+      gap: 18px;
       align-items: stretch;
     }
 
     .card {
       position: relative;
-      min-height: 290px;
-      padding: 22px 20px 20px;
+      min-height: 320px;
+      padding: 24px 22px 22px;
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 26px;
+      border-radius: 28px;
       background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
       backdrop-filter: blur(14px);
       box-shadow: var(--shadow);
       overflow: hidden;
       transform: translateY(0);
       animation: floatCard 7s ease-in-out infinite;
-      transition: transform 0.45s ease, border-color 0.45s ease, background 0.45s ease, box-shadow 0.45s ease;
+      transition: transform var(--ease), border-color var(--ease), background var(--ease), box-shadow var(--ease), opacity var(--ease), filter var(--ease);
     }
 
-    .card:nth-child(2) {
+    .card.reveal {
+      opacity: 0;
+      transform: translateY(68px);
+      filter: blur(8px);
+      animation: none;
+    }
+
+    .card.reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+      animation: floatCard 7s ease-in-out infinite;
+    }
+
+    .card:nth-child(2).visible {
       animation-duration: 8.4s;
-      animation-delay: 0.45s;
+      animation-delay: 0.25s;
     }
 
-    .card:nth-child(3) {
+    .card:nth-child(3).visible {
       animation-duration: 7.7s;
-      animation-delay: 0.9s;
+      animation-delay: 0.5s;
     }
 
-    .card:nth-child(4) {
+    .card:nth-child(4).visible {
       animation-duration: 8.8s;
-      animation-delay: 1.25s;
+      animation-delay: 0.75s;
     }
 
     .card::before {
@@ -346,7 +421,19 @@
       inset: 0;
       background: linear-gradient(130deg, rgba(255,255,255,0.13), transparent 35%, transparent 65%, rgba(255,255,255,0.06));
       opacity: 0;
-      transition: opacity 0.45s ease;
+      transition: opacity var(--ease);
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      left: 22px;
+      right: 22px;
+      bottom: 18px;
+      height: 40px;
+      background: linear-gradient(180deg, transparent, rgba(0,0,0,0.12));
+      opacity: 0.45;
+      pointer-events: none;
     }
 
     .card:hover::before {
@@ -371,15 +458,16 @@
 
     .card-badge {
       display: inline-block;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
       padding: 8px 12px;
       border-radius: 999px;
       border: 1px solid rgba(255,255,255,0.12);
       background: rgba(255,255,255,0.06);
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.72);
       font-size: 0.7rem;
       letter-spacing: 0.16em;
       text-transform: uppercase;
+      font-weight: 700;
     }
 
     .card-number {
@@ -388,21 +476,22 @@
       color: rgba(255,255,255,0.42);
       margin-bottom: 12px;
       text-transform: uppercase;
+      font-weight: 700;
     }
 
     .card h3 {
-      font-size: 1.36rem;
+      font-size: 1.38rem;
       font-weight: 700;
-      line-height: 1.35;
+      line-height: 1.38;
       margin-bottom: 12px;
-      letter-spacing: 0.02em;
+      letter-spacing: 0.01em;
     }
 
     .card p {
       font-size: 0.93rem;
-      line-height: 1.85;
+      line-height: 1.9;
       color: rgba(255,255,255,0.7);
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .card-meta {
@@ -413,6 +502,7 @@
       color: rgba(255,255,255,0.44);
       text-transform: uppercase;
       line-height: 1.8;
+      font-weight: 700;
     }
 
     .card a {
@@ -420,9 +510,8 @@
       align-items: center;
       gap: 8px;
       color: #fff;
-      text-decoration: none;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.14em;
       text-transform: uppercase;
       padding-bottom: 4px;
@@ -438,11 +527,14 @@
     }
 
     .idea-line {
-      margin-top: 26px;
+      margin-top: 34px;
       text-align: center;
-      font-size: 0.95rem;
-      line-height: 1.9;
+      font-size: 0.96rem;
+      line-height: 2;
       color: rgba(255,255,255,0.7);
+      max-width: 900px;
+      margin-inline: auto;
+      padding-inline: 16px;
     }
 
     .bottom-note {
@@ -452,16 +544,35 @@
       letter-spacing: 0.14em;
       color: rgba(255,255,255,0.34);
       text-transform: uppercase;
+      font-weight: 700;
+    }
+
+    .slide-up {
+      opacity: 0;
+      transform: translateY(42px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .slide-left {
+      opacity: 0;
+      transform: translateX(-54px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .slide-right {
+      opacity: 0;
+      transform: translateX(54px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .visible {
+      opacity: 1;
+      transform: translate(0, 0);
     }
 
     @keyframes drift {
       0% { transform: translate(0, 0) scale(1); }
       100% { transform: translate(40px, -30px) scale(1.12); }
-    }
-
-    @keyframes pulseGrid {
-      0%, 100% { opacity: 0.26; transform: scale(1); }
-      50% { opacity: 0.38; transform: scale(1.02); }
     }
 
     @keyframes archiveRead {
@@ -503,17 +614,6 @@
       50% { transform: translateY(-8px); }
     }
 
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(24px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
     @media (max-width: 1100px) {
       .cards {
         grid-template-columns: repeat(2, 1fr);
@@ -522,7 +622,7 @@
 
     @media (max-width: 700px) {
       .wrapper {
-        padding: 18px 16px 22px;
+        padding: 20px 16px 24px;
       }
 
       .topbar {
@@ -531,22 +631,26 @@
       }
 
       .hero {
-        padding: 30px 0 22px;
+        padding: 40px 0 28px;
       }
 
       .hero-title {
-        font-size: clamp(2.6rem, 16vw, 4.2rem);
-        line-height: 1.02;
+        font-size: clamp(2.8rem, 16vw, 4.4rem);
+        line-height: 0.98;
+      }
+
+      .hero-title .serif {
+        font-size: clamp(3.2rem, 18vw, 5.2rem);
       }
 
       .strong-subcopy {
         font-size: 1.02rem;
-        line-height: 1.85;
+        line-height: 1.9;
       }
 
       .hero-sub {
         font-size: 0.95rem;
-        line-height: 1.85;
+        line-height: 1.9;
       }
 
       .cards {
@@ -554,19 +658,39 @@
       }
 
       .card {
-        min-height: 250px;
+        min-height: 270px;
       }
 
       .phrase-box {
-        min-height: 90px;
+        min-height: 96px;
       }
 
       .phrase {
-        line-height: 1.7;
+        line-height: 1.8;
       }
 
       .trust-row {
         gap: 10px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+
+      .slide-up,
+      .slide-left,
+      .slide-right,
+      .card.reveal {
+        opacity: 1;
+        transform: none;
+        filter: none;
       }
     }
   </style>
@@ -576,47 +700,48 @@
     <div class="orb orb1"></div>
     <div class="orb orb2"></div>
     <div class="orb orb3"></div>
-    <div class="grid-lines"></div>
     <div class="archive-scan"></div>
   </div>
 
   <div class="wrapper">
-    <header class="topbar">
-      <div class="logo">
+    <header class="topbar slide-up">
+      <div class="logo slide-left">
         <a href="./index.html">
           <img src="./images/0_XBlogo.png" alt="XBPロゴ">
           <span>XBP Archive</span>
         </a>
       </div>
-      <div class="status">TANISAN PORTFOLIO INDEX</div>
+      <div class="status slide-right">TANISAN PORTFOLIO INDEX</div>
     </header>
 
     <main class="hero">
       <div class="hero-inner">
-        <div class="hero-label">XBP Portfolio Gateway</div>
+        <div class="hero-label slide-up">XBP Portfolio Gateway</div>
 
-        <h1 class="hero-title">
-          XBP<br>
-          <span class="light">Portfolio</span>
-        </h1>
+        <div class="hero-title-wrap slide-up">
+          <h1 class="hero-title">
+            <span class="mono">XBP</span>
+            <span class="serif">Portfolio</span>
+          </h1>
+        </div>
 
-        <p class="strong-subcopy">
+        <p class="strong-subcopy slide-up">
           デザインと設計の成長を記録するポートフォリオ
         </p>
 
-        <p class="hero-sub">
-          このページは、授業ごとの制作物を並べるだけではなく、デザインと情報の蓄積を一つの流れとして見せるために構成したXBPの入口です。  
+        <p class="hero-sub slide-up">
+          このページは、授業ごとの制作物を並べるだけではなく、デザインと情報の蓄積を一つの流れとして見せるために構成したXBPの入口です。<br>
           学習記録、設計の変化、表現の成長が段階ごとにたどれるように整理しています。
         </p>
 
-        <div class="trust-row">
+        <div class="trust-row slide-up">
           <div class="trust-chip">Design Archive</div>
           <div class="trust-chip">Process Record</div>
           <div class="trust-chip">Information Accumulation</div>
           <div class="trust-chip">Growth Portfolio</div>
         </div>
 
-        <div class="phrase-box">
+        <div class="phrase-box slide-up">
           <div class="phrase active">記録を作品へ、作品を価値へ変えていく。</div>
           <div class="phrase">デザインと情報の蓄積を、一つの流れとして見せる。</div>
           <div class="phrase">授業ごとの成長が、ポートフォリオとしてつながっていく。</div>
@@ -625,51 +750,51 @@
     </main>
 
     <section class="floating-stage">
-      <div class="guide-line">Recommended Route / Start with Design I・II or Design III・IV</div>
+      <div class="guide-line slide-up">Recommended Route / Start with Design I・II or Design III・IV</div>
 
       <div class="cards">
-        <article class="card primary recommended">
+        <article class="card primary recommended reveal" data-delay="0">
           <div class="card-badge">Recommended Start</div>
           <div class="card-number">01 / Design Core</div>
           <h3>デザイン演習Ⅰ・Ⅱ</h3>
           <p>
-            基礎的なHTMLの理解からページ構造の考え方までを含み、XBP全体の出発点となる学習記録です。  
+            基礎的なHTMLの理解からページ構造の考え方までを含み、XBP全体の出発点となる学習記録です。<br>
             デザインの基盤と情報整理の始まりが確認できます。
           </p>
           <div class="card-meta">design foundation / first archive / structure record</div>
           <a href="./de12/index.html">Enter</a>
         </article>
 
-        <article class="card">
+        <article class="card reveal" data-delay="120">
           <div class="card-badge">Practice Archive</div>
           <div class="card-number">02 / Fabrication</div>
           <h3>デジタルファブリケーション</h3>
           <p>
-            制作と実践を通して得た学びをまとめた記録です。  
+            制作と実践を通して得た学びをまとめた記録です。<br>
             手を動かしながら思考を形にしていく過程を見ることができます。
           </p>
           <div class="card-meta">making process / practical record / fabrication log</div>
           <a href="./digi_fab/index.html">Enter</a>
         </article>
 
-        <article class="card primary">
+        <article class="card primary reveal" data-delay="240">
           <div class="card-badge">Featured Archive</div>
           <div class="card-number">03 / Design Growth</div>
           <h3>デザイン演習Ⅲ・Ⅳ</h3>
           <p>
-            基礎から一歩進み、設計、表現、振り返りの質を高めていった中盤の蓄積です。  
+            基礎から一歩進み、設計、表現、振り返りの質を高めていった中盤の蓄積です。<br>
             作品として見せる意識が強くなった成長の流れが確認できます。
           </p>
           <div class="card-meta">design growth / reflection record / quality development</div>
           <a href="./de34/index.html">Enter</a>
         </article>
 
-        <article class="card">
+        <article class="card reveal" data-delay="360">
           <div class="card-badge">Advanced Section</div>
           <div class="card-number">04 / Advanced</div>
           <h3>デザイン演習Ⅴ・Ⅵ</h3>
           <p>
-            後半の発展的な制作と応用の記録です。  
+            後半の発展的な制作と応用の記録です。<br>
             前段階で蓄積した設計力と表現力が、どのように広がったかを見るためのセクションです。
           </p>
           <div class="card-meta">advanced archive / applied design / accumulated output</div>
@@ -677,21 +802,24 @@
         </article>
       </div>
 
-      <div class="idea-line">
+      <div class="idea-line slide-up">
         このアーカイブは、学習記録を並べるためではなく、蓄積された思考と表現を価値として伝えるために設計しています。
       </div>
 
-      <div class="bottom-note">
+      <div class="bottom-note slide-up">
         記録を作品へ、作品を価値へ変えていく。
       </div>
     </section>
   </div>
 
   <script>
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     const phrases = document.querySelectorAll('.phrase');
     let currentPhrase = 0;
 
     function rotatePhrases() {
+      if (!phrases.length) return;
       phrases[currentPhrase].classList.remove('active');
       currentPhrase = (currentPhrase + 1) % phrases.length;
       phrases[currentPhrase].classList.add('active');
@@ -709,22 +837,46 @@
         } else {
           card.style.borderColor = 'rgba(255,255,255,0.1)';
         }
+        card.style.boxShadow = '';
       });
 
-      cards[autoFocus].style.borderColor = 'rgba(255,255,255,0.32)';
-      cards[autoFocus].style.boxShadow = '0 34px 90px rgba(0,0,0,0.58)';
-      
-      cards.forEach((card, index) => {
-        if (index !== autoFocus) {
-          card.style.boxShadow = '';
-        }
-      });
+      if (cards[autoFocus]) {
+        cards[autoFocus].style.borderColor = 'rgba(255,255,255,0.32)';
+        cards[autoFocus].style.boxShadow = '0 34px 90px rgba(0,0,0,0.58)';
+      }
 
       autoFocus = (autoFocus + 1) % cards.length;
     }
 
     pulseCards();
     setInterval(pulseCards, 1900);
+
+    const revealItems = document.querySelectorAll('.slide-up, .slide-left, .slide-right, .card.reveal');
+
+    function showImmediately() {
+      revealItems.forEach((item) => item.classList.add('visible'));
+    }
+
+    if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const delay = Number(entry.target.dataset.delay || 0);
+            setTimeout(() => {
+              entry.target.classList.add('visible');
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.16,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealItems.forEach((item) => observer.observe(item));
+    } else {
+      showImmediately();
+    }
   </script>
 </body>
 </html>
