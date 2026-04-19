@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -497,6 +498,118 @@
       letter-spacing: 0.04em;
     }
 
+
+
+    .report-block {
+      margin-top: 28px;
+      padding: 24px 22px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+    }
+
+    .report-block p {
+      font-size: 0.97rem;
+      font-weight: 700;
+      line-height: 2;
+      color: rgba(255,255,255,0.82);
+    }
+
+    .command-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 28px;
+    }
+
+    .command-card {
+      padding: 22px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+      transition: transform var(--transition), background var(--transition), border-color var(--transition);
+    }
+
+    .command-card:hover {
+      transform: translateY(-5px);
+      background: rgba(255,255,255,0.07);
+      border-color: rgba(255,255,255,0.14);
+    }
+
+    .command-tag {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.1);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.76);
+      text-transform: uppercase;
+    }
+
+    .command-card h3 {
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      margin-bottom: 10px;
+      letter-spacing: 0.03em;
+    }
+
+    .command-card p,
+    .command-card li {
+      font-size: 0.93rem;
+      font-weight: 700;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.78);
+    }
+
+    .command-card ul {
+      margin-top: 10px;
+      padding-left: 18px;
+    }
+
+    .code-stack {
+      display: grid;
+      gap: 18px;
+      margin-top: 30px;
+      text-align: left;
+    }
+
+    .code-panel {
+      padding: 20px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .code-panel h3 {
+      font-family: 'Montserrat', 'Noto Sans JP', sans-serif;
+      font-size: 1rem;
+      font-weight: 900;
+      margin-bottom: 12px;
+      letter-spacing: 0.03em;
+    }
+
+    .code-panel pre {
+      overflow-x: auto;
+      padding: 18px;
+      border-radius: 18px;
+      background: rgba(0,0,0,0.36);
+      border: 1px solid rgba(255,255,255,0.07);
+      color: rgba(255,255,255,0.9);
+      font-size: 0.88rem;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-family: Menlo, Monaco, Consolas, monospace;
+    }
+
     @keyframes fadeUp {
       from {
         opacity: 0;
@@ -529,6 +642,10 @@
       }
 
       .insight-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .command-grid {
         grid-template-columns: 1fr;
       }
 
@@ -618,6 +735,9 @@
       .content-intro,
       .insight-card p,
       .goal-card p,
+      .command-card p,
+      .command-card li,
+      .report-block p,
       .closing p {
         font-size: 0.94rem;
         line-height: 1.95;
@@ -666,6 +786,7 @@
           <div class="tabs">
             <button class="tab-button active" onclick="openTab('tab1', this)">講義の感想</button>
             <button class="tab-button" onclick="openTab('tab2', this)">意欲・目標</button>
+            <button class="tab-button" onclick="openTab('tab3', this)">Arduino分析</button>
           </div>
 
           <div class="tab-stage">
@@ -771,6 +892,125 @@
                   <p>
                     これからは、1回ごとの演習を点で終わらせず、デザインと設計を軸にしながら積み上げ、
                     表現の質を少しずつ高めていける自分を目標にしていきます。
+                  </p>
+                </div>
+              </div>
+            </div>
+          
+
+            <div id="tab3" class="tab-content">
+              <div class="content-box">
+                <div class="content-header">
+                  <div class="content-label">Arduino Analysis</div>
+                  <h2>提出用の文章と3つのコード分類</h2>
+                  <p class="content-intro">
+                    以下では、Arduinoで扱った3つのプログラムを提出用の文章として整理し、そのあとに役割ごとに分類して説明しています。
+                  </p>
+                </div>
+
+                <div class="report-block">
+                  <p>
+                    今回の実習では、Arduinoを用いたLED制御とセンサー入力の基本について学んだ。1つ目のコードでは、13番ピンに接続したLEDを500ミリ秒ごとに点灯と消灯を繰り返させることで、デジタル出力の基礎を確認した。2つ目のコードでは、for文を使ってLEDを10回速く点滅させた後に3回ゆっくり点滅させることで、同じ出力でも繰り返し処理によって異なる発光パターンを作れることを理解した。3つ目のコードでは、アナログ入力から取得した値をシリアルモニタに表示し、センサーの値を数値として確認する方法を学んだ。これらのプログラムを通して、ArduinoではLEDのような出力機器の制御だけでなく、センサーからの入力を読み取って活用できることが分かり、入出力処理の基礎を理解することができた。
+                  </p>
+                </div>
+
+                <div class="command-grid">
+                  <div class="command-card">
+                    <div class="command-tag">Output</div>
+                    <h3>1. LEDの基本点滅コード</h3>
+                    <p>
+                      digitalWrite()でLEDを点灯と消灯に切り替え、delay()で待ち時間を入れる基本的な出力制御のコードです。一定の周期で光らせることで、デジタル出力の基礎を理解できます。
+                    </p>
+                    <ul>
+                      <li>pinMode(13, OUTPUT) で13番ピンを出力に設定する</li>
+                      <li>HIGHで点灯、LOWで消灯する</li>
+                      <li>delay(500) で0.5秒ごとの点滅になる</li>
+                    </ul>
+                  </div>
+
+                  <div class="command-card">
+                    <div class="command-tag">Loop</div>
+                    <h3>2. 繰り返しで変化をつけるコード</h3>
+                    <p>
+                      for文を使って点滅回数と速度を変えるコードです。10回の速い点滅と3回の遅い点滅を続けることで、単純なON/OFFよりも複雑な発光パターンを作れます。
+                    </p>
+                    <ul>
+                      <li>for文で同じ処理を決まった回数だけ繰り返す</li>
+                      <li>delay(300) と delay(2000) で速さを変えている</li>
+                      <li>点灯パターンの演出を学ぶコードである</li>
+                    </ul>
+                  </div>
+
+                  <div class="command-card">
+                    <div class="command-tag">Input</div>
+                    <h3>3. センサー値の読み取りコード</h3>
+                    <p>
+                      analogRead()でアナログ入力の値を取得し、Serial.println()でシリアルモニタに表示する入力処理のコードです。明るさセンサーや可変抵抗の値を数値として確認できます。
+                    </p>
+                    <ul>
+                      <li>Serial.begin(9600) で通信速度を設定する</li>
+                      <li>analogRead(1) でアナログ入力1番を読む</li>
+                      <li>Serial.println(val) で値を画面に表示する</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div class="code-stack">
+                  <div class="code-panel">
+                    <h3>追加コード① LEDの基本点滅</h3>
+                    <pre><code>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(500);
+  digitalWrite(13, LOW);
+  delay(500);
+}</code></pre>
+                  </div>
+
+                  <div class="code-panel">
+                    <h3>追加コード② 点滅パターンの変化</h3>
+                    <pre><code>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  for (int i = 0; i &lt; 10; i++) {
+    digitalWrite(13, HIGH);
+    delay(300);
+    digitalWrite(13, LOW);
+    delay(300);
+  }
+
+  for (int i = 0; i &lt; 3; i++) {
+    digitalWrite(13, HIGH);
+    delay(2000);
+    digitalWrite(13, LOW);
+    delay(2000);
+  }
+}</code></pre>
+                  </div>
+
+                  <div class="code-panel">
+                    <h3>追加コード③ センサー値の読み取り</h3>
+                    <pre><code>void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  int val = 0;
+  val = analogRead(1);
+  Serial.println(val);
+  delay(500);
+}</code></pre>
+                  </div>
+                </div>
+
+                <div class="closing">
+                  <p>
+                    この3つのコードは、Arduino学習の流れとして「出力の基本」「繰り返し処理による応用」「入力の取得」という順番で整理できる。これにより、LEDを光らせるだけでなく、センサーの値を取り入れながら制御を発展させられることを理解できた。
                   </p>
                 </div>
               </div>
