@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Flask 講義まとめ</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
+      background: linear-gradient(135deg, #f7f7f7, #e9eef5);
+      color: #222;
+      line-height: 1.8;
+    }
+
+    header {
+      padding: 70px 10%;
+      background: #111;
+      color: white;
+    }
+
+    header h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+      letter-spacing: 0.08em;
+    }
+
+    header p {
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    main {
+      width: 84%;
+      max-width: 1100px;
+      margin: 50px auto;
+    }
+
+    section {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.7);
+      border-radius: 24px;
+      padding: 35px;
+      margin-bottom: 35px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    }
+
+    h2 {
+      font-size: 28px;
+      border-left: 8px solid #6c8cff;
+      padding-left: 15px;
+      margin-bottom: 20px;
+    }
+
+    h3 {
+      font-size: 22px;
+      margin-top: 30px;
+      color: #333;
+    }
+
+    .marker {
+      background: linear-gradient(transparent 60%, #fff19c 60%);
+      font-weight: bold;
+    }
+
+    pre {
+      background: #10131a;
+      color: #e8edf7;
+      padding: 24px;
+      border-radius: 18px;
+      overflow-x: auto;
+      font-size: 14px;
+      line-height: 1.7;
+      box-shadow: inset 0 0 30px rgba(255,255,255,0.04);
+    }
+
+    code {
+      font-family: "Menlo", "Consolas", monospace;
+    }
+
+    .diagram {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .box {
+      flex: 1;
+      min-width: 170px;
+      background: white;
+      border: 2px solid #d6defc;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    .arrow {
+      font-size: 32px;
+      color: #6c8cff;
+      font-weight: bold;
+    }
+
+    .note {
+      background: #fffdf2;
+      border-left: 6px solid #ffd84d;
+      padding: 18px;
+      border-radius: 14px;
+      margin-top: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 14px;
+      text-align: left;
+    }
+
+    th {
+      background: #111;
+      color: white;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <h1>Flask 講義まとめ</h1>
+  <p>Pythonを使ってWebページを表示する仕組みを学ぶ</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>1. Flaskとは</h2>
+    <p>
+      <span class="marker">Flask</span>とは、PythonでWebアプリケーションを作るための軽量なフレームワークである。
+      HTMLファイルを表示したり、フォームから送られたデータを受け取ったり、CSVファイルの内容をWebページに表示したりできる。
+    </p>
+
+    <p>
+      通常のHTMLだけでは、ページの見た目を作ることはできるが、データを読み込んだり、Pythonの処理結果を表示したりすることは難しい。
+      Flaskを使うことで、<span class="marker">Pythonの処理とHTMLの表示をつなげる</span>ことができる。
+    </p>
+  </section>
+
+  <section>
+    <h2>2. Flaskの基本構造</h2>
+
+    <div class="diagram">
+      <div class="box">ブラウザ</div>
+      <div class="arrow">→</div>
+      <div class="box">Flask<br>app.py</div>
+      <div class="arrow">→</div>
+      <div class="box">HTML<br>index.html</div>
+      <div class="arrow">→</div>
+      <div class="box">画面に表示</div>
+    </div>
+
+    <div class="note">
+      Flaskでは、ブラウザからアクセスが来ると、Pythonファイルである <strong>app.py</strong> が処理を行い、
+      その結果として <strong>templatesフォルダ内のHTML</strong> を表示する。
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 最小のFlaskプログラム例</h2>
+    <p>
+      Flaskで最も基本的なプログラムは、トップページに文字を表示するものである。
+    </p>
+
+    <h3>app.py</h3>
+    <pre><code>from flask import Flask
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return "FlaskでWebページを表示しました"
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+    <p>
+      このコードを実行し、ブラウザで <span class="marker">http://127.0.0.1:5000</span> を開くと、
+      Flaskで作成したページが表示される。
+    </p>
+  </section>
+
+  <section>
+    <h2>4. HTMLを表示するFlaskプログラム例</h2>
+
+    <p>
+      実際のWebページでは、Pythonの文字列ではなく、HTMLファイルを表示することが多い。
+      その時に使うのが <span class="marker">render_template</span> である。
+    </p>
+
+    <h3>app.py</h3>
+    <pre><code>from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+    <h3>templates/index.html</h3>
+    <pre><code>&lt;!DOCTYPE html&gt;
+&lt;html lang="ja"&gt;
+&lt;head&gt;
+  &lt;meta charset="UTF-8"&gt;
+  &lt;title&gt;Flask練習&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;h1&gt;FlaskでHTMLを表示しました&lt;/h1&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+    <div class="note">
+      HTMLファイルは必ず <strong>templates</strong> フォルダの中に置く必要がある。
+    </div>
+  </section>
+
+  <section>
+    <h2>5. CSVファイルを読み込んで表示する例</h2>
+
+    <p>
+      今日の講義では、CSVファイルの内容をPythonで読み込み、それをHTMLに渡して表示する流れも重要である。
+    </p>
+
+    <h3>app.py</h3>
+    <pre><code>from flask import Flask, render_template
+from csv import reader
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    with open("./mmcsv.csv", "r", encoding="utf-8") as csv_file:
+        csv_reader = reader(csv_file)
+        list_mm = list(csv_reader)
+
+    return render_template("index.html", mmlist=list_mm)
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+    <h3>templates/index.html</h3>
+    <pre><code>&lt;h1&gt;CSVデータ一覧&lt;/h1&gt;
+
+&lt;table border="1"&gt;
+  {% for row in mmlist %}
+    &lt;tr&gt;
+      {% for item in row %}
+        &lt;td&gt;{{ item }}&lt;/td&gt;
+      {% endfor %}
+    &lt;/tr&gt;
+  {% endfor %}
+&lt;/table&gt;</code></pre>
+
+    <div class="diagram">
+      <div class="box">mmcsv.csv</div>
+      <div class="arrow">→</div>
+      <div class="box">Pythonで読み込み</div>
+      <div class="arrow">→</div>
+      <div class="box">mmlistとしてHTMLへ渡す</div>
+      <div class="arrow">→</div>
+      <div class="box">表として表示</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>6. GoogleマップのURLを作るプログラム例</h2>
+
+    <p>
+      CSVの中に緯度・経度のような位置情報が入っている場合、
+      その情報を使ってGoogleマップのURLを作ることができる。
+    </p>
+
+    <h3>app.py</h3>
+    <pre><code>from flask import Flask, render_template
+from csv import reader
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    with open("./mmcsv.csv", "r", encoding="utf-8") as csv_file:
+        csv_reader = reader(csv_file)
+        list_mm = list(csv_reader)
+
+    for data in list_mm:
+        if len(data) > 3:
+            data[3] = "https://www.google.com/maps?q=" + data[3].replace("(", "").replace(")", "").replace(" ", "")
+
+    return render_template("index.html", mmlist=list_mm)
+
+if __name__ == "__main__":
+    app.run(debug=True)</code></pre>
+
+    <h3>templates/index.html</h3>
+    <pre><code>&lt;h1&gt;マップリンク一覧&lt;/h1&gt;
+
+{% for data in mmlist %}
+  &lt;div&gt;
+    &lt;p&gt;{{ data }}&lt;/p&gt;
+    &lt;a href="{{ data[3] }}" target="_blank"&gt;Googleマップで見る&lt;/a&gt;
+  &lt;/div&gt;
+{% endfor %}</code></pre>
+
+    <div class="note">
+      <strong>data[3]</strong> はCSVの4列目を表している。
+      Pythonでは数え方が0から始まるため、4列目は3番になる。
+    </div>
+  </section>
+
+  <section>
+    <h2>7. Flaskでよく起きるエラーと原因</h2>
+
+    <table>
+      <tr>
+        <th>エラー</th>
+        <th>原因</th>
+        <th>解決策</th>
+      </tr>
+      <tr>
+        <td>ModuleNotFoundError: No module named 'flask'</td>
+        <td>Flaskが入っていないPythonで実行している</td>
+        <td>AnacondaのPythonで実行する</td>
+      </tr>
+      <tr>
+        <td>TemplateNotFound</td>
+        <td>index.htmlがtemplatesフォルダにない</td>
+        <td>templates/index.html に配置する</td>
+      </tr>
+      <tr>
+        <td>Port 5000 is in use</td>
+        <td>5000番ポートがすでに使われている</td>
+        <td>control + Cで止める、またはport=5001にする</td>
+      </tr>
+      <tr>
+        <td>ページが真っ白</td>
+        <td>HTMLに表示する処理がない</td>
+        <td>{{ 変数名 }} や for文で表示する</td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>8. 今日の講義のまとめ</h2>
+
+    <p>
+      Flaskは、PythonとHTMLをつなぎ、Webページを動的に表示するための仕組みである。
+      HTMLだけでは固定されたページしか作れないが、Flaskを使うことで、
+      CSVファイルの読み込みや、データの加工、条件に応じた表示などが可能になる。
+    </p>
+
+    <p>
+      特に重要なのは、<span class="marker">app.pyが処理を担当し、templates内のHTMLが表示を担当する</span>という役割分担である。
+      この構造を理解することで、Pythonで作った情報をWebページに表示できるようになる。
+    </p>
+
+    <p>
+      今回の学習では、Flaskの基本、HTML表示、CSV読み込み、GoogleマップURLの作成などを通して、
+      Webアプリケーションの基礎的な流れを確認した。
+    </p>
+  </section>
+
+</main>
+
+<footer>
+  Flask Lecture Portfolio
+</footer>
+
+</body>
+</html>
