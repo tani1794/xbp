@@ -2,194 +2,726 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Flask 講義まとめ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>XBP・タニサンのページ
+  </title>
+
   <style>
+    :root {
+      --midnight: #06111f;
+      --navy: #0b1d3a;
+      --blue: #1e6bff;
+      --ice: #9fd8ff;
+      --aqua: #42e8ff;
+      --glass: rgba(255, 255, 255, 0.08);
+      --glass-strong: rgba(255, 255, 255, 0.14);
+      --line: rgba(159, 216, 255, 0.22);
+      --text: #eef7ff;
+      --muted: #a9bfd8;
+      --marker: linear-gradient(transparent 58%, rgba(66, 232, 255, 0.38) 58%);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: "Hiragino Sans", "Yu Gothic", sans-serif;
-      background: linear-gradient(135deg, #f7f7f7, #e9eef5);
-      color: #222;
-      line-height: 1.8;
+      font-family: "Hiragino Sans", "Yu Gothic", "Noto Sans JP", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(30, 107, 255, 0.25), transparent 32%),
+        radial-gradient(circle at 85% 20%, rgba(66, 232, 255, 0.16), transparent 28%),
+        radial-gradient(circle at 40% 90%, rgba(159, 216, 255, 0.12), transparent 35%),
+        linear-gradient(135deg, #030814, #06111f 45%, #0b1d3a);
+      min-height: 100vh;
+      overflow-x: hidden;
     }
 
-    header {
-      padding: 70px 10%;
-      background: #111;
-      color: white;
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+      background-size: 54px 54px;
+      mask-image: radial-gradient(circle at center, black 30%, transparent 82%);
+      z-index: 0;
     }
 
-    header h1 {
-      font-size: 48px;
-      margin-bottom: 10px;
-      letter-spacing: 0.08em;
+    #geometryCanvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.72;
     }
 
-    header p {
-      font-size: 18px;
-      color: #ccc;
+    .orb {
+      position: fixed;
+      border-radius: 999px;
+      filter: blur(26px);
+      opacity: 0.34;
+      z-index: 0;
+      pointer-events: none;
+      animation: drift 12s ease-in-out infinite alternate;
     }
 
-    main {
-      width: 84%;
-      max-width: 1100px;
-      margin: 50px auto;
+    .orb.one {
+      width: 240px;
+      height: 240px;
+      left: -80px;
+      top: 16%;
+      background: #1e6bff;
     }
 
-    section {
-      background: rgba(255, 255, 255, 0.75);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255,255,255,0.7);
-      border-radius: 24px;
-      padding: 35px;
-      margin-bottom: 35px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    .orb.two {
+      width: 320px;
+      height: 320px;
+      right: -120px;
+      bottom: 8%;
+      background: #42e8ff;
+      animation-duration: 16s;
     }
 
-    h2 {
-      font-size: 28px;
-      border-left: 8px solid #6c8cff;
-      padding-left: 15px;
-      margin-bottom: 20px;
+    @keyframes drift {
+      from {
+        transform: translateY(0) scale(1);
+      }
+      to {
+        transform: translateY(-46px) scale(1.08);
+      }
     }
 
-    h3 {
-      font-size: 22px;
-      margin-top: 30px;
-      color: #333;
+    .site-shell {
+      position: relative;
+      z-index: 2;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(24px);
+      background: rgba(3, 8, 20, 0.66);
+      border-bottom: 1px solid var(--line);
+      padding: 14px 7vw;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      letter-spacing: 0.18em;
+      font-size: 12px;
+      color: var(--ice);
+      text-transform: uppercase;
+    }
+
+    .nav a {
+      color: var(--muted);
+      text-decoration: none;
+      margin-left: 18px;
+      font-size: 13px;
+      transition: color 0.3s ease;
+    }
+
+    .nav a:hover {
+      color: var(--aqua);
+    }
+
+    .hero {
+      min-height: 92vh;
+      padding: 12vh 8vw 8vh;
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 50px;
+      align-items: center;
+    }
+
+    .hero-kicker {
+      display: inline-block;
+      border: 1px solid rgba(159,216,255,0.35);
+      border-radius: 999px;
+      padding: 8px 14px;
+      color: var(--ice);
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      background: rgba(255,255,255,0.06);
+      backdrop-filter: blur(20px);
+    }
+
+    h1 {
+      margin: 28px 0 18px;
+      font-size: clamp(44px, 8vw, 102px);
+      line-height: 0.92;
+      letter-spacing: -0.08em;
+      font-weight: 900;
+    }
+
+    .hero h1 span {
+      display: block;
+      background: linear-gradient(110deg, #ffffff, #9fd8ff, #42e8ff);
+      -webkit-background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 44px rgba(66,232,255,0.14);
+    }
+
+    .lead {
+      max-width: 720px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 2.1;
     }
 
     .marker {
-      background: linear-gradient(transparent 60%, #fff19c 60%);
-      font-weight: bold;
+      background: var(--marker);
+      color: #ffffff;
+      font-weight: 800;
+      padding: 0 3px;
+    }
+
+    .hero-panel {
+      position: relative;
+      min-height: 520px;
+      border: 1px solid rgba(159,216,255,0.24);
+      border-radius: 34px;
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.12), rgba(255,255,255,0.03)),
+        radial-gradient(circle at 30% 20%, rgba(66,232,255,0.2), transparent 30%);
+      backdrop-filter: blur(26px);
+      box-shadow:
+        0 30px 90px rgba(0,0,0,0.34),
+        inset 0 1px 0 rgba(255,255,255,0.18);
+      overflow: hidden;
+    }
+
+    .hero-panel::before {
+      content: "";
+      position: absolute;
+      inset: 24px;
+      border: 1px solid rgba(159,216,255,0.2);
+      border-radius: 26px;
+    }
+
+    .blueprint-lines {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, transparent 49%, rgba(159,216,255,0.18) 50%, transparent 51%),
+        linear-gradient(transparent 49%, rgba(159,216,255,0.18) 50%, transparent 51%);
+      background-size: 70px 70px;
+      opacity: 0.36;
+      transform: rotate(-8deg) scale(1.2);
+    }
+
+    .floating-card {
+      position: absolute;
+      border: 1px solid rgba(159,216,255,0.28);
+      background: rgba(6,17,31,0.58);
+      backdrop-filter: blur(18px);
+      border-radius: 22px;
+      padding: 18px;
+      box-shadow: 0 20px 55px rgba(0,0,0,0.26);
+      animation: floatCard 5s ease-in-out infinite alternate;
+    }
+
+    .floating-card.card-a {
+      left: 9%;
+      top: 16%;
+      width: 210px;
+    }
+
+    .floating-card.card-b {
+      right: 8%;
+      top: 38%;
+      width: 240px;
+      animation-delay: 0.8s;
+    }
+
+    .floating-card.card-c {
+      left: 21%;
+      bottom: 12%;
+      width: 270px;
+      animation-delay: 1.4s;
+    }
+
+    .floating-card strong {
+      color: var(--aqua);
+      display: block;
+      margin-bottom: 8px;
+      letter-spacing: 0.08em;
+      font-size: 12px;
+    }
+
+    .floating-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    @keyframes floatCard {
+      from {
+        transform: translateY(0) rotate(-1deg);
+      }
+      to {
+        transform: translateY(-18px) rotate(1deg);
+      }
+    }
+
+    main {
+      width: min(1180px, 88vw);
+      margin: 0 auto 100px;
+    }
+
+    section {
+      position: relative;
+      margin: 70px 0;
+      padding: 42px;
+      border-radius: 34px;
+      border: 1px solid rgba(159,216,255,0.22);
+      background:
+        linear-gradient(135deg, rgba(255,255,255,0.11), rgba(255,255,255,0.035));
+      backdrop-filter: blur(24px);
+      box-shadow:
+        0 25px 90px rgba(0,0,0,0.28),
+        inset 0 1px 0 rgba(255,255,255,0.13);
+      overflow: hidden;
+    }
+
+    section::before {
+      content: "";
+      position: absolute;
+      width: 220px;
+      height: 220px;
+      right: -90px;
+      top: -90px;
+      border: 1px solid rgba(66,232,255,0.26);
+      transform: rotate(28deg);
+      opacity: 0.6;
+    }
+
+    .section-number {
+      color: var(--aqua);
+      letter-spacing: 0.2em;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: clamp(28px, 4vw, 48px);
+      letter-spacing: -0.05em;
+      line-height: 1.08;
+    }
+
+    h3 {
+      margin-top: 30px;
+      color: #dceeff;
+      font-size: 18px;
+      letter-spacing: 0.04em;
+    }
+
+    p {
+      color: var(--muted);
+      line-height: 2.05;
+      font-size: 15px;
+    }
+
+    .grid-two {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 26px;
+      margin-top: 30px;
+    }
+
+    .mini-card {
+      border: 1px solid rgba(159,216,255,0.2);
+      background: rgba(255,255,255,0.055);
+      border-radius: 24px;
+      padding: 24px;
+    }
+
+    .mini-card strong {
+      color: var(--ice);
+      font-size: 14px;
+      letter-spacing: 0.08em;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+
+    .flow-item {
+      min-height: 120px;
+      border: 1px solid rgba(159,216,255,0.24);
+      background: rgba(255,255,255,0.075);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: #eaf7ff;
+      font-weight: 800;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .flow-item::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: linear-gradient(120deg, transparent, rgba(66,232,255,0.18), transparent);
+      transform: translateX(-70%);
+      transition: transform 0.8s ease;
+    }
+
+    .flow-item:hover::after {
+      transform: translateX(70%);
+    }
+
+    .code-panel {
+      position: relative;
+      margin-top: 22px;
+      border-radius: 28px;
+      border: 1px solid rgba(159,216,255,0.26);
+      background:
+        radial-gradient(circle at 20% 10%, rgba(66,232,255,0.12), transparent 25%),
+        linear-gradient(135deg, rgba(2,6,16,0.92), rgba(8,25,50,0.92));
+      overflow: hidden;
+      box-shadow:
+        0 24px 80px rgba(0,0,0,0.34),
+        inset 0 1px 0 rgba(255,255,255,0.11);
+      transform-style: preserve-3d;
+    }
+
+    .code-panel::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(90deg, rgba(159,216,255,0.05) 1px, transparent 1px),
+        linear-gradient(rgba(159,216,255,0.05) 1px, transparent 1px);
+      background-size: 24px 24px;
+      opacity: 0.6;
+      transition: opacity 0.4s ease;
+    }
+
+    .code-panel:hover::before {
+      opacity: 0.18;
+    }
+
+    .code-head {
+      position: relative;
+      z-index: 2;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(159,216,255,0.18);
+      background: rgba(255,255,255,0.045);
+    }
+
+    .dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: block;
+      background: var(--ice);
+      opacity: 0.8;
+    }
+
+    .code-title {
+      color: var(--ice);
+      font-size: 12px;
+      letter-spacing: 0.12em;
     }
 
     pre {
-      background: #10131a;
-      color: #e8edf7;
-      padding: 24px;
-      border-radius: 18px;
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      padding: 26px;
       overflow-x: auto;
-      font-size: 14px;
-      line-height: 1.7;
-      box-shadow: inset 0 0 30px rgba(255,255,255,0.04);
+      color: #ecf8ff;
+      line-height: 1.75;
+      font-size: 13px;
     }
 
     code {
       font-family: "Menlo", "Consolas", monospace;
     }
 
-    .diagram {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
+    .shard-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .shard {
+      position: absolute;
+      width: 42px;
+      height: 42px;
+      border: 1px solid rgba(159,216,255,0.26);
+      background: rgba(66,232,255,0.075);
+      clip-path: polygon(50% 0%, 100% 35%, 76% 100%, 18% 85%, 0% 26%);
+      transform: translate(var(--x), var(--y)) rotate(var(--r));
+      transition:
+        transform 0.75s cubic-bezier(.16,1,.3,1),
+        opacity 0.45s ease,
+        filter 0.45s ease;
+      opacity: 0.45;
+      filter: blur(0.1px);
+    }
+
+    .code-panel:hover .shard {
+      transform:
+        translate(
+          calc(var(--x) + var(--mx)),
+          calc(var(--y) + var(--my))
+        )
+        rotate(calc(var(--r) + 80deg))
+        scale(1.18);
+      opacity: 0.95;
+      filter: drop-shadow(0 0 16px rgba(66,232,255,0.34));
+    }
+
+    .code-panel.magnetic .shard {
+      transition-duration: 0.35s;
+    }
+
+    .code-panel.crack {
+      animation: glassCrack 0.55s ease;
+    }
+
+    @keyframes glassCrack {
+      0% {
+        filter: brightness(1);
+        transform: translate(0,0);
+      }
+      32% {
+        filter: brightness(1.45);
+        transform: translate(-2px, 1px);
+      }
+      62% {
+        transform: translate(2px, -1px);
+      }
+      100% {
+        filter: brightness(1);
+        transform: translate(0,0);
+      }
+    }
+
+    .table-wrap {
+      overflow-x: auto;
       margin-top: 25px;
-      flex-wrap: wrap;
-    }
-
-    .box {
-      flex: 1;
-      min-width: 170px;
-      background: white;
-      border: 2px solid #d6defc;
-      border-radius: 18px;
-      padding: 20px;
-      text-align: center;
-      font-weight: bold;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-    }
-
-    .arrow {
-      font-size: 32px;
-      color: #6c8cff;
-      font-weight: bold;
-    }
-
-    .note {
-      background: #fffdf2;
-      border-left: 6px solid #ffd84d;
-      padding: 18px;
-      border-radius: 14px;
-      margin-top: 20px;
+      border-radius: 24px;
+      border: 1px solid rgba(159,216,255,0.2);
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 20px;
-      background: white;
-      border-radius: 16px;
-      overflow: hidden;
+      background: rgba(255,255,255,0.055);
+      min-width: 760px;
     }
 
     th, td {
-      border: 1px solid #ddd;
-      padding: 14px;
+      padding: 16px;
+      border-bottom: 1px solid rgba(159,216,255,0.16);
       text-align: left;
+      color: var(--muted);
+      font-size: 14px;
     }
 
     th {
-      background: #111;
-      color: white;
+      color: #ffffff;
+      background: rgba(66,232,255,0.12);
+      letter-spacing: 0.08em;
     }
 
-    footer {
+    .footer {
+      padding: 80px 8vw;
       text-align: center;
-      padding: 40px;
-      color: #666;
+      color: var(--muted);
+      letter-spacing: 0.18em;
+      font-size: 12px;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .grid-two {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-panel {
+        min-height: 430px;
+      }
+
+      .flow {
+        grid-template-columns: 1fr;
+      }
+
+      section {
+        padding: 28px;
+      }
+
+      .nav {
+        display: block;
+      }
+
+      .nav-links {
+        margin-top: 10px;
+      }
+
+      .nav a {
+        margin-left: 0;
+        margin-right: 14px;
+      }
     }
   </style>
 </head>
 
 <body>
+  <canvas id="geometryCanvas"></canvas>
+  <div class="orb one"></div>
+  <div class="orb two"></div>
 
-<header>
-  <h1>Flask 講義まとめ</h1>
-  <p>Pythonを使ってWebページを表示する仕組みを学ぶ</p>
-</header>
+  <div class="site-shell">
+    <nav class="nav">
+      <div class="brand">FLASK / PYTHON / WEB APPLICATION</div>
+      <div class="nav-links">
+        <a href="#about">Flask</a>
+        <a href="#structure">構造</a>
+        <a href="#examples">コード例</a>
+        <a href="#errors">エラー</a>
+      </div>
+    </nav>
 
-<main>
+    <header class="hero">
+      <div>
+        <span class="hero-kicker">LECTURE ARCHIVE  /  MAISON BLUE EDITION</span>
+        <h1>
+          <span>Flask</span>
+          <span>Lecture</span>
+          <span>Portfolio</span>
+        </h1>
+        <p class="lead">
+          Flaskは、Pythonの処理とHTMLの表示を接続するための軽量なWebフレームワークである。
+          本ページでは、講義で扱った
+          <span class="marker">ルーティング</span>、
+          <span class="marker">HTMLテンプレート</span>、
+          <span class="marker">CSV読み込み</span>、
+          <span class="marker">GoogleマップURL生成</span>
+          を、視覚的に整理する。
+        </p>
+      </div>
 
-  <section>
-    <h2>1. Flaskとは</h2>
-    <p>
-      <span class="marker">Flask</span>とは、PythonでWebアプリケーションを作るための軽量なフレームワークである。
-      HTMLファイルを表示したり、フォームから送られたデータを受け取ったり、CSVファイルの内容をWebページに表示したりできる。
-    </p>
+      <div class="hero-panel">
+        <div class="blueprint-lines"></div>
+        <div class="floating-card card-a">
+          <strong>ROUTE</strong>
+          <p>ブラウザからアクセスされたURLに応じて、Pythonの関数を実行する。</p>
+        </div>
+        <div class="floating-card card-b">
+          <strong>TEMPLATE</strong>
+          <p>templatesフォルダ内のHTMLを読み込み、画面として表示する。</p>
+        </div>
+        <div class="floating-card card-c">
+          <strong>DATA FLOW</strong>
+          <p>CSVなどの外部データをPythonで加工し、HTMLへ渡す。</p>
+        </div>
+      </div>
+    </header>
 
-    <p>
-      通常のHTMLだけでは、ページの見た目を作ることはできるが、データを読み込んだり、Pythonの処理結果を表示したりすることは難しい。
-      Flaskを使うことで、<span class="marker">Pythonの処理とHTMLの表示をつなげる</span>ことができる。
-    </p>
-  </section>
+    <main>
+      <section id="about" class="reveal">
+        <div class="section-number">SECTION 01</div>
+        <h2>Flaskとは何か</h2>
+        <p>
+          <span class="marker">Flask</span>は、Pythonを使ってWebアプリケーションを作るためのフレームワークである。
+          通常のHTMLは静的なページを作るのに向いているが、Flaskを使うとPythonで読み込んだデータや処理結果を
+          Webページへ表示できる。
+        </p>
 
-  <section>
-    <h2>2. Flaskの基本構造</h2>
+        <div class="grid-two">
+          <div class="mini-card">
+            <strong>HTMLだけの場合</strong>
+            <p>文字・画像・デザインの表示が中心。データ処理や条件分岐は苦手。</p>
+          </div>
+          <div class="mini-card">
+            <strong>Flaskを使う場合</strong>
+            <p>Pythonで処理した結果をHTMLに渡し、動的なWebページを作れる。</p>
+          </div>
+        </div>
+      </section>
 
-    <div class="diagram">
-      <div class="box">ブラウザ</div>
-      <div class="arrow">→</div>
-      <div class="box">Flask<br>app.py</div>
-      <div class="arrow">→</div>
-      <div class="box">HTML<br>index.html</div>
-      <div class="arrow">→</div>
-      <div class="box">画面に表示</div>
-    </div>
+      <section id="structure" class="reveal">
+        <div class="section-number">SECTION 02</div>
+        <h2>Flaskの基本構造</h2>
+        <p>
+          Flaskでは、<span class="marker">app.pyが処理</span>を担当し、
+          <span class="marker">templates内のHTMLが表示</span>を担当する。
+          この役割分担を理解することが、Flask学習の中心になる。
+        </p>
 
-    <div class="note">
-      Flaskでは、ブラウザからアクセスが来ると、Pythonファイルである <strong>app.py</strong> が処理を行い、
-      その結果として <strong>templatesフォルダ内のHTML</strong> を表示する。
-    </div>
-  </section>
+        <div class="flow">
+          <div class="flow-item">Browser<br>アクセス</div>
+          <div class="flow-item">app.py<br>Python処理</div>
+          <div class="flow-item">templates<br>HTML読込</div>
+          <div class="flow-item">Web Page<br>表示</div>
+        </div>
+      </section>
 
-  <section>
-    <h2>3. 最小のFlaskプログラム例</h2>
-    <p>
-      Flaskで最も基本的なプログラムは、トップページに文字を表示するものである。
-    </p>
+      <section id="examples" class="reveal">
+        <div class="section-number">SECTION 03</div>
+        <h2>Flaskのプログラム例</h2>
+        <p>
+          講義で扱った基本例を、コードタブとして整理する。
+          コードの背景には、カーソルに反応して
+          <span class="marker">図面がバラける動き</span>、
+          <span class="marker">磁力に引き寄せられる動き</span>、
+          <span class="marker">ガラスが割れるような反応</span>
+          を入れている。
+        </p>
 
-    <h3>app.py</h3>
-    <pre><code>from flask import Flask
+        <h3>例1：最小のFlaskプログラム</h3>
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">app.py / minimum flask route</div>
+          </div>
+          <pre><code>from flask import Flask
 
 app = Flask(__name__)
 
@@ -199,23 +731,16 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)</code></pre>
+        </div>
 
-    <p>
-      このコードを実行し、ブラウザで <span class="marker">http://127.0.0.1:5000</span> を開くと、
-      Flaskで作成したページが表示される。
-    </p>
-  </section>
-
-  <section>
-    <h2>4. HTMLを表示するFlaskプログラム例</h2>
-
-    <p>
-      実際のWebページでは、Pythonの文字列ではなく、HTMLファイルを表示することが多い。
-      その時に使うのが <span class="marker">render_template</span> である。
-    </p>
-
-    <h3>app.py</h3>
-    <pre><code>from flask import Flask, render_template
+        <h3>例2：HTMLファイルを表示する</h3>
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">app.py / render template</div>
+          </div>
+          <pre><code>from flask import Flask, render_template
 
 app = Flask(__name__)
 
@@ -225,9 +750,15 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)</code></pre>
+        </div>
 
-    <h3>templates/index.html</h3>
-    <pre><code>&lt;!DOCTYPE html&gt;
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">templates/index.html</div>
+          </div>
+          <pre><code>&lt;!DOCTYPE html&gt;
 &lt;html lang="ja"&gt;
 &lt;head&gt;
   &lt;meta charset="UTF-8"&gt;
@@ -237,21 +768,16 @@ if __name__ == "__main__":
   &lt;h1&gt;FlaskでHTMLを表示しました&lt;/h1&gt;
 &lt;/body&gt;
 &lt;/html&gt;</code></pre>
+        </div>
 
-    <div class="note">
-      HTMLファイルは必ず <strong>templates</strong> フォルダの中に置く必要がある。
-    </div>
-  </section>
-
-  <section>
-    <h2>5. CSVファイルを読み込んで表示する例</h2>
-
-    <p>
-      今日の講義では、CSVファイルの内容をPythonで読み込み、それをHTMLに渡して表示する流れも重要である。
-    </p>
-
-    <h3>app.py</h3>
-    <pre><code>from flask import Flask, render_template
+        <h3>例3：CSVファイルを読み込んで表示する</h3>
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">app.py / csv to html</div>
+          </div>
+          <pre><code>from flask import Flask, render_template
 from csv import reader
 
 app = Flask(__name__)
@@ -266,11 +792,17 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)</code></pre>
+        </div>
 
-    <h3>templates/index.html</h3>
-    <pre><code>&lt;h1&gt;CSVデータ一覧&lt;/h1&gt;
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">templates/index.html / jinja loop</div>
+          </div>
+          <pre><code>&lt;h1&gt;CSVデータ一覧&lt;/h1&gt;
 
-&lt;table border="1"&gt;
+&lt;table&gt;
   {% for row in mmlist %}
     &lt;tr&gt;
       {% for item in row %}
@@ -279,28 +811,16 @@ if __name__ == "__main__":
     &lt;/tr&gt;
   {% endfor %}
 &lt;/table&gt;</code></pre>
+        </div>
 
-    <div class="diagram">
-      <div class="box">mmcsv.csv</div>
-      <div class="arrow">→</div>
-      <div class="box">Pythonで読み込み</div>
-      <div class="arrow">→</div>
-      <div class="box">mmlistとしてHTMLへ渡す</div>
-      <div class="arrow">→</div>
-      <div class="box">表として表示</div>
-    </div>
-  </section>
-
-  <section>
-    <h2>6. GoogleマップのURLを作るプログラム例</h2>
-
-    <p>
-      CSVの中に緯度・経度のような位置情報が入っている場合、
-      その情報を使ってGoogleマップのURLを作ることができる。
-    </p>
-
-    <h3>app.py</h3>
-    <pre><code>from flask import Flask, render_template
+        <h3>例4：GoogleマップURLを生成する</h3>
+        <div class="code-panel">
+          <div class="shard-layer"></div>
+          <div class="code-head">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <div class="code-title">app.py / google maps url</div>
+          </div>
+          <pre><code>from flask import Flask, render_template
 from csv import reader
 
 app = Flask(__name__)
@@ -319,80 +839,211 @@ def index():
 
 if __name__ == "__main__":
     app.run(debug=True)</code></pre>
+        </div>
+      </section>
 
-    <h3>templates/index.html</h3>
-    <pre><code>&lt;h1&gt;マップリンク一覧&lt;/h1&gt;
+      <section id="errors" class="reveal">
+        <div class="section-number">SECTION 04</div>
+        <h2>Flaskで起きやすいエラー</h2>
+        <p>
+          Flaskでは、エラーの多くが
+          <span class="marker">Pythonの実行環境</span>、
+          <span class="marker">ファイル配置</span>、
+          <span class="marker">テンプレート名</span>
+          に関係している。
+        </p>
 
-{% for data in mmlist %}
-  &lt;div&gt;
-    &lt;p&gt;{{ data }}&lt;/p&gt;
-    &lt;a href="{{ data[3] }}" target="_blank"&gt;Googleマップで見る&lt;/a&gt;
-  &lt;/div&gt;
-{% endfor %}</code></pre>
+        <div class="table-wrap">
+          <table>
+            <tr>
+              <th>エラー</th>
+              <th>主な原因</th>
+              <th>解決策</th>
+            </tr>
+            <tr>
+              <td>ModuleNotFoundError: No module named 'flask'</td>
+              <td>Flaskが入っていないPythonで実行している</td>
+              <td>AnacondaのPythonを選択して実行する</td>
+            </tr>
+            <tr>
+              <td>TemplateNotFound</td>
+              <td>index.htmlがtemplatesフォルダにない</td>
+              <td>templates/index.htmlに配置する</td>
+            </tr>
+            <tr>
+              <td>Port 5000 is in use</td>
+              <td>5000番ポートがすでに使われている</td>
+              <td>control + Cで止める、またはport=5001を指定する</td>
+            </tr>
+            <tr>
+              <td>ページが真っ白</td>
+              <td>HTML側で変数を表示していない</td>
+              <td>{{ 変数名 }} や for文で表示処理を書く</td>
+            </tr>
+          </table>
+        </div>
+      </section>
 
-    <div class="note">
-      <strong>data[3]</strong> はCSVの4列目を表している。
-      Pythonでは数え方が0から始まるため、4列目は3番になる。
-    </div>
-  </section>
+      <section class="reveal">
+        <div class="section-number">SECTION 05</div>
+        <h2>今日の講義のまとめ</h2>
+        <p>
+          Flaskは、Pythonで処理した内容をWebページに表示するための橋である。
+          今回の講義では、URLにアクセスしたときに関数を実行する
+          <span class="marker">ルーティング</span>、
+          HTMLを表示する
+          <span class="marker">render_template</span>、
+          CSVを読み込んで画面に出す
+          <span class="marker">データ連携</span>
+          を学んだ。
+        </p>
+        <p>
+          特に重要なのは、<span class="marker">app.pyとtemplatesフォルダの役割分担</span>である。
+          app.pyが処理を行い、index.htmlが表示を担当することで、PythonとWebページが接続される。
+        </p>
+      </section>
+    </main>
 
-  <section>
-    <h2>7. Flaskでよく起きるエラーと原因</h2>
+    <footer class="footer">
+      FLASK LECTURE PORTFOLIO / GLASS BLUE GEOMETRY
+    </footer>
+  </div>
 
-    <table>
-      <tr>
-        <th>エラー</th>
-        <th>原因</th>
-        <th>解決策</th>
-      </tr>
-      <tr>
-        <td>ModuleNotFoundError: No module named 'flask'</td>
-        <td>Flaskが入っていないPythonで実行している</td>
-        <td>AnacondaのPythonで実行する</td>
-      </tr>
-      <tr>
-        <td>TemplateNotFound</td>
-        <td>index.htmlがtemplatesフォルダにない</td>
-        <td>templates/index.html に配置する</td>
-      </tr>
-      <tr>
-        <td>Port 5000 is in use</td>
-        <td>5000番ポートがすでに使われている</td>
-        <td>control + Cで止める、またはport=5001にする</td>
-      </tr>
-      <tr>
-        <td>ページが真っ白</td>
-        <td>HTMLに表示する処理がない</td>
-        <td>{{ 変数名 }} や for文で表示する</td>
-      </tr>
-    </table>
-  </section>
+  <script>
+    const canvas = document.getElementById("geometryCanvas");
+    const ctx = canvas.getContext("2d");
 
-  <section>
-    <h2>8. 今日の講義のまとめ</h2>
+    let width;
+    let height;
+    let points = [];
 
-    <p>
-      Flaskは、PythonとHTMLをつなぎ、Webページを動的に表示するための仕組みである。
-      HTMLだけでは固定されたページしか作れないが、Flaskを使うことで、
-      CSVファイルの読み込みや、データの加工、条件に応じた表示などが可能になる。
-    </p>
+    function resizeCanvas() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
 
-    <p>
-      特に重要なのは、<span class="marker">app.pyが処理を担当し、templates内のHTMLが表示を担当する</span>という役割分担である。
-      この構造を理解することで、Pythonで作った情報をWebページに表示できるようになる。
-    </p>
+      points = Array.from({ length: 62 }, () => ({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.32,
+        vy: (Math.random() - 0.5) * 0.32,
+        r: Math.random() * 2.2 + 0.8
+      }));
+    }
 
-    <p>
-      今回の学習では、Flaskの基本、HTML表示、CSV読み込み、GoogleマップURLの作成などを通して、
-      Webアプリケーションの基礎的な流れを確認した。
-    </p>
-  </section>
+    function drawGeometry() {
+      ctx.clearRect(0, 0, width, height);
 
-</main>
+      points.forEach((p, i) => {
+        p.x += p.vx;
+        p.y += p.vy;
 
-<footer>
-  Flask Lecture Portfolio
-</footer>
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
 
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(159, 216, 255, 0.42)";
+        ctx.fill();
+
+        for (let j = i + 1; j < points.length; j++) {
+          const q = points[j];
+          const dx = p.x - q.x;
+          const dy = p.y - q.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 145) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = `rgba(66, 232, 255, ${0.12 * (1 - dist / 145)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      });
+
+      requestAnimationFrame(drawGeometry);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+    drawGeometry();
+
+    const revealItems = document.querySelectorAll(".reveal");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("show");
+        }
+      });
+    }, { threshold: 0.16 });
+
+    revealItems.forEach(item => observer.observe(item));
+
+    const codePanels = document.querySelectorAll(".code-panel");
+
+    codePanels.forEach((panel, panelIndex) => {
+      const layer = panel.querySelector(".shard-layer");
+
+      for (let i = 0; i < 18; i++) {
+        const shard = document.createElement("span");
+        shard.classList.add("shard");
+
+        const x = Math.random() * 92 + "%";
+        const y = Math.random() * 88 + "%";
+        const r = (Math.random() * 180 - 90) + "deg";
+        const mx = (Math.random() * 190 - 95) + "px";
+        const my = (Math.random() * 140 - 70) + "px";
+
+        shard.style.left = x;
+        shard.style.top = y;
+        shard.style.setProperty("--x", "0px");
+        shard.style.setProperty("--y", "0px");
+        shard.style.setProperty("--r", r);
+        shard.style.setProperty("--mx", mx);
+        shard.style.setProperty("--my", my);
+
+        layer.appendChild(shard);
+      }
+
+      panel.addEventListener("mousemove", (e) => {
+        const rect = panel.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = e.clientX - cx;
+        const dy = e.clientY - cy;
+
+        panel.classList.add("magnetic");
+        panel.style.transform = `perspective(900px) rotateY(${dx / 70}deg) rotateX(${-dy / 70}deg)`;
+
+        const shards = panel.querySelectorAll(".shard");
+
+        shards.forEach((shard, i) => {
+          const pullX = (e.clientX - rect.left - rect.width / 2) / (10 + i);
+          const pullY = (e.clientY - rect.top - rect.height / 2) / (10 + i);
+          shard.style.setProperty("--x", `${pullX}px`);
+          shard.style.setProperty("--y", `${pullY}px`);
+        });
+      });
+
+      panel.addEventListener("mouseleave", () => {
+        panel.classList.remove("magnetic");
+        panel.style.transform = "perspective(900px) rotateY(0deg) rotateX(0deg)";
+
+        const shards = panel.querySelectorAll(".shard");
+        shards.forEach(shard => {
+          shard.style.setProperty("--x", "0px");
+          shard.style.setProperty("--y", "0px");
+        });
+      });
+
+      panel.addEventListener("mouseenter", () => {
+        panel.classList.remove("crack");
+        void panel.offsetWidth;
+        panel.classList.add("crack");
+      });
+    });
+  </script>
 </body>
 </html>
