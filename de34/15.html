@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>タニサンのページ</title>
+  <style>
+    :root{
+      --ivory:#fbfaf4;
+      --snow:#ffffff;
+      --chrome:#d9dde4;
+      --ink:#151515;
+      --charcoal:#2b2d31;
+      --electric:#20c7ff;
+      --lime:#b8ff3d;
+      --orange:#ff8a2a;
+      --line:rgba(21,21,21,.16);
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+
+    body{
+      min-height:100vh;
+      background:
+        radial-gradient(circle at 14% 10%, rgba(32,199,255,.18), transparent 30%),
+        radial-gradient(circle at 84% 18%, rgba(184,255,61,.18), transparent 25%),
+        radial-gradient(circle at 55% 84%, rgba(255,138,42,.14), transparent 30%),
+        linear-gradient(135deg, var(--snow), var(--ivory) 45%, #f1f3f5);
+      color:var(--ink);
+      font-family:"Yu Gothic", "YuGothic", "Hiragino Kaku Gothic ProN", "Noto Sans JP", sans-serif;
+      overflow-x:hidden;
+    }
+
+    .grain{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.16;
+      background-image:
+        linear-gradient(90deg, rgba(21,21,21,.07) 1px, transparent 1px),
+        linear-gradient(rgba(21,21,21,.05) 1px, transparent 1px);
+      background-size:64px 64px;
+      mask-image:linear-gradient(to bottom, black, transparent 92%);
+      z-index:0;
+    }
+
+    nav{
+      position:fixed;
+      top:28px;
+      left:50%;
+      transform:translateX(-50%);
+      z-index:10;
+      display:flex;
+      gap:18px;
+      padding:8px 12px;
+      border-top:1px solid rgba(21,21,21,.22);
+      border-bottom:1px solid rgba(21,21,21,.22);
+      backdrop-filter:blur(12px);
+      background:rgba(255,255,255,.72);
+      box-shadow:0 18px 45px rgba(21,21,21,.10);
+    }
+
+    nav a{
+      color:var(--ink);
+      text-decoration:none;
+      font-size:12px;
+      letter-spacing:.18em;
+      font-weight:900;
+      text-transform:uppercase;
+      position:relative;
+      padding:3px 0;
+      text-shadow:0 14px 18px rgba(21,21,21,.18);
+    }
+
+    nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:-5px;
+      width:0;
+      height:2px;
+      background:linear-gradient(90deg,var(--electric),var(--lime),var(--orange));
+      transition:.35s cubic-bezier(.2,.8,.2,1);
+    }
+    nav a:hover::after{width:100%;}
+
+    section{
+      position:relative;
+      z-index:1;
+      min-height:100vh;
+      padding:120px 8vw 80px;
+      display:grid;
+      align-items:center;
+    }
+
+    .hero{grid-template-columns:1.05fr .95fr;gap:6vw;}
+    .grid2{grid-template-columns:.9fr 1.1fr;gap:6vw;}
+
+    .label{
+      font-size:12px;
+      letter-spacing:.28em;
+      font-weight:900;
+      color:var(--orange);
+      margin-bottom:22px;
+    }
+
+    h1{
+      font-family:Impact, "Arial Black", "Yu Gothic", sans-serif;
+      font-size:clamp(64px, 13vw, 180px);
+      line-height:.85;
+      letter-spacing:-.08em;
+      font-weight:900;
+      text-align:left;
+      filter:drop-shadow(18px 18px 0 rgba(32,199,255,.20)) drop-shadow(-10px -10px 0 rgba(184,255,61,.16));
+      text-transform:uppercase;
+    }
+
+    .hero-copy{
+      text-align:right;
+      max-width:560px;
+      justify-self:end;
+      border-right:1px solid var(--line);
+      padding-right:28px;
+    }
+
+    .hero-copy h2,
+    .panel h2{
+      font-size:clamp(28px, 4vw, 62px);
+      line-height:1.05;
+      letter-spacing:-.08em;
+      font-weight:900;
+      margin-bottom:22px;
+    }
+
+    p{
+      font-size:15px;
+      line-height:2.05;
+      letter-spacing:.04em;
+      color:rgba(21,21,21,.82);
+    }
+
+    .panel{
+      border:1px solid var(--line);
+      background:linear-gradient(145deg, rgba(255,255,255,.80), rgba(241,243,245,.54));
+      backdrop-filter:blur(16px);
+      padding:34px;
+      box-shadow:26px 28px 0 rgba(21,21,21,.07), 0 28px 80px rgba(21,21,21,.12);
+      opacity:0;
+      transform:translateY(46px) scale(.98);
+      transition:1s cubic-bezier(.16,1,.3,1);
+      position:relative;
+      overflow:hidden;
+    }
+
+    .panel::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      border-top:5px solid var(--ink);
+      pointer-events:none;
+    }
+
+    .panel::after{
+      content:"";
+      position:absolute;
+      width:140px;
+      height:140px;
+      right:-70px;
+      top:-70px;
+      background:linear-gradient(135deg, var(--electric), var(--lime));
+      transform:rotate(45deg);
+      opacity:.48;
+      pointer-events:none;
+    }
+
+    .panel.show{opacity:1;transform:translateY(0) scale(1);}
+    .left{text-align:left;}.right{text-align:right;}.center{text-align:center;}
+
+    .brand-strip{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:14px;
+      align-items:stretch;
+      margin-bottom:28px;
+      opacity:0;
+      transform:translateY(30px);
+      transition:1s cubic-bezier(.16,1,.3,1) .18s;
+    }
+    .show .brand-strip{opacity:1;transform:translateY(0);}
+
+    .zozo-logo{
+      min-height:150px;
+      display:grid;
+      place-items:center;
+      background:#050505;
+      color:#fff;
+      font-family:Impact, "Arial Black", sans-serif;
+      font-size:clamp(34px, 4.3vw, 70px);
+      letter-spacing:-.04em;
+      box-shadow:14px 14px 0 rgba(32,199,255,.24);
+    }
+
+    .founder-photo-wrap{
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(21,21,21,.18);
+      box-shadow:14px 14px 0 rgba(184,255,61,.26);
+      min-height:150px;
+      background:linear-gradient(145deg,#111,#2d3138 60%, #0f1012);
+    }
+
+    .founder-card{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .silhouette-head{
+      position:absolute;
+      width:62px;
+      height:62px;
+      border-radius:50%;
+      background:linear-gradient(145deg,#f2f2f2,#8d949d);
+      top:26px;
+      box-shadow:0 0 30px rgba(255,255,255,.18);
+    }
+
+    .silhouette-body{
+      position:absolute;
+      width:130px;
+      height:120px;
+      border-radius:34px 34px 8px 8px;
+      background:linear-gradient(145deg,#dfe5eb,#69717b);
+      bottom:8px;
+      box-shadow:0 0 40px rgba(32,199,255,.15);
+    }
+
+    .photo-overlay{
+      position:absolute;
+      left:0;
+      right:0;
+      bottom:0;
+      padding:10px 12px;
+      background:linear-gradient(to top, rgba(0,0,0,.78), transparent);
+      color:#fff;
+      font-size:11px;
+      letter-spacing:.2em;
+      font-weight:800;
+    }
+
+    .db-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:24px;
+      font-size:13px;
+    }
+    .db-table th,.db-table td{
+      border-bottom:1px solid var(--line);
+      padding:15px 10px;
+      vertical-align:top;
+      text-align:left;
+    }
+    .db-table th{
+      font-size:11px;
+      letter-spacing:.18em;
+      color:var(--orange);
+      font-weight:900;
+    }
+
+    .tag{
+      display:inline-block;
+      padding:3px 7px;
+      margin:2px;
+      border:1px solid rgba(21,21,21,.22);
+      font-size:11px;
+      letter-spacing:.08em;
+      background:rgba(255,255,255,.58);
+      box-shadow:5px 5px 0 rgba(32,199,255,.12);
+    }
+
+    .diagram-wrap{
+      width:100%;
+      aspect-ratio:1.15/1;
+      border:1px solid var(--line);
+      background:linear-gradient(145deg, rgba(255,255,255,.92), rgba(217,221,228,.45));
+      padding:20px;
+      box-shadow:28px 28px 0 rgba(21,21,21,.07), 0 30px 80px rgba(21,21,21,.10);
+    }
+    svg{width:100%;height:100%;overflow:visible;}
+    .node{fill:rgba(255,255,255,.88);stroke:rgba(21,21,21,.62);stroke-width:1.2;filter:drop-shadow(12px 16px 12px rgba(21,21,21,.12));}
+    .node-title{font-size:15px;font-weight:900;fill:var(--ink);letter-spacing:.08em;}
+    .node-small{font-size:11px;fill:rgba(21,21,21,.72);}
+    .flow{fill:none;stroke:rgba(32,199,255,.88);stroke-width:2;stroke-dasharray:8 8;animation:dash 1.8s linear infinite;}
+    @keyframes dash{to{stroke-dashoffset:-32;}}
+
+    .query-box{
+      margin-top:26px;
+      border-left:2px solid var(--ink);
+      padding:18px 0 18px 22px;
+      font-family:"SFMono-Regular", Consolas, monospace;
+      font-size:13px;
+      line-height:1.9;
+      background:rgba(255,255,255,.62);
+      box-shadow:inset 8px 0 0 rgba(32,199,255,.35);
+      text-align:left;
+      white-space:pre-wrap;
+    }
+
+    .floating-word{display:inline-block;position:relative;cursor:default;}
+    .floating-word span{display:inline-block;transition:.45s cubic-bezier(.16,1,.3,1);}
+    .floating-word:hover span{transform:translateY(-10px);text-shadow:0 20px 18px rgba(21,21,21,.24);}
+
+    .mini-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;}
+    .mini{border-top:1px solid var(--line);padding-top:16px;min-height:150px;}
+    .mini h3{font-size:18px;margin-bottom:12px;letter-spacing:-.04em;}
+    .mini p{font-size:13px;line-height:1.85;}
+
+    .cursor-light{
+      position:fixed;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      background:radial-gradient(circle, rgba(32,199,255,.18), rgba(184,255,61,.08), transparent 68%);
+      pointer-events:none;
+      transform:translate(-50%,-50%);
+      mix-blend-mode:multiply;
+      z-index:2;
+    }
+
+    @media(max-width:850px){
+      nav{width:calc(100% - 28px);justify-content:center;gap:10px;}
+      nav a{font-size:10px;}
+      .hero,.grid2{grid-template-columns:1fr;}
+      .hero-copy{text-align:left;justify-self:start;border-right:0;border-left:1px solid var(--line);padding-right:0;padding-left:22px;}
+      .mini-cards{grid-template-columns:1fr;}
+      .brand-strip{grid-template-columns:1fr;}
+      section{padding:100px 6vw 70px;}
+    }
+  </style>
+</head>
+<body>
+  <div class="grain"></div>
+  <div class="cursor-light" id="cursorLight"></div>
+
+  <nav>
+    <a href="#top">DATABASE</a>
+    <a href="#tables">TABLE</a>
+    <a href="#fields">FIELD</a>
+    <a href="#query">QUERY</a>
+  </nav>
+
+  <section class="hero" id="top">
+    <div>
+      <div class="label">タニサンのページ</div>
+      <h1 class="floating-word" aria-label="データベース">
+        <span>デ</span><span>ー</span><span>タ</span><span>ベ</span><span>ー</span><span>ス</span>
+      </h1>
+    </div>
+
+    <div class="hero-copy panel">
+      <div class="brand-strip">
+        <div class="zozo-logo">ZOZOTOWN</div>
+        <div class="founder-photo-wrap">
+          <img class="founder-photo" src="data:image/webp;base64,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" alt="前澤友作氏のイラスト風ポートレート">
+          <div class="photo-overlay">YUSAKU MAEZAWA ILLUSTRATION</div>
+        </div>
+      </div>
+      <h2>ZOZOTOWN型ECを、データの箱として見る。</h2>
+      <p>
+        ZOZOTOWNのようなファッションECでは、商品を検索し、ブランドを選び、サイズや価格で絞り込み、購入まで進む。
+        その裏側では、商品・ブランド・会員・注文・在庫などのテーブルがつながり、フィールドが情報を細かく保存し、クエリが必要なデータだけを取り出す。
+      </p>
+    </div>
+  </section>
+
+  <section class="grid2" id="tables">
+    <div class="diagram-wrap panel">
+      <svg viewBox="0 0 640 560" role="img" aria-label="テーブル・フィールド・クエリの関係図">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(32,199,255,.88)" />
+          </marker>
+        </defs>
+        <path class="flow" d="M320 105 C320 155 320 170 320 210" marker-end="url(#arrow)" />
+        <path class="flow" d="M205 300 C155 330 138 375 145 420" marker-end="url(#arrow)" />
+        <path class="flow" d="M430 300 C492 330 510 378 500 420" marker-end="url(#arrow)" />
+        <path class="flow" d="M320 350 C320 390 320 410 320 455" marker-end="url(#arrow)" />
+        <rect class="node" x="210" y="40" width="220" height="70" />
+        <text class="node-title" x="320" y="72" text-anchor="middle">QUERY</text>
+        <text class="node-small" x="320" y="94" text-anchor="middle">検索条件を投げる</text>
+        <rect class="node" x="210" y="215" width="220" height="120" />
+        <text class="node-title" x="320" y="252" text-anchor="middle">TABLE</text>
+        <text class="node-small" x="320" y="277" text-anchor="middle">products / brands / orders</text>
+        <text class="node-small" x="320" y="300" text-anchor="middle">情報を種類ごとに保存</text>
+        <rect class="node" x="50" y="420" width="190" height="90" />
+        <text class="node-title" x="145" y="456" text-anchor="middle">FIELD</text>
+        <text class="node-small" x="145" y="481" text-anchor="middle">price / size / color</text>
+        <rect class="node" x="405" y="420" width="190" height="90" />
+        <text class="node-title" x="500" y="456" text-anchor="middle">SERVICE</text>
+        <text class="node-small" x="500" y="481" text-anchor="middle">検索・購入・おすすめ</text>
+        <rect class="node" x="230" y="455" width="180" height="65" />
+        <text class="node-title" x="320" y="485" text-anchor="middle">RESULT</text>
+        <text class="node-small" x="320" y="506" text-anchor="middle">画面に表示</text>
+      </svg>
+    </div>
+
+    <div class="panel right">
+      <div class="label">TABLE</div>
+      <h2>テーブルは、サービスを支える情報の棚。</h2>
+      <p>
+        テーブルとは、同じ種類のデータをまとめて入れる場所。ZOZOTOWN型のECなら、商品情報は商品テーブル、ブランド情報はブランドテーブル、購入履歴は注文テーブルに分けると整理しやすい。
+        一つの巨大な表に全部入れるより、役割ごとに分けた方が検索・更新・分析が速くなる。
+      </p>
+    </div>
+  </section>
+
+  <section id="fields">
+    <div class="panel left">
+      <div class="label">ZOZOTOWN MODEL</div>
+      <h2>主なテーブルとフィールド</h2>
+      <table class="db-table">
+        <thead><tr><th>テーブル</th><th>役割</th><th>フィールド例</th></tr></thead>
+        <tbody>
+          <tr><td>products</td><td>商品そのものを管理する。</td><td><span class="tag">product_id</span><span class="tag">product_name</span><span class="tag">price</span><span class="tag">category_id</span><span class="tag">brand_id</span></td></tr>
+          <tr><td>brands</td><td>ブランド名やブランドの特徴を管理する。</td><td><span class="tag">brand_id</span><span class="tag">brand_name</span><span class="tag">brand_concept</span></td></tr>
+          <tr><td>stocks</td><td>サイズ・色ごとの在庫を管理する。</td><td><span class="tag">stock_id</span><span class="tag">product_id</span><span class="tag">size</span><span class="tag">color</span><span class="tag">quantity</span></td></tr>
+          <tr><td>users</td><td>会員情報や配送に必要な基本情報を管理する。</td><td><span class="tag">user_id</span><span class="tag">name</span><span class="tag">email</span><span class="tag">address</span></td></tr>
+          <tr><td>orders</td><td>誰が、いつ、何を買ったかを管理する。</td><td><span class="tag">order_id</span><span class="tag">user_id</span><span class="tag">order_date</span><span class="tag">total_price</span></td></tr>
+          <tr><td>order_items</td><td>一つの注文に含まれる商品を管理する。</td><td><span class="tag">order_id</span><span class="tag">product_id</span><span class="tag">quantity</span><span class="tag">purchase_price</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="grid2" id="query">
+    <div class="panel center">
+      <div class="label">FIELD</div>
+      <h2>フィールドは、一つひとつの情報の名前。</h2>
+      <p>
+        フィールドは表の列にあたる。たとえば商品テーブルのpriceは価格、brand_idはどのブランドの商品かを示す。
+        product_idのようなIDを使うと、商品テーブルとブランドテーブルを結びつけられる。
+      </p>
+      <div class="mini-cards">
+        <div class="mini"><h3>主キー</h3><p>product_idのように、一つのデータを特定する番号。</p></div>
+        <div class="mini"><h3>外部キー</h3><p>brand_idのように、別テーブルとのつながりを作る番号。</p></div>
+        <div class="mini"><h3>属性</h3><p>price、size、colorのように、商品の特徴を表す情報。</p></div>
+      </div>
+    </div>
+
+    <div class="panel left">
+      <div class="label">QUERY</div>
+      <h2>クエリは、欲しい情報だけを呼び出す命令。</h2>
+      <p>
+        ユーザーが「黒のナイキ、1万円以下、Mサイズ」と検索したとき、クエリは複数のテーブルを見に行き、条件に合う商品だけを取り出す。
+      </p>
+      <div class="query-box">SELECT products.product_name, brands.brand_name, products.price, stocks.size, stocks.color
+FROM products
+JOIN brands ON products.brand_id = brands.brand_id
+JOIN stocks ON products.product_id = stocks.product_id
+WHERE brands.brand_name = 'NIKE'
+  AND stocks.color = 'black'
+  AND stocks.size = 'M'
+  AND products.price <= 10000
+  AND stocks.quantity > 0;</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="panel right">
+      <div class="label">SERVICE FLOW</div>
+      <h2>検索から購入まで、データは静かに動く。</h2>
+      <p>
+        商品を見るときはproductsとbrands、サイズを選ぶときはstocks、購入するとordersとorder_itemsが使われる。
+        つまり、ECサイトの画面はただのデザインではなく、複数のテーブルをクエリでつないだ結果として表示されている。
+      </p>
+    </div>
+  </section>
+
+  <script>
+    const panels = document.querySelectorAll('.panel');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting){entry.target.classList.add('show');}
+      });
+    }, { threshold: 0.18 });
+    panels.forEach(panel => observer.observe(panel));
+
+    const cursorLight = document.getElementById('cursorLight');
+    let mouseX = window.innerWidth / 2;
+    let mouseY = window.innerHeight / 2;
+    let currentX = mouseX;
+    let currentY = mouseY;
+    window.addEventListener('mousemove', e => {mouseX = e.clientX;mouseY = e.clientY;});
+    function animateLight(){
+      currentX += (mouseX - currentX) * 0.08;
+      currentY += (mouseY - currentY) * 0.08;
+      cursorLight.style.left = currentX + 'px';
+      cursorLight.style.top = currentY + 'px';
+      requestAnimationFrame(animateLight);
+    }
+    animateLight();
+    document.querySelectorAll('.floating-word span').forEach((span, index) => {
+      span.style.transitionDelay = `${index * 0.035}s`;
+    });
+  </script>
+</body>
+</html>
+
