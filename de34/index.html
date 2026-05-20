@@ -1,1023 +1,797 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RED INDEX | タニサンのポートフォリオ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>タニサン — デザインポートフォリオ</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Syncopate:wght@400;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #050203;
-      --black: #090405;
-      --black2: #160607;
-      --red: #ff2430;
-      --red2: #a80511;
-      --red3: #ff8b90;
-      --white: #fff6f0;
-      --muted: rgba(255,246,240,.64);
-      --line: rgba(255,246,240,.14);
-      --glass: rgba(255,255,255,.062);
-      --shadow: 0 30px 100px rgba(0,0,0,.54);
-      --ease: cubic-bezier(.16,1,.3,1);
+      --ivory:    #F6F4EF;
+      --bone:     #EDE9E1;
+      --smoke:    #D8D4CC;
+      --platinum: #B8B4AC;
+      --graphite: #6C6862;
+      --ink:      #1A1714;
+      --glass-bg:           rgba(246,244,239,0.65);
+      --glass-border:       rgba(186,182,176,0.30);
+      --glass-border-hover: rgba(186,182,176,0.60);
+      --foil-text: linear-gradient(120deg, #8a8680 0%, #c8c4bc 30%, #f2f0ea 50%, #b0aca4 70%, #888480 100%);
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      background: var(--bg);
-    }
-
+    *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
     body {
-      min-height: 100vh;
-      color: var(--white);
-      font-family: "Manrope", "Noto Sans JP", sans-serif;
-      background:
-        radial-gradient(circle at 14% 10%, rgba(255,36,48,.27), transparent 30%),
-        radial-gradient(circle at 84% 16%, rgba(255,139,144,.12), transparent 26%),
-        radial-gradient(circle at 50% 84%, rgba(255,36,48,.10), transparent 34%),
-        linear-gradient(135deg, #030102 0%, #150607 48%, #050203 100%);
+      font-family: 'Noto Serif JP', serif;
+      background: var(--ivory);
+      color: var(--ink);
       overflow-x: hidden;
+      cursor: none;
     }
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      z-index: 40;
-      pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,246,240,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,246,240,.03) 1px, transparent 1px);
-      background-size: 46px 46px;
-      mask-image: radial-gradient(circle at center, black 0%, transparent 84%);
+    #bg-canvas {
+      position: fixed; inset: 0; z-index: 0; pointer-events: none;
     }
 
-    a, button {
-      font: inherit;
+    #cursor-dot {
+      position: fixed; width: 8px; height: 8px;
+      background: var(--ink); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.08s ease, background 0.3s;
+      mix-blend-mode: multiply;
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid var(--graphite); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: width 0.3s, height 0.3s, opacity 0.3s, border-color 0.3s;
+      opacity: 0.55;
     }
 
-    a {
-      color: inherit;
+    .top-nav {
+      position: fixed; top: 0; left: 0; width: 100%;
+      padding: 22px 6%;
+      display: flex; justify-content: space-between; align-items: center;
+      z-index: 800;
+      background: rgba(246,244,239,0.72);
+      backdrop-filter: blur(14px) saturate(1.4);
+      border-bottom: 0.5px solid var(--glass-border);
+    }
+    .logo {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.3em; font-weight: 700;
+      color: var(--ink); text-transform: uppercase;
+    }
+    .logo span {
+      background: var(--foil-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+    .nav-links a {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.6rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--graphite); text-decoration: none;
+      padding: 7px 14px; border-radius: 999px;
+      border: 0.5px solid transparent;
+      transition: 0.28s ease;
+    }
+    .nav-links a:hover {
+      color: var(--ink); border-color: var(--glass-border);
+      background: rgba(200,196,192,0.18);
+    }
+
+    #scroll-bar {
+      position: fixed; top: 0; left: 0;
+      width: 0%; height: 1px;
+      background: linear-gradient(90deg, var(--smoke), var(--graphite));
+      z-index: 9999; transition: width 0.1s linear;
+    }
+
+    .section {
+      position: relative; z-index: 10;
+      min-height: 100vh;
+      padding: 140px 8% 100px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .container { width: 100%; max-width: 1160px; }
+
+    .reveal {
+      opacity: 0; transform: translateY(32px);
+      transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1);
+    }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.12s; }
+    .reveal-d2 { transition-delay: 0.26s; }
+    .reveal-d3 { transition-delay: 0.42s; }
+
+    .hero { text-align: center; }
+    .hero-eyebrow {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.35em; text-transform: uppercase;
+      color: var(--platinum); margin-bottom: 28px;
+      display: inline-flex; align-items: center; gap: 12px;
+    }
+    .hero-eyebrow::before, .hero-eyebrow::after {
+      content: ''; display: block; width: 40px; height: 0.5px;
+      background: var(--platinum);
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.4rem, 8vw, 7.8rem);
+      font-weight: 300; line-height: 0.9; letter-spacing: -0.02em;
+      margin-bottom: 34px;
+    }
+    .hero-title .italic { font-style: italic; color: var(--graphite); }
+    .hero-title .shimmer {
+      background: var(--foil-text);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; background-size: 200% 100%;
+      animation: shimmer 5s linear infinite;
+    }
+    @keyframes shimmer {
+      0% { background-position: 200% center; }
+      100% { background-position: -200% center; }
+    }
+    .hero-desc {
+      font-weight: 200; font-size: clamp(0.9rem, 1.5vw, 1.05rem);
+      color: var(--graphite); max-width: 580px; margin: 0 auto 44px;
+      line-height: 1.9; letter-spacing: 0.04em;
+    }
+    .hero-buttons {
+      display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;
+    }
+    .btn-primary {
       text-decoration: none;
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--ivory); background: var(--ink);
+      padding: 14px 32px; border-radius: 999px;
+      border: 1px solid var(--ink);
+      transition: 0.32s ease; position: relative; overflow: hidden;
+    }
+    .btn-primary::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, #e8e4dc, #f0ece4, #ccc8c0, #f0ece4);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .btn-primary:hover { color: var(--ink); }
+    .btn-primary:hover::before { opacity: 1; }
+    .btn-primary span { position: relative; z-index: 1; }
+    .btn-secondary {
+      text-decoration: none;
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--graphite);
+      padding: 14px 32px; border-radius: 999px;
+      border: 0.5px solid var(--glass-border);
+      transition: 0.32s ease;
+    }
+    .btn-secondary:hover {
+      color: var(--ink); border-color: var(--graphite);
+      background: rgba(200,196,192,0.15);
     }
 
-    button {
-      color: inherit;
+    .section-marker {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--platinum); margin-bottom: 18px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-marker::after {
+      content: ''; flex: 0 0 60px; height: 0.5px; background: var(--smoke);
+    }
+    .section-heading {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.1rem, 4vw, 3.6rem);
+      font-weight: 300; letter-spacing: -0.01em; line-height: 1.1;
+      margin-bottom: 14px; transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    }
+    .section-heading em { font-style: italic; color: var(--graphite); }
+    .section-body {
+      font-size: 0.88rem; color: var(--graphite); max-width: 660px;
+      margin-bottom: 44px; line-height: 1.9; font-weight: 200;
     }
 
-    .pulse-field {
-      position: fixed;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      overflow: hidden;
-      opacity: .62;
-      mix-blend-mode: screen;
+    .glass-panel {
+      background: var(--glass-bg);
+      border: 0.5px solid var(--glass-border); border-radius: 24px;
+      padding: 36px; backdrop-filter: blur(16px) saturate(1.2);
+      position: relative; overflow: hidden;
+    }
+    .glass-panel::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(220,216,210,0.8), transparent);
     }
 
-    .pulse-bar {
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 1px;
-      height: var(--h);
-      background: linear-gradient(to bottom, transparent, rgba(255,246,240,.42), rgba(255,36,48,.42), transparent);
-      transform-origin: center;
-      transform: translate(-50%, -50%) rotate(var(--a)) translateY(var(--y));
-      animation: pulseArray 2.6s ease-in-out infinite;
-      animation-delay: var(--d);
-      opacity: .18;
-      will-change: transform, opacity;
-    }
-
-    .cursor-red {
-      position: fixed;
-      left: 0;
-      top: 0;
-      width: 360px;
-      height: 360px;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,36,48,.18), transparent 68%);
-      filter: blur(12px);
-      z-index: 2;
-    }
-
-    .site {
-      position: relative;
-      z-index: 3;
-      width: min(1180px, calc(100% - 36px));
-      margin: 0 auto;
-      padding: 22px 0 52px;
-    }
-
-    .topbar {
-      position: sticky;
-      top: 16px;
-      z-index: 80;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 10px 12px 10px 16px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      background: rgba(5,2,3,.72);
-      backdrop-filter: blur(22px);
-      box-shadow: 0 18px 54px rgba(0,0,0,.34);
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 11px;
-      font-weight: 900;
-      letter-spacing: .14em;
-      font-size: .76rem;
-      white-space: nowrap;
-    }
-
-    .brand-mark {
-      width: 31px;
-      height: 31px;
-      border-radius: 12px;
-      background:
-        linear-gradient(135deg, var(--red), transparent 64%),
-        linear-gradient(225deg, var(--white), var(--red2));
-      box-shadow: 0 0 34px rgba(255,36,48,.36);
-      transform: rotate(12deg);
-    }
-
-    .nav {
-      display: flex;
-      justify-content: flex-end;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .nav a,
-    .nav button {
-      border: 0;
-      cursor: pointer;
-      padding: 9px 13px;
-      border-radius: 999px;
-      color: var(--muted);
-      background: transparent;
-      font-size: .78rem;
-      font-weight: 900;
-      transition: .25s var(--ease);
-    }
-
-    .nav a:hover,
-    .nav button:hover {
-      color: var(--white);
-      background: rgba(255,255,255,.07);
-    }
-
-    .hero {
-      min-height: 90vh;
-      display: grid;
-      grid-template-columns: .95fr 1.05fr;
+    .card-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 18px;
-      padding: 32px 0 26px;
-      align-items: stretch;
     }
-
-    .hero-main,
-    .course-panel,
-    .note-panel-shell {
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,.078), rgba(255,255,255,.03));
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(20px);
-      overflow: hidden;
+    .card {
+      background: rgba(255,253,250,0.72);
+      border: 0.5px solid var(--glass-border); border-radius: 18px;
+      padding: 30px 26px;
+      transition: border-color 0.38s, box-shadow 0.38s;
+      position: relative; overflow: hidden;
+      transform-style: preserve-3d;
     }
-
-    .hero-main {
-      position: relative;
-      min-height: 650px;
-      border-radius: 40px;
-      padding: clamp(30px, 5vw, 62px);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      isolation: isolate;
+    .card::after {
+      content: ''; position: absolute; inset: 0; border-radius: 18px;
+      background: linear-gradient(135deg, rgba(255,253,250,0.6) 0%, transparent 60%);
+      opacity: 0; transition: opacity 0.38s; pointer-events: none;
     }
-
-    .hero-main::before {
-      content: "";
-      position: absolute;
-      inset: -34%;
-      z-index: 0;
-      opacity: .84;
-      background:
-        conic-gradient(from 120deg, transparent, rgba(255,36,48,.21), transparent 38%, rgba(255,246,240,.09), transparent 70%);
-      animation: slowCore 20s linear infinite;
+    .card:hover {
+      border-color: var(--glass-border-hover);
+      box-shadow: 0 24px 48px rgba(26,23,20,0.07), 0 0 0 0.5px rgba(200,196,192,0.5);
     }
-
-    .hero-main::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        linear-gradient(116deg, transparent 0 40%, rgba(255,246,240,.60) 41%, rgba(255,36,48,.34) 42.5%, transparent 44%),
-        linear-gradient(292deg, transparent 0 56%, rgba(255,36,48,.44) 57%, rgba(255,246,240,.12) 58.5%, transparent 60%);
-      clip-path: polygon(0 0, 100% 0, 100% 45%, 0 72%);
-      opacity: 0;
-      mix-blend-mode: screen;
-      animation: realityCut 2.65s var(--ease) 1 .35s both;
+    .card:hover::after { opacity: 1; }
+    .card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem; font-weight: 300; letter-spacing: 0.15em;
+      color: var(--platinum); margin-bottom: 16px;
     }
-
-    .hero-content,
-    .hero-footer {
-      position: relative;
-      z-index: 2;
+    .card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; margin-bottom: 10px; color: var(--ink);
     }
-
-    .kicker {
-      display: inline-flex;
-      width: fit-content;
-      padding: 8px 12px;
-      margin-bottom: 18px;
-      border: 1px solid rgba(255,36,48,.28);
-      border-radius: 999px;
-      color: var(--red3);
-      background: rgba(255,36,48,.10);
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .16em;
-      text-transform: uppercase;
+    .card p {
+      font-size: 0.83rem; color: var(--graphite); line-height: 1.75;
+      margin-bottom: 26px; font-weight: 200;
     }
-
-    h1 {
-      position: relative;
-      width: fit-content;
-      font-size: clamp(4.5rem, 11vw, 11.8rem);
-      line-height: .74;
-      letter-spacing: -.11em;
-      font-weight: 900;
-      margin-bottom: 26px;
-      text-shadow: 0 24px 80px rgba(0,0,0,.66);
+    .card-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      text-decoration: none;
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--graphite); transition: 0.28s ease;
     }
-
-    h1::before,
-    h1::after {
-      content: attr(data-title);
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
+    .card-link::after {
+      content: ''; display: block; width: 20px; height: 0.5px;
+      background: var(--platinum); transition: width 0.28s ease;
     }
+    .card-link:hover { color: var(--ink); }
+    .card-link:hover::after { width: 36px; background: var(--ink); }
 
-    h1::before {
-      color: var(--red);
-      clip-path: inset(0 0 55% 0);
-      animation: realityWordA 1.35s var(--ease) 1 .35s both;
-    }
-
-    h1::after {
-      color: rgba(255,246,240,.58);
-      clip-path: inset(55% 0 0 0);
-      animation: realityWordB 1.35s var(--ease) 1 .35s both;
-    }
-
-    .outline {
-      color: transparent;
-      -webkit-text-stroke: 1.35px rgba(255,246,240,.9);
-      text-stroke: 1.35px rgba(255,246,240,.9);
-    }
-
-    .lead {
-      max-width: 560px;
-      color: var(--muted);
-      font-size: clamp(.98rem, 1.35vw, 1.08rem);
-      line-height: 1.9;
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
+    .notes-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
       gap: 12px;
-      margin-top: 32px;
+    }
+    .note-link {
+      text-decoration: none;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; padding: 20px 10px; border-radius: 14px;
+      background: rgba(255,253,250,0.6);
+      border: 0.5px solid var(--glass-border);
+      transition: 0.3s cubic-bezier(0.16,1,0.3,1); gap: 6px;
+    }
+    .note-link .note-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem; font-weight: 300; color: var(--ink); line-height: 1;
+    }
+    .note-link .note-label {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.46rem; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--platinum);
+    }
+    .note-link:hover {
+      transform: translateY(-4px) scale(1.03);
+      border-color: var(--glass-border-hover);
+      background: rgba(255,253,250,0.9);
+      box-shadow: 0 12px 28px rgba(26,23,20,0.06);
+    }
+    .note-link:hover .note-num { color: var(--graphite); }
+
+    .section-divider {
+      width: 100%; height: 0.5px; position: relative; z-index: 10;
+      background: linear-gradient(90deg, transparent, var(--smoke) 30%, var(--smoke) 70%, transparent);
     }
 
-    .btn {
-      display: inline-flex;
+    footer {
+      position: relative; z-index: 10;
+      padding: 48px 8%;
+      display: flex; justify-content: space-between; align-items: center;
+      border-top: 0.5px solid var(--glass-border);
+      background: rgba(246,244,239,0.82);
+      backdrop-filter: blur(12px);
+    }
+    .footer-logo {
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.62rem; letter-spacing: 0.28em;
+      color: var(--platinum); text-transform: uppercase;
+    }
+    .footer-copy { font-size: 0.78rem; color: var(--platinum); font-weight: 200; }
+
+
+    /* ── OPENING PATH: page → DE3・4 notes ── */
+    .opening-path {
+      position: fixed;
+      inset: 0;
+      z-index: 7000;
+      display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 50px;
-      padding: 13px 20px;
-      border: 1px solid var(--line);
-      border-radius: 999px;
-      cursor: pointer;
-      font-weight: 900;
-      transition: .25s var(--ease);
-    }
-
-    .btn.primary {
-      color: #190405;
-      background: linear-gradient(135deg, var(--white), var(--red));
-      border-color: rgba(255,246,240,.48);
-    }
-
-    .btn.ghost {
-      color: var(--white);
-      background: rgba(255,255,255,.055);
-    }
-
-    .btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 16px 44px rgba(255,36,48,.18);
-    }
-
-    .hero-footer {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin-top: 42px;
-    }
-
-    .stat {
-      min-height: 116px;
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 24px;
-      background: rgba(0,0,0,.23);
-    }
-
-    .stat strong {
-      display: block;
-      color: var(--red3);
-      font-size: clamp(1.7rem, 3vw, 2.8rem);
-      line-height: 1;
-      letter-spacing: -.07em;
-      margin-bottom: 10px;
-    }
-
-    .stat span {
-      color: var(--muted);
-      font-size: .8rem;
-      font-weight: 800;
-    }
-
-    .course-panel {
-      min-height: 650px;
-      border-radius: 40px;
-      padding: 18px;
-      display: grid;
-      gap: 16px;
-    }
-
-    .course-card {
-      position: relative;
-      min-height: 285px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 28px;
-      border: 1px solid var(--line);
-      border-radius: 32px;
-      background:
-        radial-gradient(circle at var(--mx,50%) var(--my,50%), rgba(255,36,48,.19), transparent 38%),
-        linear-gradient(145deg, rgba(255,255,255,.078), rgba(255,255,255,.024));
-      overflow: hidden;
-      transition: transform .28s var(--ease), border-color .28s var(--ease), box-shadow .28s var(--ease);
-      isolation: isolate;
-    }
-
-    .course-card::before {
-      content: "";
-      position: absolute;
-      inset: -45%;
-      z-index: 0;
-      background: linear-gradient(120deg, transparent 42%, rgba(255,246,240,.15), transparent 58%);
-      transform: translateX(-70%) rotate(18deg);
-      transition: transform .72s var(--ease);
-    }
-
-    .course-card:hover {
-      transform: translateY(-8px) scale(1.012);
-      border-color: rgba(255,139,144,.45);
-      box-shadow: 0 26px 78px rgba(0,0,0,.42), 0 0 60px rgba(255,36,48,.10);
-    }
-
-    .course-card:hover::before {
-      transform: translateX(70%) rotate(18deg);
-    }
-
-    .echo-frame {
-      position: absolute;
-      inset: 14px;
-      z-index: 0;
-      border: 1px solid rgba(255,246,240,.14);
-      border-radius: 28px;
-      opacity: 0;
       pointer-events: none;
-    }
-
-    .course-card:hover .echo-frame:nth-child(1) {
-      animation: memoryEcho .82s var(--ease) both;
-    }
-
-    .course-card:hover .echo-frame:nth-child(2) {
-      animation: memoryEcho .82s var(--ease) .06s both;
-    }
-
-    .course-card:hover .echo-frame:nth-child(3) {
-      animation: memoryEcho .82s var(--ease) .12s both;
-    }
-
-    .course-card > *:not(.echo-frame) {
-      position: relative;
-      z-index: 2;
-    }
-
-    .course-index {
-      color: var(--red3);
-      font-size: .72rem;
-      font-weight: 900;
-      letter-spacing: .16em;
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-
-    .course-card h2 {
-      font-size: clamp(2.5rem, 4vw, 4.5rem);
-      line-height: .9;
-      letter-spacing: -.075em;
-      margin-bottom: 20px;
-    }
-
-    .link-grid {
-      display: grid;
-      gap: 9px;
-    }
-
-    .link-grid a,
-    .link-grid button {
-      width: 100%;
-      border: 1px solid rgba(255,246,240,.13);
-      border-radius: 18px;
-      padding: 12px 14px;
-      color: var(--white);
-      background: rgba(0,0,0,.23);
-      font-weight: 900;
-      text-align: left;
-      cursor: pointer;
-      transition: .25s var(--ease);
-    }
-
-    .link-grid a:hover,
-    .link-grid button:hover {
-      transform: translateX(6px);
-      background: rgba(255,36,48,.13);
-      border-color: rgba(255,139,144,.35);
-    }
-
-    .notes {
-      padding: 30px 0 0;
-    }
-
-    .note-panel-shell {
-      border-radius: 40px;
-    }
-
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 20px;
-      padding: 28px;
-      border-bottom: 1px solid var(--line);
-    }
-
-    .section-head h2 {
-      font-size: clamp(2.8rem, 6vw, 6.5rem);
-      line-height: .82;
-      letter-spacing: -.09em;
-    }
-
-    .section-head p {
-      max-width: 450px;
-      color: var(--muted);
-      line-height: 1.8;
-      font-size: .92rem;
-    }
-
-    .tabs {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      padding: 20px 28px 0;
-    }
-
-    .tab-btn {
-      border: 1px solid var(--line);
-      cursor: pointer;
-      padding: 10px 16px;
-      border-radius: 999px;
-      color: var(--muted);
-      background: rgba(255,255,255,.045);
-      font-weight: 900;
-      transition: .25s var(--ease);
-    }
-
-    .tab-btn.active,
-    .tab-btn:hover {
-      color: #190405;
-      background: linear-gradient(135deg, var(--white), var(--red));
-    }
-
-    .note-panel {
-      display: none;
-      padding: 20px 28px 28px;
-    }
-
-    .note-panel.active {
-      display: block;
-      animation: riseIn .45s var(--ease) both;
-    }
-
-    .note-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 10px;
-    }
-
-    .note-grid a {
-      min-height: 94px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 14px;
-      border: 1px solid var(--line);
-      border-radius: 22px;
-      background: rgba(0,0,0,.22);
-      transition: .25s var(--ease);
-    }
-
-    .note-grid a:hover {
-      transform: translateY(-5px);
-      background: rgba(255,36,48,.13);
-      border-color: rgba(255,139,144,.34);
-    }
-
-    .note-grid strong {
-      color: var(--red3);
-      font-size: 1.55rem;
-      line-height: 1;
-      letter-spacing: -.06em;
-    }
-
-    .note-grid span {
-      color: var(--muted);
-      font-size: .78rem;
-      font-weight: 800;
-    }
-
-    .modal {
-      position: fixed;
-      inset: 0;
-      z-index: 120;
-      display: none;
-      place-items: center;
-      padding: 22px;
-      background: rgba(0,0,0,.72);
-      backdrop-filter: blur(18px);
-    }
-
-    .modal.active {
-      display: grid;
-      animation: fadeIn .25s var(--ease) both;
-    }
-
-    .modal-card {
-      width: min(760px, 100%);
-      max-height: min(760px, 90vh);
-      overflow: auto;
-      border: 1px solid rgba(255,139,144,.24);
-      border-radius: 34px;
       background:
-        radial-gradient(circle at 18% 18%, rgba(255,36,48,.16), transparent 34%),
-        linear-gradient(180deg, rgba(24,8,9,.98), rgba(5,2,3,.98));
-      box-shadow: var(--shadow);
+        radial-gradient(circle at 50% 46%, rgba(246,244,239,0.98), rgba(246,244,239,0.72) 42%, rgba(246,244,239,0) 72%);
+      animation: openingFadeOut 1.1s ease 4.2s forwards;
     }
 
-    .modal-head {
+    .opening-path-inner {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      gap: 18px;
-      padding: 22px 24px;
-      border-bottom: 1px solid var(--line);
+      gap: clamp(16px, 3vw, 34px);
+      padding: 28px 36px;
+      border: 0.5px solid rgba(108,104,98,0.22);
+      background: rgba(255,253,250,0.74);
+      backdrop-filter: blur(18px) saturate(1.25);
+      box-shadow: 0 28px 70px rgba(26,23,20,0.08);
     }
 
-    .modal-head h2 {
-      font-size: clamp(2.2rem, 5vw, 4rem);
-      line-height: .88;
-      letter-spacing: -.08em;
+    .path-step {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: pathFadeIn 0.95s cubic-bezier(0.16,1,0.3,1) forwards;
     }
 
-    .close-modal {
-      width: 44px;
-      height: 44px;
-      border: 1px solid var(--line);
-      border-radius: 50%;
-      color: var(--white);
-      background: rgba(255,255,255,.055);
-      cursor: pointer;
-      font-size: 1.3rem;
+    .path-step:nth-child(1) { animation-delay: 0.35s; }
+
+    .path-arrow {
+      opacity: 0;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: pathArrow 0.75s cubic-bezier(0.16,1,0.3,1) 1.25s forwards;
+      color: #6C6862;
+      font-family: 'Syncopate', sans-serif;
+      font-size: clamp(1.1rem, 2vw, 1.8rem);
+      letter-spacing: 0.12em;
     }
 
-    .modal-links {
-      display: grid;
-      gap: 10px;
-      padding: 24px;
+    .path-step:nth-child(3) { animation-delay: 1.75s; }
+
+    .path-number {
+      display: block;
+      margin-bottom: 10px;
+      font-family: 'Syncopate', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      color: #9a958c;
+      font-weight: 700;
     }
 
-    .modal-links a {
-      padding: 15px 16px;
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      background: rgba(255,255,255,.045);
-      font-weight: 900;
-      transition: .25s var(--ease);
+    .path-title {
+      display: block;
+      font-family: 'Syncopate', 'Noto Serif JP', serif;
+      font-size: clamp(1.35rem, 4vw, 3.6rem);
+      letter-spacing: 0.12em;
+      font-weight: 700;
+      color: #1A1714;
+      white-space: nowrap;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.7);
     }
 
-    .modal-links a:hover {
-      transform: translateX(6px);
-      background: rgba(255,36,48,.12);
+    .path-title.main-note {
+      color: #3F3A34;
+      background: linear-gradient(120deg, #1A1714 0%, #6C6862 40%, #1A1714 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 700;
     }
 
-    @keyframes slowCore {
-      to { transform: rotate(360deg); }
-    }
-
-    @keyframes realityCut {
-      0% { opacity: 0; transform: translateX(-18%) skewX(-10deg); filter: blur(12px); }
-      28% { opacity: .95; filter: blur(0); }
-      100% { opacity: 0; transform: translateX(20%) skewX(8deg); }
-    }
-
-    @keyframes realityWordA {
-      0%, 100% { transform: translateX(0); }
-      34% { transform: translateX(32px) skewX(-13deg); }
-      62% { transform: translateX(-18px); }
-    }
-
-    @keyframes realityWordB {
-      0%, 100% { transform: translateX(0); }
-      34% { transform: translateX(-26px) skewX(9deg); }
-      62% { transform: translateX(18px); }
-    }
-
-    @keyframes pulseArray {
-      0%, 100% {
-        opacity: .10;
-        transform: translate(-50%, -50%) rotate(var(--a)) translateY(var(--y)) scaleY(.35);
-      }
-      48% {
-        opacity: .64;
-        transform: translate(-50%, -50%) rotate(var(--a)) translateY(var(--y)) scaleY(1.08);
-      }
-    }
-
-    @keyframes memoryEcho {
-      0% { opacity: 0; transform: translate3d(0,0,0) scale(.94); filter: blur(8px); }
-      28% { opacity: .62; filter: blur(0); }
-      100% { opacity: 0; transform: translate3d(var(--ex), var(--ey), 0) scale(1.06); }
-    }
-
-    @keyframes riseIn {
-      from { opacity: 0; transform: translateY(14px); }
+    @keyframes pathFadeIn {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    @keyframes pathArrow {
+      to { opacity: 1; transform: scaleX(1); }
     }
 
-    @media (max-width: 1020px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
+    @keyframes openingFadeOut {
+      to { opacity: 0; visibility: hidden; }
+    }
 
-      .hero-main,
-      .course-panel {
-        min-height: auto;
-      }
+    /* ── Readability boost for main DE3・4 notes ── */
+    #note2 .section-marker,
+    #note2 .section-body,
+    #note2 .note-label {
+      color: #5A554D;
+      font-weight: 400;
+    }
 
-      .note-grid {
-        grid-template-columns: repeat(3, 1fr);
+    #note2 .section-heading {
+      color: #1A1714;
+      font-weight: 600;
+      text-shadow: 0 1px 0 rgba(255,255,255,0.72);
+    }
+
+    #note2 .note-link {
+      background: rgba(255,253,250,0.88);
+      border-color: rgba(108,104,98,0.26);
+    }
+
+    #note2 .note-link .note-num {
+      color: #1A1714;
+      font-weight: 600;
+    }
+
+    #note2 .note-link .note-label {
+      font-family: 'Noto Serif JP', serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 768px) {
+      .opening-path-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+      .path-arrow {
+        transform-origin: center;
+      }
+      .path-title {
+        white-space: normal;
       }
     }
 
-    @media (max-width: 700px) {
-      .site {
-        width: min(100% - 24px, 1180px);
-        padding-top: 12px;
-      }
-
-      .topbar {
-        position: relative;
-        top: auto;
-        align-items: flex-start;
-        flex-direction: column;
-        border-radius: 26px;
-      }
-
-      .nav {
-        justify-content: flex-start;
-      }
-
-      .hero {
-        padding-top: 14px;
-      }
-
-      h1 {
-        font-size: clamp(4.4rem, 22vw, 6.3rem);
-      }
-
-      .hero-footer,
-      .note-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .section-head {
-        align-items: flex-start;
-        flex-direction: column;
-      }
+    @media (max-width: 768px) {
+      .top-nav { flex-direction: column; gap: 12px; padding: 16px 5%; }
+      .section { padding: 130px 5% 80px; }
+      .glass-panel { padding: 20px; }
+      footer { flex-direction: column; gap: 12px; text-align: center; }
     }
   </style>
 </head>
 <body>
-  <div class="pulse-field" id="pulseField"></div>
-  <div class="cursor-red" id="cursorRed"></div>
 
-  <div class="site">
-    <header class="topbar">
-      <a href="#top" class="brand" aria-label="トップへ戻る">
-        <span class="brand-mark"></span>
-        RED INDEX
-      </a>
-      <nav class="nav" aria-label="ページ内ナビゲーション">
-        <a href="#top">Top</a>
-        <a href="#notes">Notes</a>
-        <button type="button" data-modal="allWorks">All</button>
-      </nav>
-    </header>
-
-    <main class="hero" id="top">
-      <section class="hero-main">
-        <div class="hero-content">
-          <span class="kicker">Design Exercise Archive</span>
-          <h1 data-title="RED INDEX"><span class="outline">RED</span><br>INDEX</h1>
-          <p class="lead">デザイン演習Ⅰ・Ⅱ、演習Ⅲ・Ⅳ、演習ノートを赤と黒のコントラストで整理したポートフォリオ入口。</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#notes">Notes</a>
-            <button class="btn ghost" type="button" data-modal="allWorks">All Pages</button>
-          </div>
-        </div>
-
-        <div class="hero-footer">
-          <div class="stat"><strong>Ⅰ・Ⅱ</strong><span>前半演習</span></div>
-          <div class="stat"><strong>Ⅲ・Ⅳ</strong><span>後半演習</span></div>
-          <div class="stat"><strong>18</strong><span>演習ノート</span></div>
-        </div>
-      </section>
-
-      <aside class="course-panel" aria-label="演習分類">
-        <article class="course-card hover-card">
-          <i class="echo-frame" style="--ex:-18px; --ey:18px"></i>
-          <i class="echo-frame" style="--ex:22px; --ey:-14px"></i>
-          <i class="echo-frame" style="--ex:0px; --ey:28px"></i>
-          <div>
-            <p class="course-index">Design Exercise 01</p>
-            <h2>演習Ⅰ・Ⅱ</h2>
-          </div>
-          <div class="link-grid">
-            <a href="./hp1.html" target="_blank" rel="noopener">HTMLの基礎知識</a>
-            <a href="./hp2.html" target="_blank" rel="noopener">HTMLのwork</a>
-            <a href="./test.html" target="_blank" rel="noopener">テストページ</a>
-            <button type="button" data-modal="notes12">ノート一覧Ⅰ</button>
-          </div>
-        </article>
-
-        <article class="course-card hover-card">
-          <i class="echo-frame" style="--ex:20px; --ey:16px"></i>
-          <i class="echo-frame" style="--ex:-24px; --ey:-12px"></i>
-          <i class="echo-frame" style="--ex:0px; --ey:30px"></i>
-          <div>
-            <p class="course-index">Design Exercise 02</p>
-            <h2>演習Ⅲ・Ⅳ</h2>
-          </div>
-          <div class="link-grid">
-            <a href="./hp3.html" target="_blank" rel="noopener">HTMLの基礎知識Ⅱ</a>
-            <a href="./hp4.html" target="_blank" rel="noopener">HTMLのworkⅡ</a>
-            <a href="./test2.html" target="_blank" rel="noopener">テストページⅡ</a>
-            <button type="button" data-modal="notes34">ノート一覧Ⅱ</button>
-          </div>
-        </article>
-      </aside>
-    </main>
-
-    <section class="notes" id="notes">
-      <div class="note-panel-shell">
-        <div class="section-head">
-          <h2>Notes</h2>
-          <p>演習Ⅰ・Ⅱと演習Ⅲ・Ⅳを切り替え。</p>
-        </div>
-
-        <div class="tabs">
-          <button class="tab-btn active" type="button" data-tab="note12">演習Ⅰ・Ⅱ</button>
-          <button class="tab-btn" type="button" data-tab="note34">演習Ⅲ・Ⅳ</button>
-        </div>
-
-        <div class="note-panel active" id="note12">
-          <div class="note-grid">
-            <a href="../de12/1.html" target="_blank" rel="noopener"><strong>01</strong><span>第一回</span></a>
-            <a href="../de12/2.html" target="_blank" rel="noopener"><strong>02</strong><span>第二回</span></a>
-            <a href="../de12/3.html" target="_blank" rel="noopener"><strong>03</strong><span>第三回</span></a>
-            <a href="../de12/4.html" target="_blank" rel="noopener"><strong>04</strong><span>第四回</span></a>
-            <a href="../de12/5.html" target="_blank" rel="noopener"><strong>05</strong><span>第五回</span></a>
-            <a href="../de12/6.html" target="_blank" rel="noopener"><strong>06</strong><span>第六回</span></a>
-            <a href="../de12/7.html" target="_blank" rel="noopener"><strong>07</strong><span>第七回</span></a>
-            <a href="../de12/8.html" target="_blank" rel="noopener"><strong>08</strong><span>第八回</span></a>
-            <a href="../de12/9html.html" target="_blank" rel="noopener"><strong>09</strong><span>第九回</span></a>
-          </div>
-        </div>
-
-        <div class="note-panel" id="note34">
-          <div class="note-grid">
-            <a href="../de34/10.html" target="_blank" rel="noopener"><strong>10</strong><span>第十回</span></a>
-            <a href="../de34/11.html" target="_blank" rel="noopener"><strong>11</strong><span>第十一回</span></a>
-            <a href="../de34/12.html" target="_blank" rel="noopener"><strong>12</strong><span>FLASK</span></a>
-            <a href="../de34/13.html" target="_blank" rel="noopener"><strong>13</strong><span>アプリ</span></a>
-            <a href="../de34/15.html" target="_blank" rel="noopener"><strong>14</strong><span>DATA BASE</span></a>
-            <a href="./15.html" target="_blank" rel="noopener"><strong>15</strong><span>第十五回</span></a>
-            <a href="./16.html" target="_blank" rel="noopener"><strong>16</strong><span>第十六回</span></a>
-            <a href="./17.html" target="_blank" rel="noopener"><strong>17</strong><span>第十七回</span></a>
-            <a href="./18.html" target="_blank" rel="noopener"><strong>18</strong><span>第十八回</span></a>
-          </div>
-        </div>
-      </div>
-    </section>
+<div class="opening-path" aria-hidden="true">
+  <div class="opening-path-inner">
+    <div class="path-step">
+      <span class="path-number">01</span>
+      <span class="path-title">タニサンのページ</span>
+    </div>
+    <div class="path-arrow">→</div>
+    <div class="path-step">
+      <span class="path-number">02</span>
+      <span class="path-title main-note">DE3・4_NOTES</span>
+    </div>
   </div>
+</div>
 
-  <div class="modal" id="notes12" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head"><h2>演習Ⅰ・Ⅱ</h2><button class="close-modal" type="button">×</button></div>
-      <div class="modal-links">
-        <a href="../de12/1.html" target="_blank" rel="noopener">第一回</a>
-        <a href="../de12/2.html" target="_blank" rel="noopener">第二回</a>
-        <a href="../de12/3.html" target="_blank" rel="noopener">第三回</a>
-        <a href="../de12/4.html" target="_blank" rel="noopener">第四回</a>
-        <a href="../de12/5.html" target="_blank" rel="noopener">第五回</a>
-        <a href="../de12/6.html" target="_blank" rel="noopener">第六回</a>
-        <a href="../de12/7.html" target="_blank" rel="noopener">第七回</a>
-        <a href="../de12/8.html" target="_blank" rel="noopener">第八回</a>
-        <a href="../de12/9html.html" target="_blank" rel="noopener">第九回</a>
+
+<div id="scroll-bar"></div>
+<div id="cursor-dot"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<header class="top-nav">
+  <div class="logo"><span>Tani</span> Portfolio</div>
+  <nav class="nav-links">
+    <a href="#top">Top</a>
+    <a href="#work12">演習 Ⅰ・Ⅱ</a>
+    <a href="#note1">ノート Ⅰ</a>
+    <a href="#work34">演習 Ⅲ・Ⅳ</a>
+    <a href="#note2">ノート Ⅱ</a>
+  </nav>
+</header>
+
+<section class="section hero" id="top">
+  <div class="container">
+    <div class="hero-eyebrow reveal">Design Exercise Portfolio</div>
+    <h1 class="hero-title reveal reveal-d1">
+      <span class="shimmer">タニサンの</span><br>
+      <span class="italic">デザイン</span><br>
+      ポートフォリオ
+    </h1>
+    <p class="hero-desc reveal reveal-d2">
+      デザイン演習で制作したHTML作品と演習ノートを整理し、<br>
+      学習の流れと成果が一目で伝わるよう再設計したポートフォリオ。
+    </p>
+    <div class="hero-buttons reveal reveal-d3">
+      <a href="#work12" class="btn-primary"><span>作品を見る</span></a>
+      <a href="#note2" class="btn-secondary">DE3・4_NOTESへ</a>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<section class="section" id="work12">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-marker">Works 01</p>
+      <h2 class="section-heading">デザイン演習<em>Ⅰ・Ⅱ</em></h2>
+      <p class="section-body">HTMLの基礎理解から実践ページの作成までをまとめたセクション。各コンテンツの役割が一目で伝わるカード形式で整理しています。</p>
+    </div>
+    <div class="glass-panel reveal reveal-d1">
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-num">01 / 03</div>
+          <h3>HTMLの基礎知識</h3>
+          <p>HTML構造の理解と基本タグの学習内容を確認できるページです。</p>
+          <a href="./hp1.html" target="_blank" class="card-link">開く</a>
+        </div>
+        <div class="card">
+          <div class="card-num">02 / 03</div>
+          <h3>HTMLのwork</h3>
+          <p>演習の中で作成した実践的なワークページをまとめています。</p>
+          <a href="./hp2.html" target="_blank" class="card-link">開く</a>
+        </div>
+        <div class="card">
+          <div class="card-num">03 / 03</div>
+          <h3>テストページ</h3>
+          <p>試作や確認用として制作したページを閲覧できます。</p>
+          <a href="./test.html" target="_blank" class="card-link">開く</a>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="modal" id="notes34" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head"><h2>演習Ⅲ・Ⅳ</h2><button class="close-modal" type="button">×</button></div>
-      <div class="modal-links">
-        <a href="../de34/10.html" target="_blank" rel="noopener">第十回</a>
-        <a href="../de34/11.html" target="_blank" rel="noopener">第十一回</a>
-        <a href="../de34/12.html" target="_blank" rel="noopener">FLASK</a>
-        <a href="../de34/13.html" target="_blank" rel="noopener">アプリ</a>
-        <a href="../de34/15.html" target="_blank" rel="noopener">DATA BASE</a>
-        <a href="./15.html" target="_blank" rel="noopener">データベース</a>
-        <a href="./16.html" target="_blank" rel="noopener">第十六回</a>
-        <a href="./17.html" target="_blank" rel="noopener">第十七回</a>
-        <a href="./18.html" target="_blank" rel="noopener">第十八回</a>
+<div class="section-divider"></div>
+
+<section class="section" id="note1">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-marker">Archive 01</p>
+      <h2 class="section-heading">演習ノート<em>一覧 Ⅰ</em></h2>
+      <p class="section-body">第一回から第九回までの演習記録。学習の積み重ねが追いやすいよう、均一なグリッドで配置しています。</p>
+    </div>
+    <div class="glass-panel reveal reveal-d1">
+      <div class="notes-grid">
+        <a class="note-link" href="../de12/1.html" target="_blank"><span class="note-num">01</span><span class="note-label">第一回</span></a>
+        <a class="note-link" href="../de12/2.html" target="_blank"><span class="note-num">02</span><span class="note-label">第二回</span></a>
+        <a class="note-link" href="../de12/3.html" target="_blank"><span class="note-num">03</span><span class="note-label">第三回</span></a>
+        <a class="note-link" href="../de12/4.html" target="_blank"><span class="note-num">04</span><span class="note-label">第四回</span></a>
+        <a class="note-link" href="../de12/5.html" target="_blank"><span class="note-num">05</span><span class="note-label">第五回</span></a>
+        <a class="note-link" href="../de12/6.html" target="_blank"><span class="note-num">06</span><span class="note-label">第六回</span></a>
+        <a class="note-link" href="../de12/7.html" target="_blank"><span class="note-num">07</span><span class="note-label">第七回</span></a>
+        <a class="note-link" href="../de12/8.html" target="_blank"><span class="note-num">08</span><span class="note-label">第八回</span></a>
+        <a class="note-link" href="../de12/9html.html" target="_blank"><span class="note-num">09</span><span class="note-label">第九回</span></a>
       </div>
     </div>
   </div>
+</section>
 
-  <div class="modal" id="allWorks" aria-hidden="true">
-    <div class="modal-card">
-      <div class="modal-head"><h2>All Pages</h2><button class="close-modal" type="button">×</button></div>
-      <div class="modal-links">
-        <a href="./hp1.html" target="_blank" rel="noopener">HTMLの基礎知識</a>
-        <a href="./hp2.html" target="_blank" rel="noopener">HTMLのwork</a>
-        <a href="./test.html" target="_blank" rel="noopener">テストページ</a>
-        <a href="./hp3.html" target="_blank" rel="noopener">HTMLの基礎知識Ⅱ</a>
-        <a href="./hp4.html" target="_blank" rel="noopener">HTMLのworkⅡ</a>
-        <a href="./test2.html" target="_blank" rel="noopener">テストページⅡ</a>
+<div class="section-divider"></div>
+
+<section class="section" id="work34">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-marker">Works 02</p>
+      <h2 class="section-heading">デザイン演習<em>Ⅲ・Ⅳ</em></h2>
+      <p class="section-body">後半の演習内容を独立したセクションとして追加。Ⅰ・ⅡとⅢ・Ⅳの役割分担を明確に示しています。</p>
+    </div>
+    <div class="glass-panel reveal reveal-d1">
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-num">01 / 03</div>
+          <h3>HTMLの基礎知識 Ⅱ</h3>
+          <p>後半の演習で扱った知識や応用内容の確認ページです。</p>
+          <a href="./hp3.html" target="_blank" class="card-link">開く</a>
+        </div>
+        <div class="card">
+          <div class="card-num">02 / 03</div>
+          <h3>HTMLのwork Ⅱ</h3>
+          <p>演習Ⅲ・Ⅳで制作した実践ページを整理したセクションです。</p>
+          <a href="./hp4.html" target="_blank" class="card-link">開く</a>
+        </div>
+        <div class="card">
+          <div class="card-num">03 / 03</div>
+          <h3>テストページ Ⅱ</h3>
+          <p>追加の試作や確認用ページを閲覧できます。</p>
+          <a href="./test2.html" target="_blank" class="card-link">開く</a>
+        </div>
       </div>
     </div>
   </div>
+</section>
 
-  <script>
-    const cursorRed = document.getElementById('cursorRed');
-    const pulseField = document.getElementById('pulseField');
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+<div class="section-divider"></div>
 
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
-    }
+<section class="section" id="note2">
+  <div class="container">
+    <div class="reveal">
+      <p class="section-marker">Archive 02</p>
+      <h2 class="section-heading">演習ノート<em>一覧 Ⅱ</em></h2>
+      <p class="section-body">第十回以降のノートを独立表示。ページ全体の情報構造を整理し、見る側が迷わない形にしています。</p>
+    </div>
+    <div class="glass-panel reveal reveal-d1">
+      <div class="notes-grid">
+        <a class="note-link" href="../de34/10.html" target="_blank"><span class="note-num">10</span><span class="note-label">第十回</span></a>
+        <a class="note-link" href="./11.html" target="_blank"><span class="note-num">11</span><span class="note-label">初回</span></a>
+        <a class="note-link" href="./12.html" target="_blank"><span class="note-num">12</span><span class="note-label">FLASK</span></a>
+        <a class="note-link" href="./13.html" target="_blank"><span class="note-num">13</span><span class="note-label">13回</span></a>
+        <a class="note-link" href="./14.html" target="_blank"><span class="note-num">14</span><span class="note-label">アプリ</span></a>
+        <a class="note-link" href="./15.html" target="_blank"><span class="note-num">15</span><span class="note-label">データベース</span></a>
+        <a class="note-link" href="./16.html" target="_blank"><span class="note-num">16</span><span class="note-label">第十六回</span></a>
+        <a class="note-link" href="./17.html" target="_blank"><span class="note-num">17</span><span class="note-label">第十七回</span></a>
+        <a class="note-link" href="./18.html" target="_blank"><span class="note-num">18</span><span class="note-label">第十八回</span></a>
+      </div>
+    </div>
+  </div>
+</section>
 
-    function buildPulseArray() {
-      if (!pulseField || reduceMotion) return;
+<footer>
+  <div class="footer-logo">Tani Portfolio</div>
+  <p class="footer-copy">© 2025 Tani — Design Exercise Portfolio</p>
+</footer>
 
-      const count = window.innerWidth < 700 ? 26 : 48;
-      const fragment = document.createDocumentFragment();
+<script>
+/* ── CANVAS BG: flowing liquid grain ── */
+(function(){
+  const cv = document.getElementById('bg-canvas');
+  const cx = cv.getContext('2d');
+  let W, H, t = 0;
+  let mx = 0.5, my = 0.5;
 
-      for (let i = 0; i < count; i += 1) {
-        const bar = document.createElement('i');
-        bar.className = 'pulse-bar';
-        bar.style.setProperty('--a', `${i * (360 / count)}deg`);
-        bar.style.setProperty('--y', `${random(80, 340)}px`);
-        bar.style.setProperty('--h', `${random(70, 190)}px`);
-        bar.style.setProperty('--d', `${i * .026}s`);
-        fragment.appendChild(bar);
+  const blobs = [
+    { color:[240,236,228], phase:0.0, sp:0.00042 },
+    { color:[228,224,216], phase:1.1, sp:0.00038 },
+    { color:[218,215,208], phase:2.3, sp:0.00050 },
+    { color:[236,232,225], phase:3.7, sp:0.00035 },
+    { color:[244,241,235], phase:5.0, sp:0.00044 },
+    { color:[224,220,214], phase:4.2, sp:0.00040 },
+  ];
+
+  const lines = Array.from({length:24}, (_,i) => ({
+    yBase: 0,
+    amp: 14 + Math.random()*38,
+    freq: 0.0007 + Math.random()*0.001,
+    ph: Math.random()*Math.PI*2,
+    sp: 0.00016 + Math.random()*0.00014,
+    al: 0.025 + Math.random()*0.032,
+  }));
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX / W;
+    my = e.clientY / H;
+  });
+
+  function resize() {
+    W = cv.width  = window.innerWidth;
+    H = cv.height = window.innerHeight;
+    lines.forEach((l,i) => l.yBase = H*(0.04 + i/lines.length*0.92));
+  }
+
+  function draw() {
+    t++;
+    cx.clearRect(0,0,W,H);
+    cx.fillStyle = '#F6F4EF';
+    cx.fillRect(0,0,W,H);
+
+    /* radial blobs */
+    blobs.forEach((b,i) => {
+      const nx = Math.sin(t*b.sp + b.phase)*W*0.36 + W*0.5 + (mx-0.5)*W*0.05;
+      const ny = Math.cos(t*b.sp*0.73 + b.phase)*H*0.32 + H*0.5 + (my-0.5)*H*0.05;
+      const r  = Math.min(W,H)*(0.3+i*0.04);
+      const gr = cx.createRadialGradient(nx,ny,0,nx,ny,r);
+      const [rv,gv,bv] = b.color;
+      gr.addColorStop(0,   `rgba(${rv},${gv},${bv},0.32)`);
+      gr.addColorStop(0.5, `rgba(${rv},${gv},${bv},0.08)`);
+      gr.addColorStop(1,   `rgba(${rv},${gv},${bv},0)`);
+      cx.beginPath(); cx.arc(nx,ny,r,0,Math.PI*2);
+      cx.fillStyle = gr; cx.fill();
+    });
+
+    /* flowing grain lines */
+    lines.forEach(l => {
+      cx.beginPath(); cx.moveTo(0, l.yBase);
+      for(let x=0; x<=W; x+=4) {
+        const y = l.yBase
+          + Math.sin(x*l.freq + t*l.sp + l.ph)*l.amp
+          + Math.sin(x*l.freq*2.1 + t*l.sp*0.6)*l.amp*0.3;
+        cx.lineTo(x, y);
       }
-
-      pulseField.appendChild(fragment);
-    }
-
-    window.addEventListener('mousemove', (event) => {
-      if (!cursorRed || reduceMotion) return;
-      cursorRed.style.left = `${event.clientX}px`;
-      cursorRed.style.top = `${event.clientY}px`;
+      cx.strokeStyle = `rgba(152,148,142,${l.al})`;
+      cx.lineWidth = 0.5;
+      cx.stroke();
     });
 
-    document.querySelectorAll('.hover-card').forEach((card) => {
-      card.addEventListener('mousemove', (event) => {
-        const rect = card.getBoundingClientRect();
-        const x = ((event.clientX - rect.left) / rect.width) * 100;
-        const y = ((event.clientY - rect.top) / rect.height) * 100;
-        card.style.setProperty('--mx', `${x}%`);
-        card.style.setProperty('--my', `${y}%`);
-      });
+    /* subtle mesh */
+    const gs = 90;
+    cx.strokeStyle = 'rgba(190,186,180,0.06)';
+    cx.lineWidth = 0.5;
+    for(let x=0;x<=W;x+=gs){ cx.beginPath(); cx.moveTo(x,0); cx.lineTo(x,H); cx.stroke(); }
+    for(let y=0;y<=H;y+=gs){ cx.beginPath(); cx.moveTo(0,y); cx.lineTo(W,y); cx.stroke(); }
+
+    requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize(); draw();
+})();
+
+/* ── CURSOR ── */
+(function(){
+  const dot  = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  let rx=0, ry=0, dx=0, dy=0;
+
+  document.addEventListener('mousemove', e => {
+    dx = e.clientX; dy = e.clientY;
+    dot.style.left = dx+'px'; dot.style.top = dy+'px';
+  });
+
+  function lerp(a,b,n){ return a+(b-a)*n; }
+  (function tick(){
+    rx = lerp(rx,dx,0.10); ry = lerp(ry,dy,0.10);
+    ring.style.left = rx+'px'; ring.style.top = ry+'px';
+    requestAnimationFrame(tick);
+  })();
+
+  document.querySelectorAll('a,button').forEach(el => {
+    el.addEventListener('mouseenter', ()=>{
+      dot.style.transform = 'translate(-50%,-50%) scale(2.4)';
+      dot.style.background = '#6C6862';
+      ring.style.width = '52px'; ring.style.height = '52px';
+      ring.style.opacity = '0.85';
     });
-
-    const tabButtons = document.querySelectorAll('.tab-btn');
-    const notePanels = document.querySelectorAll('.note-panel');
-
-    tabButtons.forEach((button) => {
-      button.addEventListener('click', () => {
-        tabButtons.forEach((item) => item.classList.remove('active'));
-        notePanels.forEach((panel) => panel.classList.remove('active'));
-        button.classList.add('active');
-        const target = document.getElementById(button.dataset.tab);
-        if (target) target.classList.add('active');
-      });
+    el.addEventListener('mouseleave', ()=>{
+      dot.style.transform = 'translate(-50%,-50%) scale(1)';
+      dot.style.background = '#1A1714';
+      ring.style.width = '36px'; ring.style.height = '36px';
+      ring.style.opacity = '0.55';
     });
+  });
+})();
 
-    function openModal(id) {
-      const modal = document.getElementById(id);
-      if (!modal) return;
-      modal.classList.add('active');
-      modal.setAttribute('aria-hidden', 'false');
-    }
+/* ── SCROLL REVEAL ── */
+(function(){
+  const els = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('show'); });
+  }, { threshold: 0.12 });
+  els.forEach(el => io.observe(el));
+})();
 
-    function closeModal(modal) {
-      if (!modal) return;
-      modal.classList.remove('active');
-      modal.setAttribute('aria-hidden', 'true');
-    }
+/* ── SCROLL PROGRESS ── */
+(function(){
+  const bar = document.getElementById('scroll-bar');
+  window.addEventListener('scroll', ()=>{
+    const s = document.documentElement;
+    bar.style.width = (s.scrollTop/(s.scrollHeight-s.clientHeight)*100)+'%';
+  }, {passive:true});
+})();
 
-    document.querySelectorAll('[data-modal]').forEach((button) => {
-      button.addEventListener('click', (event) => {
-        event.preventDefault();
-        openModal(button.dataset.modal);
-      });
+/* ── MAGNETIC HEADING ── */
+(function(){
+  document.querySelectorAll('.section-heading').forEach(el => {
+    el.addEventListener('mousemove', e => {
+      const r = el.getBoundingClientRect();
+      const x = (e.clientX-r.left-r.width/2)*0.04;
+      const y = (e.clientY-r.top -r.height/2)*0.04;
+      el.style.transform = `translate(${x}px,${y}px)`;
+      el.style.transition = 'transform 0.15s ease';
     });
-
-    document.querySelectorAll('.close-modal').forEach((button) => {
-      button.addEventListener('click', () => closeModal(button.closest('.modal')));
+    el.addEventListener('mouseleave', ()=>{
+      el.style.transform = '';
+      el.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1)';
     });
+  });
+})();
 
-    document.querySelectorAll('.modal').forEach((modal) => {
-      modal.addEventListener('click', (event) => {
-        if (event.target === modal) closeModal(modal);
-      });
+/* ── CARD TILT ── */
+(function(){
+  document.querySelectorAll('.card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX-r.left)/r.width  - 0.5;
+      const y = (e.clientY-r.top) /r.height - 0.5;
+      card.style.transform = `translateY(-6px) rotateX(${-y*5}deg) rotateY(${x*5}deg)`;
+      card.style.transition = 'transform 0.08s ease, border-color 0.38s, box-shadow 0.38s';
     });
-
-    window.addEventListener('keydown', (event) => {
-      if (event.key !== 'Escape') return;
-      document.querySelectorAll('.modal.active').forEach(closeModal);
+    card.addEventListener('mouseleave', ()=>{
+      card.style.transform = '';
+      card.style.transition = 'transform 0.6s cubic-bezier(0.16,1,0.3,1), border-color 0.38s, box-shadow 0.38s';
     });
-
-    buildPulseArray();
-
-    console.assert(document.querySelectorAll('.course-card').length === 2, '演習分類は2つです');
-    console.assert(document.querySelectorAll('.note-grid a').length === 18, 'ノートリンクは18個です');
-  </script>
+  });
+})();
+</script>
 </body>
 </html>
