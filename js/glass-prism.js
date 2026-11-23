@@ -131,6 +131,9 @@
     this.stage = opts.stage || this.source.parentNode;
     this.maxDpr = opts.maxDpr || 1.5;
     this.selector = opts.selector || '.glass[data-prism]';
+    // overlay mode: the source canvas stays visible; the prism layer only
+    // draws while a tab is hovered (used with the Three.js world in de34)
+    this.overlay = !!opts.overlay;
     this.active = null;
     this.mouse = { x: -9999, y: -9999 };
     this.smooth = { x: -9999, y: -9999 };
@@ -150,7 +153,7 @@
     canvas.setAttribute('aria-hidden', 'true');
     var gl;
     try {
-      gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false, alpha: false }) ||
+      gl = canvas.getContext('webgl', { premultipliedAlpha: false, antialias: false, alpha: this.overlay }) ||
            canvas.getContext('experimental-webgl');
     } catch (e) { gl = null; }
     if (!gl) return;
@@ -189,7 +192,7 @@
     this.gl = gl;
     this.canvas = canvas;
     this.stage.appendChild(canvas);
-    document.documentElement.classList.add('prism-on');
+    if (!this.overlay) document.documentElement.classList.add('prism-on');
     this.ok = true;
 
     var self = this;
@@ -311,6 +314,11 @@
     if (!this.ok) return;
 
     var gl = this.gl, u = this.u;
+    if (this.overlay && this.strength <= 0.002) {
+      if (!this._cleared) { gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT); this._cleared = true; }
+      return;
+    }
+    this._cleared = false;
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.source);
     gl.uniform2f(u.uRes, this.w, this.h);
     gl.uniform1f(u.uTime, time || 0);

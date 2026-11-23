@@ -5,14 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>タニサン — デザインポートフォリオ</title>
   <meta name="description" content="デザイン演習で制作したHTML作品と演習ノートを整理したタニサンのデザインポートフォリオ。">
-  <meta name="theme-color" content="#efe9df">
+  <meta name="theme-color" content="#f7f7f5">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="../css/common.css">
   <link rel="stylesheet" href="../css/de34.css">
+
+  <!-- Three.js (fixed version) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
 </head>
 <body data-theme="de34">
 
@@ -33,10 +43,8 @@
 
   <div id="scroll-bar" aria-hidden="true"></div>
 
-  <!-- Animated background: glowing blue rings and ripples (drawn by js/de34-scene.js) -->
-  <div class="bg-stage" aria-hidden="true">
-    <canvas id="bg-canvas"></canvas>
-  </div>
+  <!-- The open world: a white 3D space rendered with Three.js (js/de34-world.js) -->
+  <div class="bg-stage" id="world" aria-hidden="true"></div>
 
   <header class="site-header glass" data-prism>
     <a class="logo" href="#top"><b>Tani</b> Portfolio</a>
@@ -58,17 +66,18 @@
     <a href="#note2"><span>Archive 02</span></a>
   </nav>
 
+  <p class="coord" aria-hidden="true">
+    <span>x <b id="cx">0.00</b></span><span>y <b id="cy">0.00</b></span><span>z <b id="cz">0.00</b></span><span>t <b id="ct">0.00</b></span>
+  </p>
+
   <main class="page">
 
-    <!-- ===== Hero ===== -->
-    <section class="hero" id="top">
-      <div class="container hero-inner">
+    <!-- ===== Station 0 · Hero ===== -->
+    <section class="station hero" id="top">
+      <p class="mono-word" data-slide="-1" aria-hidden="true">portfolio</p>
+      <div class="container station-inner">
         <p class="eyebrow reveal">Design Exercise Portfolio</p>
-        <h1 class="hero-title reveal">
-          <span class="hero-en" aria-hidden="true">Design<br>Portfolio</span>
-          <span class="hero-ja">タニサンの<br>デザイン<br>ポートフォリオ</span>
-        </h1>
-        <p class="hero-accent reveal">notes &amp; works.</p>
+        <h1 class="hero-title reveal">タニサンの<br>デザイン<br>ポートフォリオ</h1>
         <p class="hero-desc reveal">
           デザイン演習で制作したHTML作品と演習ノートを整理し、<br>
           学習の流れと成果が一目で伝わるよう再設計したポートフォリオ。
@@ -77,12 +86,14 @@
           <a href="#work12" class="btn btn-primary">作品を見る</a>
           <a href="#note2" class="btn btn-secondary glass" data-prism>DE3・4_NOTESへ</a>
         </div>
+        <p class="hint reveal">Scroll — 白い空間の奥へ進みます</p>
       </div>
     </section>
 
-    <!-- ===== Works 01 ===== -->
-    <section class="section" id="work12">
-      <div class="container">
+    <!-- ===== Station 1 · Works 01 ===== -->
+    <section class="station" id="work12">
+      <p class="mono-word" data-slide="1" aria-hidden="true">works</p>
+      <div class="container station-inner">
         <header class="section-head reveal">
           <p class="eyebrow">Works 01</p>
           <h2 class="section-heading">デザイン演習<em>Ⅰ・Ⅱ</em></h2>
@@ -90,31 +101,32 @@
         </header>
 
         <div class="gallery card-grid reveal">
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">01 / 03</p>
             <h3>HTMLの基礎知識</h3>
             <p>HTML構造の理解と基本タグの学習内容を確認できるページです。</p>
             <a href="./hp1.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          </article>
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">02 / 03</p>
             <h3>HTMLのwork</h3>
             <p>演習の中で作成した実践的なワークページをまとめています。</p>
             <a href="./hp2.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          </article>
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">03 / 03</p>
             <h3>テストページ</h3>
             <p>試作や確認用として制作したページを閲覧できます。</p>
             <a href="./test.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- ===== Archive 01 ===== -->
-    <section class="section" id="note1">
-      <div class="container">
+    <!-- ===== Station 2 · Archive 01 ===== -->
+    <section class="station" id="note1">
+      <p class="mono-word" data-slide="-1" aria-hidden="true">notes</p>
+      <div class="container station-inner">
         <header class="section-head reveal">
           <p class="eyebrow">Archive 01</p>
           <h2 class="section-heading">演習ノート<em>一覧 Ⅰ</em></h2>
@@ -135,9 +147,10 @@
       </div>
     </section>
 
-    <!-- ===== Works 02 ===== -->
-    <section class="section" id="work34">
-      <div class="container">
+    <!-- ===== Station 3 · Works 02 ===== -->
+    <section class="station" id="work34">
+      <p class="mono-word" data-slide="1" aria-hidden="true">growth</p>
+      <div class="container station-inner">
         <header class="section-head reveal">
           <p class="eyebrow">Works 02</p>
           <h2 class="section-heading">デザイン演習<em>Ⅲ・Ⅳ</em></h2>
@@ -145,31 +158,32 @@
         </header>
 
         <div class="gallery card-grid reveal">
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">01 / 03</p>
             <h3>HTMLの基礎知識 Ⅱ</h3>
             <p>後半の演習で扱った知識や応用内容の確認ページです。</p>
             <a href="./hp3.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          </article>
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">02 / 03</p>
             <h3>HTMLのwork Ⅱ</h3>
             <p>演習Ⅲ・Ⅳで制作した実践ページを整理したセクションです。</p>
             <a href="./hp4.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
-          <div class="float"><article class="card glass" data-prism data-tilt="7">
+          </article>
+          <article class="card glass" data-prism data-tilt="7">
             <p class="card-num">03 / 03</p>
             <h3>テストページ Ⅱ</h3>
             <p>追加の試作や確認用ページを閲覧できます。</p>
             <a href="./test2.html" target="_blank" rel="noopener" class="pill">開く <span aria-hidden="true">→</span></a>
-          </article></div>
+          </article>
         </div>
       </div>
     </section>
 
-    <!-- ===== Archive 02 ===== -->
-    <section class="section" id="note2">
-      <div class="container">
+    <!-- ===== Station 4 · Archive 02 ===== -->
+    <section class="station" id="note2">
+      <p class="mono-word" data-slide="-1" aria-hidden="true">archive</p>
+      <div class="container station-inner">
         <header class="section-head reveal">
           <p class="eyebrow">Archive 02</p>
           <h2 class="section-heading">演習ノート<em>一覧 Ⅱ</em></h2>
@@ -197,6 +211,7 @@
   </main>
 
   <script src="../js/glass-prism.js"></script>
-  <script src="../js/de34-scene.js"></script>
+  <script src="../js/de34-page.js"></script>
+  <script type="module" src="../js/de34-world.js"></script>
 </body>
 </html>

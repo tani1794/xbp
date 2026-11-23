@@ -45,20 +45,20 @@
   color-scheme: dark;
 }
 
-/* Theme: de34 (light cream) — Figma "Theme · De34" */
+/* Theme: de34 (white open world) — Figma "Theme · De34 White" */
 [data-theme="de34"] {
-  --c-bg: #efe9df;
-  --c-text: #1c1c1f;
-  --c-muted: #55524d;
-  --c-accent: #8a6a3e;
-  --c-accent-soft: #c8a97e;
-  --c-glass-fill: rgba(255, 255, 255, 0.52);
-  --c-glass-fill-hover: rgba(255, 255, 255, 0.62);
-  --c-glass-stroke: rgba(255, 255, 255, 0.9);
-  --c-chip-fill: rgba(28, 28, 31, 0.06);
-  --c-rim: #2f6bff;
-  --c-shadow: 0 24px 60px rgba(90, 76, 56, 0.14);
-  --glass-blur: 18px;
+  --c-bg: #f7f7f5;
+  --c-text: #111113;
+  --c-muted: #55555b;
+  --c-accent: #a4532b;          /* leather orange, darkened for 4.5:1 text contrast */
+  --c-accent-soft: #c8683a;
+  --c-glass-fill: rgba(255, 255, 255, 0.6);
+  --c-glass-fill-hover: rgba(255, 255, 255, 0.72);
+  --c-glass-stroke: rgba(255, 255, 255, 0.95);
+  --c-chip-fill: rgba(17, 17, 19, 0.05);
+  --c-rim: #c8683a;
+  --c-shadow: 0 30px 70px rgba(20, 22, 30, 0.12), 0 2px 6px rgba(20, 22, 30, 0.05);
+  --glass-blur: 16px;
   color-scheme: light;
 }
 
