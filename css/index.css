@@ -86,20 +86,12 @@
   line-height: 1.6;
 }
 
-.hero-desc {
-  margin-top: 14px;
-  max-width: 600px;
-  font-size: 16px;
-  line-height: 1.8;
-  color: var(--c-muted);
-}
-
 .tag-row {
   list-style: none;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-top: 40px;
+  margin-top: 24px;   /* lead → tags (was lead → paragraph 14px, paragraph → tags 40px) */
 }
 
 .hero-side {
@@ -254,12 +246,6 @@
   line-height: 1.4;
 }
 
-.card-body {
-  font-size: 15px;
-  line-height: 1.85;
-  color: var(--c-muted);
-}
-
 .card-meta {
   font-family: var(--font-en);
   font-size: 11px;
@@ -282,11 +268,6 @@
   font-size: clamp(30px, 3.6vw, 50px);
   font-weight: 700;
   line-height: 1.5;
-}
-
-.philosophy-desc {
-  margin-top: 24px;
-  max-width: 640px;
 }
 
 /* ---------- footer ---------- */
@@ -359,10 +340,6 @@
   .hero-lead {
     margin-top: 28px;
     font-size: 17px;
-  }
-
-  .hero-desc {
-    font-size: 15px;
   }
 
   .phrase-box {

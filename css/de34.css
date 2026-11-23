@@ -212,12 +212,19 @@ body {
 }
 
 /* ---------- reveal ---------- */
-.reveal {
+.reveal,
+.gallery > .glass {
   /* driven by scroll position, the same input as the 3D camera, so text,
      tabs and the world always arrive together (no timers) */
   opacity: var(--in, 0);
   translate: 0 calc((1 - var(--in, 0)) * 56px);
   will-change: opacity, translate;
+}
+
+/* without JavaScript nothing would ever set --in: show everything */
+@media (scripting: none) {
+  .reveal,
+  .gallery > .glass { opacity: 1; translate: none; }
 }
 
 /* ---------- hero ---------- */
@@ -238,19 +245,11 @@ body {
   letter-spacing: -0.01em;
 }
 
-.hero-desc {
-  margin-top: 26px;
-  max-width: 560px;
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--c-muted);
-}
-
 .hero-buttons {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
-  margin-top: 36px;
+  margin-top: 26px;   /* was 26px under the removed paragraph: h1 → next block */
 }
 
 .btn {
@@ -306,16 +305,9 @@ body {
   color: var(--c-accent);
 }
 
-.section-body {
-  margin-top: 16px;
-  font-size: 16px;
-  line-height: 1.85;
-  color: var(--c-muted);
-}
-
 /* ---------- galleries (tilt toward the cursor, set by JS) ---------- */
 .gallery {
-  margin-top: 44px;
+  margin-top: 24px;   /* heading → panels (was heading → text 16px, text → panels 44px) */
   transform-style: preserve-3d;
 }
 
@@ -370,6 +362,11 @@ body {
 .card .pill {
   align-self: flex-start;
   margin-top: 8px;
+}
+
+/* a card without a description keeps its button on the bottom line */
+.card h3 + .pill {
+  margin-top: auto;
 }
 
 .notes-grid {
@@ -442,9 +439,6 @@ body {
 @media (max-width: 720px) {
   .station { padding: 110px 0 140px; }
   .hero { padding-top: 130px; }
-  .hero-desc br { display: none; }
-  .hero-desc { font-size: 15px; }
-  .gallery { margin-top: 32px; }
   .notes-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
   .note-link { padding: 16px; }
   .mono-word { font-size: 34vw; bottom: 1vh; }
@@ -455,5 +449,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .opening-path { display: none; }
-  .reveal { opacity: 1; translate: none; }
+  .reveal,
+  .gallery > .glass { opacity: 1; translate: none; }
 }
