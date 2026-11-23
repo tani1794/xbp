@@ -366,19 +366,27 @@ function main() {
     dt = dt || 0;
     const camDt = Math.min(rawDt || dt, 0.5); // slow devices still reach the station
     const target = scrollProgress();
-    p += (target - p) * (reduce ? 1 : 1 - Math.exp(-camDt * 4.2)); // inertial camera (frame-rate independent)
+    // short inertia (~0.15 s) so the world keeps step with the scrolled DOM
+    p += (target - p) * (reduce ? 1 : 1 - Math.exp(-camDt * 7.5));
     const sy = window.scrollY;
     scrollSpinAcc += (sy - lastScrollY) * 0.0016;           // rotation synced to scroll
     lastScrollY = sy;
-    const mk = 1 - Math.exp(-dt * 3);
-    mouse.sx += (mouse.x - mouse.sx) * mk;
-    mouse.sy += (mouse.y - mouse.sy) * mk;
+    // look-around pauses while a glass tab is hovered, so the world behind
+    // the tab (and its refraction) holds still
+    if (!document.documentElement.classList.contains('glass-hover')) {
+      const mk = 1 - Math.exp(-camDt * 3);
+      mouse.sx += (mouse.x - mouse.sx) * mk;
+      mouse.sy += (mouse.y - mouse.sy) * mk;
+    }
 
     // camera on the path (+ an entrance fly-in on load)
     camCurve.getPoint(p, tmpPos);
     lookCurve.getPoint(p, tmpLook);
     if (intro < 1) {
-      intro = Math.min(1, intro + dt / 2.6);
+      // real elapsed time (not the capped frame step), and finish quickly once
+      // the visitor starts scrolling — otherwise the camera lagged behind the
+      // sections on slow devices
+      intro = Math.min(1, intro + camDt / (window.scrollY > 4 ? 0.35 : 2.6));
       const e = 1 - Math.pow(1 - intro, 3);
       tmpPos.add(up.set(0, 5 * (1 - e), 16 * (1 - e)));
     }

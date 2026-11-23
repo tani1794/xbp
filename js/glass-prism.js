@@ -45,6 +45,7 @@
     'uniform vec2  uMouse;',    // cursor (css px)
     'uniform float uStrength;', // 0..1 eased hover amount
     'uniform float uTime;',
+    'uniform float uOverlay;',  // 1 = draw only inside the tab (transparent elsewhere)
 
     'float sdRoundRect(vec2 p, vec2 b, float r){',
     '  vec2 q = abs(p) - b + r;',
@@ -76,7 +77,7 @@
     '  vec2 center = uRect.xy + hs;',
     '  float d = sdRoundRect(px - center, hs, uRadius);',
     '  float inside = smoothstep(1.5, -1.5, d);',
-    '  if (inside <= 0.0) { gl_FragColor = vec4(base, 1.0); return; }',
+    '  if (inside <= 0.0) { gl_FragColor = vec4(base, 1.0) * (1.0 - uOverlay); return; }',
 
     // lens bulge around the cursor
     '  float lensR = max(min(uRect.z, uRect.w) * 0.75, 120.0);',
@@ -110,7 +111,7 @@
     '  refr = mix(refr, spectral(band) * 0.85 + 0.1, clamp(rim * uStrength * 0.9, 0.0, 1.0));',
     '  refr += vec3(1.0) * fall * 0.05 * uStrength;',
 
-    '  gl_FragColor = vec4(mix(base, refr, inside), 1.0);',
+    '  gl_FragColor = vec4(mix(base, refr, inside), mix(1.0, inside, uOverlay));',
     '}'
   ].join('\n');
 
@@ -181,7 +182,7 @@
       gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
 
       this.u = {};
-      var names = ['uTex', 'uRes', 'uRect', 'uRadius', 'uMouse', 'uStrength', 'uTime'];
+      var names = ['uTex', 'uRes', 'uRect', 'uRadius', 'uMouse', 'uStrength', 'uTime', 'uOverlay'];
       for (var i = 0; i < names.length; i++) this.u[names[i]] = gl.getUniformLocation(prog, names[i]);
       gl.uniform1i(this.u.uTex, 0);
     } catch (err) {
@@ -232,12 +233,13 @@
         if (e.pointerType === 'touch') return;
         self._setActive(el, e.clientX, e.clientY, 1);
         el.classList.add('is-hover');
+        document.documentElement.classList.add('glass-hover');
       });
       el.addEventListener('pointermove', function (e) {
         if (e.pointerType === 'touch') return;
         self.mouse.x = e.clientX;
         self.mouse.y = e.clientY;
-        var r = el.getBoundingClientRect();
+        var r = stableRect(el);
         el.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
         el.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
         var a = Math.atan2(e.clientY - (r.top + r.height / 2), e.clientX - (r.left + r.width / 2));
@@ -246,6 +248,7 @@
       el.addEventListener('pointerleave', function (e) {
         if (e.pointerType === 'touch') return;
         el.classList.remove('is-hover');
+        document.documentElement.classList.remove('glass-hover');
         if (self.active === el) self.target = 0;
       });
       // touch: short, weak pulse on tap
@@ -281,23 +284,50 @@
     }
   };
 
+  /* The box of an element as it was when the pointer entered, before any
+     tilt was applied. Re-measuring the tilted element on every move fed the
+     tilt back into itself and made the tab shake at its edges. */
+  var rectCache = typeof WeakMap === 'function' ? new WeakMap() : null;
+  function stableRect(el) {
+    var r = rectCache && rectCache.get(el);
+    if (!r) {
+      r = el.getBoundingClientRect();
+      if (rectCache) rectCache.set(el, r);
+    }
+    return r;
+  }
+  function forgetRect(el) { if (rectCache) rectCache.delete(el); }
+  // scrolling or resizing moves boxes: measure again on the next move
+  if (rectCache) {
+    var clearAll = function () { rectCache = new WeakMap(); };
+    global.addEventListener('scroll', clearAll, { passive: true });
+    global.addEventListener('resize', clearAll);
+  }
+
   GlassPrism.prototype._bindTilt = function () {
     if (reduceMotion || coarse) return;
     var els = document.querySelectorAll('[data-tilt]');
     Array.prototype.forEach.call(els, function (el) {
       var max = parseFloat(el.getAttribute('data-tilt')) || 8;
+      el.addEventListener('pointerenter', function () {
+        forgetRect(el);
+        stableRect(el); // measured while still flat
+      });
       el.addEventListener('pointermove', function (e) {
-        var r = el.getBoundingClientRect();
-        var x = (e.clientX - r.left) / r.width - 0.5;
-        var y = (e.clientY - r.top) / r.height - 0.5;
-        el.style.setProperty('--tilt-x', (-y * 2 * max).toFixed(2) + 'deg');
-        el.style.setProperty('--tilt-y', (x * 2 * max).toFixed(2) + 'deg');
+        var r = stableRect(el);
+        var x = Math.max(-0.5, Math.min(0.5, (e.clientX - r.left) / r.width - 0.5));
+        var y = Math.max(-0.5, Math.min(0.5, (e.clientY - r.top) / r.height - 0.5));
+        // the side under the cursor comes toward the viewer, so the edge
+        // grows outward instead of slipping away from the cursor
+        el.style.setProperty('--tilt-x', (y * 2 * max).toFixed(2) + 'deg');
+        el.style.setProperty('--tilt-y', (-x * 2 * max).toFixed(2) + 'deg');
         el.classList.add('is-hover');
       });
       el.addEventListener('pointerleave', function () {
         el.style.setProperty('--tilt-x', '0deg');
         el.style.setProperty('--tilt-y', '0deg');
         el.classList.remove('is-hover');
+        forgetRect(el);
       });
     });
   };
@@ -322,6 +352,7 @@
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, this.source);
     gl.uniform2f(u.uRes, this.w, this.h);
     gl.uniform1f(u.uTime, time || 0);
+    gl.uniform1f(u.uOverlay, this.overlay ? 1 : 0);
 
     var s = this.strength;
     if (this.active && s > 0.002) {
