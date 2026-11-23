@@ -30,9 +30,36 @@
     }
   }
 
+  /* Reveal is tied to scroll position — the same input the 3D camera uses —
+     instead of IntersectionObserver + timed transitions, which let the tabs
+     arrive late or out of step with the world on fast scrolls. */
+  var stations = Array.prototype.slice.call(document.querySelectorAll('.station')).map(function (st) {
+    return { el: st, items: Array.prototype.slice.call(st.querySelectorAll('.reveal')) };
+  });
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  function revealByScroll() {
+    var vh = window.innerHeight;
+    for (var i = 0; i < stations.length; i++) {
+      var st = stations[i];
+      var top = st.el.getBoundingClientRect().top;
+      // 0 when the station's top is near the bottom of the screen,
+      // 1 once it has reached the upper third (before the camera arrives)
+      var q = clamp01((vh * 0.95 - top) / (vh * 0.6));
+      for (var k = 0; k < st.items.length; k++) {
+        var v = clamp01(q * 1.5 - k * 0.16);      // gentle stagger by order
+        v = 1 - Math.pow(1 - v, 3);                // ease-out
+        st.items[k].style.setProperty('--in', v.toFixed(3));
+      }
+    }
+  }
+
   function tick() {
-    mouse.sx += (mouse.x - mouse.sx) * 0.06;
-    mouse.sy += (mouse.y - mouse.sy) * 0.06;
+    // hold the gallery still while a tab is hovered, so the tab doesn't move
+    // under the cursor
+    if (!document.documentElement.classList.contains('glass-hover')) {
+      mouse.sx += (mouse.x - mouse.sx) * 0.06;
+      mouse.sy += (mouse.y - mouse.sy) * 0.06;
+    }
     var gx = (-mouse.sy * 8).toFixed(2) + 'deg';
     var gy = (mouse.sx * 8).toFixed(2) + 'deg';
     for (var i = 0; i < galleries.length; i++) {
@@ -40,6 +67,7 @@
       galleries[i].style.setProperty('--gy', gy);
     }
     slideWords();
+    revealByScroll();
     requestAnimationFrame(tick);
   }
 
@@ -47,6 +75,7 @@
     slideWords();
     window.addEventListener('scroll', slideWords, { passive: true });
   } else {
+    revealByScroll();
     requestAnimationFrame(tick);
   }
 
@@ -64,20 +93,9 @@
     }, 1200);
   });
 
-  /* reveal */
-  var reveals = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reduce) {
-    var ro = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) {
-          en.target.classList.add('show');
-          ro.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.12 });
-    reveals.forEach(function (el) { ro.observe(el); });
-  } else {
-    reveals.forEach(function (el) { el.classList.add('show'); });
+  /* reduced motion: everything is simply visible (CSS sets opacity 1) */
+  if (reduce) {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.style.setProperty('--in', '1'); });
   }
 
   /* scroll progress */

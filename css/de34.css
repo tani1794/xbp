@@ -113,6 +113,15 @@ body {
   padding: 2px;
 }
 
+/* hover must not re-blur the backdrop: animating backdrop-filter repaints the
+   whole layer every frame and made the page judder */
+.glass,
+.glass.is-hover {
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  backdrop-filter: blur(10px) saturate(140%);
+  transition: background 0.5s var(--ease-out), border-color 0.5s var(--ease-out), box-shadow 0.5s var(--ease-out);
+}
+
 /* ---------- header ---------- */
 .site-header .logo {
   font-family: var(--font-en);
@@ -204,20 +213,12 @@ body {
 
 /* ---------- reveal ---------- */
 .reveal {
-  opacity: 0;
-  transform: perspective(1000px) translate3d(0, 40px, -140px) rotateX(10deg);
-  transition: opacity 1s var(--ease-out), transform 1.2s var(--ease-out);
+  /* driven by scroll position, the same input as the 3D camera, so text,
+     tabs and the world always arrive together (no timers) */
+  opacity: var(--in, 0);
+  translate: 0 calc((1 - var(--in, 0)) * 56px);
+  will-change: opacity, translate;
 }
-
-.reveal.show {
-  opacity: 1;
-  transform: none;
-}
-
-.hero .reveal:nth-child(2) { transition-delay: 0.08s; }
-.hero .reveal:nth-child(3) { transition-delay: 0.16s; }
-.hero .reveal:nth-child(4) { transition-delay: 0.24s; }
-.hero .reveal:nth-child(5) { transition-delay: 0.32s; }
 
 /* ---------- hero ---------- */
 .hero {
@@ -318,9 +319,8 @@ body {
   transform-style: preserve-3d;
 }
 
-.gallery.show {
-  transform: rotateX(var(--gx, 0deg)) rotateY(var(--gy, 0deg));
-  transition: opacity 1s var(--ease-out), transform 0.9s var(--ease-out);
+.gallery {
+  transform: perspective(1400px) rotateX(var(--gx, 0deg)) rotateY(var(--gy, 0deg));
 }
 
 .card-grid {
@@ -339,8 +339,7 @@ body {
   transition:
     transform 0.6s var(--ease-out),
     background 0.5s var(--ease-out),
-    -webkit-backdrop-filter 0.5s var(--ease-out),
-    backdrop-filter 0.5s var(--ease-out);
+    box-shadow 0.5s var(--ease-out);
 }
 
 .card.is-hover {
@@ -386,11 +385,12 @@ body {
   gap: 6px;
   padding: 20px 20px 18px;
   border-radius: 20px;
-  transition: transform 0.45s var(--ease-out), background 0.5s var(--ease-out);
 }
 
-.note-link:hover {
-  transform: translateY(-4px) translateZ(20px);
+/* hover feedback without moving the box (moving it pushed the tile out from
+   under the cursor, which un-hovered it, which moved it back — a loop) */
+.note-link.is-hover {
+  box-shadow: 0 34px 70px rgba(20, 22, 30, 0.16), inset 0 1px 0 #fff, inset 0 -1px 0 rgba(17, 17, 19, 0.04);
 }
 
 .note-num {
@@ -455,5 +455,5 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .opening-path { display: none; }
-  .reveal { opacity: 1; transform: none; }
+  .reveal { opacity: 1; translate: none; }
 }
